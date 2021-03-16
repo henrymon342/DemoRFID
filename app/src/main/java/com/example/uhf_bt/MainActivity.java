@@ -106,8 +106,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        if (BuildConfig.DEBUG) {
+        setContentView(R.layout.login);
+       /* if (BuildConfig.DEBUG) {
             setTitle(String.format("%s(v%s-debug)", getString(R.string.app_name), getVerName()));
         } else {
             setTitle(String.format("%s(v%s)", getString(R.string.app_name), getVerName() ));
@@ -117,7 +117,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         checkReadWritePermission();
         checkLocationEnable();
         uhf.init(getApplicationContext());
-        Utils.initSound(getApplicationContext());
+        Utils.initSound(getApplicationContext());*/
     }
 
     @Override

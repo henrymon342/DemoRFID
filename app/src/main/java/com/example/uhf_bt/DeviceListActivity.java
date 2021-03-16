@@ -332,7 +332,7 @@ public class DeviceListActivity extends BaseActivity {
 
             MyDevice device = devices.get(position);
             final TextView tvadd = ((TextView) vg.findViewById(R.id.address));
-            final TextView tvname = ((TextView) vg.findViewById(R.id.name));
+            final TextView tvname = ((TextView) vg.findViewById(R.id.correo));
             final TextView tvpaired = (TextView) vg.findViewById(R.id.paired);
             final TextView tvrssi = (TextView) vg.findViewById(R.id.rssi);
 
