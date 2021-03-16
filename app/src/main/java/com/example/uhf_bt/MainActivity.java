@@ -48,6 +48,7 @@ import java.util.TimerTask;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTabHost;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import no.nordicsemi.android.dfu.BuildConfig;
 
@@ -63,9 +64,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public String selectEPC=null;
     public boolean isSupportRssi=false;
     public BluetoothDevice mDevice = null;
+    private ConstraintLayout login;
     private FragmentTabHost mTabHost;
     private FragmentManager fm;
-    private Button btn_connect, btn_search;
+    private Button btn_connect, btn_search,btn_login;
     private TextView tvAddress;
     public BluetoothAdapter mBtAdapter = null;
     public RFIDWithUHFBLE uhf = RFIDWithUHFBLE.getInstance();
@@ -106,8 +108,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
-       /* if (BuildConfig.DEBUG) {
+        setContentView(R.layout.activity_main);
+        /*btn_login=(Button)findViewById(R.id.btn_login);*/
+
+        if (BuildConfig.DEBUG) {
             setTitle(String.format("%s(v%s-debug)", getString(R.string.app_name), getVerName()));
         } else {
             setTitle(String.format("%s(v%s)", getString(R.string.app_name), getVerName() ));
@@ -117,8 +121,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         checkReadWritePermission();
         checkLocationEnable();
         uhf.init(getApplicationContext());
-        Utils.initSound(getApplicationContext());*/
+        Utils.initSound(getApplicationContext());
+
     }
+
 
     @Override
     protected void onDestroy() {
