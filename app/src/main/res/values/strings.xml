@@ -990,13 +990,13 @@
     <string name="uhf_title_uii" translatable="false">UII:</string>
     <string name="uhf_title_tid" translatable="false">TID:</string>
     <string name="uhf_title_user" translatable="false">USER:</string>
-    <string name="Connect">Connect</string>
+    <string name="Connect">Conectar</string>
     <string name="disConnect">Disconnect</string>
     <string name="disConnectForSecond">Disconnect\n(Disconnect after %ds)</string>
     <string name="disConnectForMinute">Disconnect\n(Disconnect after %dMin)</string>
 
     <string name="title_2d_Scan">Barcode Scan</string>
-    <string name="title_inventory">Inventory</string>
+    <string name="title_inventory">Inventario</string>
     <string name="title_inventory2">Inventory_EPC+TID+USER</string>
     <string name="title_encryption">Encryption</string>
     <string name="title_authentication">Authentication</string>

@@ -2,8 +2,8 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "30.0.1"
-    ndkVersion '21.3.6528147'
+    buildToolsVersion '28.0.2'
+
     defaultConfig {
         applicationId "com.example.uhf_bt"
         minSdkVersion 18
