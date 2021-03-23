@@ -98,4 +98,5 @@
         android:text="Registro Falso"
         tools:layout_editor_absoluteX="42dp"
         tools:layout_editor_absoluteY="639dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

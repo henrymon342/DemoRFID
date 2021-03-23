@@ -3,6 +3,7 @@ package com.example.uhf_bt;
 import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
@@ -51,10 +52,25 @@ public class LoginActivity extends BaseActivity {
         password=findViewById(R.id.password);
         Log.d("RESPUESTA1",  correo.getText().toString());
         Log.d("RESPUESTA2",  password.getText().toString());
-        if(correo.getText().toString().equals("admin@admin")&&password.getText().toString().equals("1234")){
-            startActivity(loginIntend);
-        }else{
-            Toast.makeText(this, "usuario o constraseña invalido", Toast.LENGTH_SHORT).show();
+        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
+        SQLiteDatabase db= conn.getReadableDatabase();
+        String[] parametros={correo.getText().toString()};
+        String[] campos={utilidades.CAMPO_EMAIL,utilidades.CAMPO_PASSWORD};
+        try {
+            Cursor cursor = db.query(utilidades.TABLA_USUARIO,campos,utilidades.CAMPO_EMAIL+"=?",parametros,null,null,null);
+            cursor.moveToFirst();
+            String email=cursor.getString(0);
+            String pass=cursor.getString(1);
+            cursor.close();
+            if(correo.getText().toString().equals(email)&&password.getText().toString().equals(pass)){
+                startActivity(loginIntend);
+            }else{
+                Toast.makeText(this, "usuario o constraseña invalido", Toast.LENGTH_SHORT).show();
+            }
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(),"el usuario o contraseña son incorrectos",Toast.LENGTH_LONG).show();
+            correo.setText("");
+            password.setText("");
         }
     }
     public void registrar(){
@@ -62,10 +78,10 @@ public class LoginActivity extends BaseActivity {
         ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
         ContentValues values=new ContentValues();
-        values.put(utilidades.CAMPO_ID,"u1");
-        values.put(utilidades.CAMPO_NOMBRE,"jorge");
-        values.put(utilidades.CAMPO_EMAIL,"jorge@gmail.com");
-        values.put(utilidades.CAMPO_PASSWORD,"1234567");
+        values.put(utilidades.CAMPO_ID,"u3");
+        values.put(utilidades.CAMPO_NOMBRE,"pepe");
+        values.put(utilidades.CAMPO_EMAIL,"pepe@gmail.com");
+        values.put(utilidades.CAMPO_PASSWORD,"1234");
 
         Long idResultante=db.insert(utilidades.TABLA_USUARIO,utilidades.CAMPO_ID,values);
 
