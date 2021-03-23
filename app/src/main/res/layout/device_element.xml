@@ -38,7 +38,7 @@
         android:textSize="12dp" />
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/correo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -48,6 +48,6 @@
         android:id="@+id/address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/name"
+        android:layout_below="@+id/correo"
         android:textSize="10dp" />
 </RelativeLayout>

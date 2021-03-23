@@ -25,9 +25,17 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.uhf_bt.fragment.BTRenameFragment;
+import com.example.uhf_bt.fragment.BarcodeFragment;
+import com.example.uhf_bt.fragment.UHFEraseFragment;
+import com.example.uhf_bt.fragment.UHFKillFragment;
 import com.example.uhf_bt.fragment.UHFLocationFragment;
+import com.example.uhf_bt.fragment.UHFLockFragment;
+import com.example.uhf_bt.fragment.UHFReadFragment;
 import com.example.uhf_bt.fragment.UHFReadTagFragment;
 import com.example.uhf_bt.fragment.UHFSetFragment;
+import com.example.uhf_bt.fragment.UHFUpdataFragment;
+import com.example.uhf_bt.fragment.UHFWriteFragment;
 import com.rscja.deviceapi.RFIDWithUHFBLE;
 import com.rscja.deviceapi.interfaces.ConnectionStatus;
 import com.rscja.deviceapi.interfaces.ConnectionStatusCallback;
@@ -40,6 +48,7 @@ import java.util.TimerTask;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTabHost;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import no.nordicsemi.android.dfu.BuildConfig;
 
@@ -55,9 +64,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public String selectEPC=null;
     public boolean isSupportRssi=false;
     public BluetoothDevice mDevice = null;
+    private ConstraintLayout login;
     private FragmentTabHost mTabHost;
     private FragmentManager fm;
-    private Button btn_connect, btn_search;
+    private Button btn_connect, btn_search,btn_login;
     private TextView tvAddress;
     public BluetoothAdapter mBtAdapter = null;
     public RFIDWithUHFBLE uhf = RFIDWithUHFBLE.getInstance();
@@ -99,6 +109,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        /*btn_login=(Button)findViewById(R.id.btn_login);*/
+
         if (BuildConfig.DEBUG) {
             setTitle(String.format("%s(v%s-debug)", getString(R.string.app_name), getVerName()));
         } else {
@@ -110,7 +122,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         checkLocationEnable();
         uhf.init(getApplicationContext());
         Utils.initSound(getApplicationContext());
+
     }
+
 
     @Override
     protected void onDestroy() {
@@ -424,11 +438,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.title_inventory)).setIndicator(getString(R.string.title_inventory)), UHFReadTagFragment.class, null);
        // mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.title_inventory2)).setIndicator(getString(R.string.title_inventory2)), UHFNewReadTagFragment.class, null);
+        mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.title_2d_Scan)).setIndicator(getString(R.string.title_2d_Scan)), BarcodeFragment.class, null);
 
         mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.uhf_msg_tab_set)).setIndicator(getString(R.string.uhf_msg_tab_set)), UHFSetFragment.class, null);
 
         mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.location)).setIndicator(getString(R.string.location)),
                 UHFLocationFragment.class, null);
+
+        mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.uhf_msg_tab_read)).setIndicator(getString(R.string.uhf_msg_tab_read)), UHFReadFragment.class, null);
+
+        mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.uhf_msg_tab_write)).setIndicator(getString(R.string.uhf_msg_tab_write)), UHFWriteFragment.class, null);
+
+        mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.uhf_msg_tab_lock)).setIndicator(getString(R.string.uhf_msg_tab_lock)), UHFLockFragment.class, null);
+
+        mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.uhf_msg_tab_kill)).setIndicator(getString(R.string.uhf_msg_tab_kill)), UHFKillFragment.class, null);
+
+        mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.uhf_msg_tab_erase)).setIndicator(getString(R.string.uhf_msg_tab_erase)), UHFEraseFragment.class, null);
+
+        mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.title_update)).setIndicator(getString(R.string.title_update)), UHFUpdataFragment.class, null);
+
+        mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.title_bt_rename)).setIndicator(getString(R.string.title_bt_rename)), BTRenameFragment.class, null);
 
 
     }
