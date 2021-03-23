@@ -31,6 +31,7 @@ import com.example.uhf_bt.NumberTool;
 import com.example.uhf_bt.R;
 import com.example.uhf_bt.Utils;
 import com.example.uhf_bt.view.Articulo;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.rscja.deviceapi.RFIDWithUHFBLE;
 import com.rscja.deviceapi.entity.UHFTAGInfo;
 import com.rscja.deviceapi.interfaces.ConnectionStatus;
@@ -52,6 +53,8 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
     //lista para guardar los datos
     private ArrayList<String> listaCsv;
+    MaterialSpinner spinnerE;
+    MaterialSpinner spinnerU;
 
     private String TAG = "UHFReadTagFragment";
     int lastIndex=-1;
@@ -151,6 +154,8 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_uhfread_tag, container, false);
         initFilter(view);
+
+
 
         return view;
     }
@@ -274,109 +279,41 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         clearData();
     }
 
-    private CheckBox cbFilter;
+
     private ViewGroup layout_filter;
     private Button btnSetFilter;
     private void initFilter(View view) {
         layout_filter = (ViewGroup) view.findViewById(R.id.layout_filter);
-        layout_filter.setVisibility(View.GONE);
-        cbFilter = (CheckBox) view.findViewById(R.id.cbFilter);
-        cbFilter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                layout_filter.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-            }
-        });
+
 
         final EditText etLen = (EditText) view.findViewById(R.id.etLen);
         final EditText etPtr = (EditText) view.findViewById(R.id.etPtr);
         final EditText etData = (EditText) view.findViewById(R.id.etData);
-        final RadioButton rbEPC = (RadioButton) view.findViewById(R.id.rbEPC);
-        final RadioButton rbTID = (RadioButton) view.findViewById(R.id.rbTID);
-        final RadioButton rbUser = (RadioButton) view.findViewById(R.id.rbUser);
+
+        //final RadioButton rbTID = (RadioButton) view.findViewById(R.id.rbTID);
+        //final RadioButton rbUser = (RadioButton) view.findViewById(R.id.rbUser);
         btnSetFilter = (Button) view.findViewById(R.id.btSet);
 
-        btnSetFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int filterBank = RFIDWithUHFBLE.Bank_EPC;
-                if (rbEPC.isChecked()) {
-                    filterBank = RFIDWithUHFBLE.Bank_EPC;
-                } else if (rbTID.isChecked()) {
-                    filterBank = RFIDWithUHFBLE.Bank_TID;
-                } else if (rbUser.isChecked()) {
-                    filterBank = RFIDWithUHFBLE.Bank_USER;
-                }
-                if (etLen.getText().toString() == null || etLen.getText().toString().isEmpty()) {
-                    showToast("数据长度不能为空");
-                    return;
-                }
-                if (etPtr.getText().toString() == null || etPtr.getText().toString().isEmpty()) {
-                    showToast("起始地址不能为空");
-                    return;
-                }
-                int ptr = Utils.toInt(etPtr.getText().toString(), 0);
-                int len = Utils.toInt(etLen.getText().toString(), 0);
-                String data = etData.getText().toString().trim();
-                if (len > 0 && !TextUtils.isEmpty(data)) {
-                    String rex = "[\\da-fA-F]*"; //匹配正则表达式，数据为十六进制格式
-                    if (!data.matches(rex)) {
-                        showToast("过滤的数据必须是十六进制数据");
-//                        mContext.playSound(2);
-                        return;
-                    }
 
-                    int l = data.replace(" ", "").length();
-                    if (len <= l * 4) {
-                        if(l % 2 != 0)
-                            data += "0";
-                    } else {
-                        showToast(R.string.uhf_msg_set_filter_fail2);
-                        return;
-                    }
+        //SPINNER
+        spinnerE = view.findViewById(R.id.spinnerE);
+        spinnerU = view.findViewById(R.id.spinnerU);
 
-                    if (mContext.uhf.setFilter(filterBank, ptr, len, data)) {
-                        showToast(R.string.uhf_msg_set_filter_succ);
-                    } else {
-                        showToast(R.string.uhf_msg_set_filter_fail);
-                    }
-                } else {
-                    //禁用过滤
-                    String dataStr = "00";
-                    if (mContext.uhf.setFilter(RFIDWithUHFBLE.Bank_EPC, 0, 0, dataStr)
-                            && mContext.uhf.setFilter(RFIDWithUHFBLE.Bank_TID, 0, 0, dataStr)
-                            && mContext.uhf.setFilter(RFIDWithUHFBLE.Bank_USER, 0, 0, dataStr)) {
-                        showToast(R.string.msg_disable_succ);
-                    } else {
-                        showToast(R.string.msg_disable_fail);
-                    }
-                }
-                cbFilter.setChecked(false);
+        setItemsEdificios();
+
+    }
+
+    private void setItemsEdificios() {
+        spinnerE.setItems("EDIFICIO 1", "EDIFICIO 2", "EDIFICIO 3", "EDIFICIO 4", "EDIFICIO 5");
+        spinnerE.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+            @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                Toast.makeText(mContext, item, Toast.LENGTH_SHORT).show();
             }
         });
-
-        rbEPC.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (rbEPC.isChecked()) {
-                    etPtr.setText("32");
-                }
-            }
-        });
-        rbTID.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (rbTID.isChecked()) {
-                    etPtr.setText("0");
-                }
-            }
-        });
-        rbUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (rbUser.isChecked()) {
-                    etPtr.setText("0");
-                }
+        spinnerU.setItems("ROOM 1", "ROOM 2", "ROOM 3", "ROOM 4", "ROOM 5");
+        spinnerU.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+            @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                Toast.makeText(mContext, item, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -389,14 +326,12 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             btInventory.setEnabled(true);
             btInventoryPerMinute.setEnabled(true);
 
-            cbFilter.setEnabled(true);
+
         } else {
             InventoryLoop.setEnabled(false);
             btInventory.setEnabled(false);
             btInventoryPerMinute.setEnabled(false);
 
-            cbFilter.setChecked(false);
-            cbFilter.setEnabled(false);
         }
     }
 
@@ -451,7 +386,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                     btInventoryPerMinute.setEnabled(true);
                 }
 
-                cbFilter.setEnabled(true);
+
             } else if (connectionStatus == ConnectionStatus.DISCONNECTED) {
                 loopFlag = false;
                 mContext.isScanning = false;
@@ -461,8 +396,6 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                 btInventory.setEnabled(false);
                 btInventoryPerMinute.setEnabled(false);
 
-                cbFilter.setChecked(false);
-                cbFilter.setEnabled(false);
             }
         }
     }
@@ -472,7 +405,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             return;
         }
         isRuning = true;
-        cbFilter.setChecked(false);
+
         new TagThread().start();
     }
 
@@ -512,10 +445,10 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     private synchronized   List<UHFTAGInfo> getUHFInfo() {
         List<UHFTAGInfo> list=null;
         if(mContext.isSupportRssi){
-            //旧主板才需要调用readTagFromBufferList_EpcTidUser 输出 RSSI
+            //La placa base antigua solo necesita llamar a readTagFromBufferList_EpcTidUser para generar RSSI
             list = mContext.uhf.readTagFromBufferList_EpcTidUser();
         }else {
-            //读写器主板版本 2.20-2.29 readTagFromBufferList 函数支持输出Rssi，无需调用readTagFromBufferList_EpcTidUser
+            //La función readTagFromBufferList de la placa base del lector versión 2.20-2.29 admite la salida Rssi, no es necesario llamar a readTagFromBufferList_EpcTidUser
            list = mContext.uhf.readTagFromBufferList();
         }
         return list;

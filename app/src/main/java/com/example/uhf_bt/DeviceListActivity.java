@@ -332,7 +332,7 @@ public class DeviceListActivity extends BaseActivity {
 
             MyDevice device = devices.get(position);
             final TextView tvadd = ((TextView) vg.findViewById(R.id.address));
-            final TextView tvname = ((TextView) vg.findViewById(R.id.name));
+            //final TextView tvname = ((TextView) vg.findViewById(R.id.name));
             final TextView tvpaired = (TextView) vg.findViewById(R.id.paired);
             final TextView tvrssi = (TextView) vg.findViewById(R.id.rssi);
 
@@ -343,8 +343,8 @@ public class DeviceListActivity extends BaseActivity {
                 tvrssi.setVisibility(View.VISIBLE);
             }
 
-            tvname.setText(device.getName());
-            tvname.setTextColor(Color.BLACK);
+            //tvname.setText(device.getName());
+            //tvname.setTextColor(Color.BLACK);
             tvadd.setText(device.getAddress());
             tvadd.setTextColor(Color.BLACK);
             if (device.getBondState() == BluetoothDevice.BOND_BONDED) {

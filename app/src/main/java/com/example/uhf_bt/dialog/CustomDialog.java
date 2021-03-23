@@ -45,15 +45,15 @@ public class CustomDialog extends BaseDialog {
     }
 
     private void init() {
-        mContentView = View.inflate(mContext, R.layout.usuallib_normal_dialog_layout, null);
-        mMessageLayout = getView(mContentView, R.id.messageLayout);
-        tv_title = getView(mContentView, R.id.tv_title);
-        tv_msg = getView(mContentView, R.id.tv_msg);
-        lineView = getView(mContentView, R.id.title_line_heng);
+        //mContentView = View.inflate(mContext, R.layout.usuallib_normal_dialog_layout, null);
+        //mMessageLayout = getView(mContentView, R.id.messageLayout);
+        //tv_title = getView(mContentView, R.id.tv_title);
+        //tv_msg = getView(mContentView, R.id.tv_msg);
+        //lineView = getView(mContentView, R.id.title_line_heng);
         btn_cancel = getView(mContentView, R.id.btn_cancel);
-        btn_cancel.setOnClickListener(mListener);
-        btn_ok = getView(mContentView, R.id.btn_ok);
-        btn_ok.setOnClickListener(mListener);
+        //btn_cancel.setOnClickListener(mListener);
+        //btn_ok = getView(mContentView, R.id.btn_ok);
+        //btn_ok.setOnClickListener(mListener);
         mDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
@@ -66,6 +66,7 @@ public class CustomDialog extends BaseDialog {
         mDialog.setContentView(mContentView);
     }
 
+    /**
     private View.OnClickListener mListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -84,7 +85,7 @@ public class CustomDialog extends BaseDialog {
             }
         }
     };
-
+    */
     public CustomDialog setMessageView(View messageView) {
         return setMessageView(messageView, -1);
     }
@@ -277,7 +278,7 @@ public class CustomDialog extends BaseDialog {
             btn_cancel.setVisibility(View.VISIBLE);
             btn_ok.setBackgroundResource(R.drawable.selecter_bottomright_coner_fe_f0);
         }
-        hideOrShowLines();
+        //hideOrShowLines();
         return this;
     }
 
@@ -292,7 +293,7 @@ public class CustomDialog extends BaseDialog {
             btn_ok.setVisibility(View.VISIBLE);
             btn_cancel.setBackgroundResource(R.drawable.selecter_bottomleft_coner_fe_f0);
         }
-        hideOrShowLines();
+        //hideOrShowLines();
         return this;
     }
 
@@ -342,6 +343,7 @@ public class CustomDialog extends BaseDialog {
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
     }
 
+    /**
     private void hideOrShowLines() {
         View lineHeng = getView(mContentView, R.id.line_heng);
         if(lineHeng != null) {
@@ -359,5 +361,5 @@ public class CustomDialog extends BaseDialog {
                 lineShu.setVisibility(View.VISIBLE);
             }
         }
-    }
+    }*/
 }

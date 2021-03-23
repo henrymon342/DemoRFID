@@ -44,7 +44,9 @@ public class UHFLocationFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         mContext = (MainActivity) getActivity();
+        Log.d(TAG, " ACTIVIDAD BUSCADA: "+ ((Object)mContext).getClass().getSimpleName());
         llChart=mContext.findViewById(R.id.llChart);
         etEPC=mContext.findViewById(R.id.etEPC);
         btStart=mContext.findViewById(R.id.btStart);
@@ -90,14 +92,16 @@ public class UHFLocationFragment extends Fragment {
 
     private void startLocation(){
         LogUtility.setDebug(true);
-       String epc=etEPC.getText().toString();
-       if(epc!=null && epc.length()>0) {
+       String epc = etEPC.getText().toString();
+       if(epc != null && epc.length()>0) {
+
            boolean result = mContext.uhf.startLocation(mContext, epc, IUHF.Bank_EPC, 32, new IUHFLocationCallback() {
                @Override
                public void getLocationValue(int Value) {
                    llChart.setData(Value);
                }
            });
+           Log.d(TAG, "RESULT: "+ mContext);
            if (!result) {
                Toast.makeText(mContext, R.string.psam_msg_fail, Toast.LENGTH_SHORT).show();
                return;
