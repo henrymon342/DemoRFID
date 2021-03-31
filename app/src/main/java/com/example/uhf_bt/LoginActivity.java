@@ -25,9 +25,7 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-
         ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
-
         btn_login=(Button)findViewById(R.id.btn_login);
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +45,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     public void logear(){
-        Intent loginIntend= new Intent(this,MainActivity.class);
+        Intent loginIntend= new Intent(this,PrincipalActivity.class);
         correo=findViewById(R.id.correo);
         password=findViewById(R.id.password);
         Log.d("RESPUESTA1",  correo.getText().toString());
@@ -56,7 +54,10 @@ public class LoginActivity extends BaseActivity {
         SQLiteDatabase db= conn.getReadableDatabase();
         String[] parametros={correo.getText().toString()};
         String[] campos={utilidades.CAMPO_EMAIL,utilidades.CAMPO_PASSWORD};
+
+
         try {
+            Log.d("RESPUESTA3",  "entro pero no funciono");
             Cursor cursor = db.query(utilidades.TABLA_USUARIO,campos,utilidades.CAMPO_EMAIL+"=?",parametros,null,null,null);
             cursor.moveToFirst();
             String email=cursor.getString(0);
@@ -68,6 +69,7 @@ public class LoginActivity extends BaseActivity {
                 Toast.makeText(this, "usuario o constraseña invalido", Toast.LENGTH_SHORT).show();
             }
         }catch (Exception e){
+            Log.d("RESPUESTA4",  "nunca entro");
             Toast.makeText(getApplicationContext(),"el usuario o contraseña son incorrectos",Toast.LENGTH_LONG).show();
             correo.setText("");
             password.setText("");
