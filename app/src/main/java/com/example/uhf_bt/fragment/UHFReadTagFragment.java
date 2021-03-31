@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,8 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.Interfaces.LogeoInterface;
+import com.example.Models.User;
 import com.example.uhf_bt.DateUtils;
 import com.example.uhf_bt.FileUtils;
 import com.example.uhf_bt.MainActivity;
@@ -47,6 +50,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import androidx.fragment.app.Fragment;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static java.lang.String.valueOf;
 
 
 public class UHFReadTagFragment extends Fragment implements View.OnClickListener {
@@ -108,8 +118,14 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                 case FLAG_UHFINFO_LIST:
                     List<UHFTAGInfo> list = ( List<UHFTAGInfo>) msg.obj;
                     UHFTAGInfo cosa = list.get(0);
-                    Log.d("HENRYLISTA   ", cosa.getEPC());
+
                     // la captura de objetos uno por uno
+                    UHFTAGInfo infoAux = list.get(0);
+                    if (infoAux != null) {
+                        Message msgAux = handler.obtainMessage(FLAG_UHFINFO);
+                        msgAux.obj = infoAux;
+                        Log.d("HENRYLISTA   ", valueOf(msgAux));
+                    }
                     listaCsv.add(msg.toString());
                     Log.d("GG:", msg.toString());
                     addEPCToList(list);
@@ -140,7 +156,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                     String cc = cosa2.getEPC();
                     Log.d("HENRYLISTA   ", cc);
                     // la captura de objetos uno por uno
-                    listaCsv.add(list2.get(0).getEPC());
+                    listaCsv.add(list2.get(0).toString());
                     //adicionarALista(cc);
                     List list1=new ArrayList<UHFTAGInfo>();
                     list1.add(info);
@@ -154,7 +170,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_uhfread_tag, container, false);
         initFilter(view);
-
+        getUsuarios();
 
 
         return view;
@@ -187,23 +203,26 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btClear:
+            case R.id.btClear: // limpiar
                 clearData();
                 break;
             case R.id.btInventoryPerMinute:
                 inventoryPerMinute();
                 break;
-            case R.id.InventoryLoop:
-                startThread();
+            case R.id.InventoryLoop: // auto
+                getUsuarios();
+                //startThread();
                 break;
-            case R.id.btInventory:
-                inventory();
+            case R.id.btInventory: // single
+                //inventory();
+                cargarBDSQLite();
                 break;
-            case R.id.btStop:
+            case R.id.btStop: //stop
                 if (mContext.uhf.getConnectStatus() == ConnectionStatus.CONNECTED) {
                     stopInventory();
                 }
                 break;
+                /**
             case R.id.btnGenerar:
                 Log.d("CSV", " entro!!!!");
                 for (int i = 0; i < tagList.size(); i++) {
@@ -211,7 +230,33 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                     Log.d("CSV",  String.valueOf( tagList.get(i).get("tagData")));
                 }
                 break;
+                 */
         }
+    }
+
+    private void getUsuarios() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://192.168.100.135:5001")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        LogeoInterface logeoInterface = retrofit.create(LogeoInterface.class);
+        Call<List<User>> call = logeoInterface.getUsers();
+
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if (!response.isSuccessful()){
+                    Log.d("RESPUESTAAPIsuccess", String.valueOf(response.code()));
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Log.d("RESPUESTAAPIfailed", t.getMessage());
+            }
+        });
     }
 
 
@@ -228,7 +273,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         btStop = (Button) mContext.findViewById(R.id.btStop);
         btStop.setEnabled(false);
         btClear = (Button) mContext.findViewById(R.id.btClear);
-        btnGenerar = (Button) mContext.findViewById(R.id.btnGenerar);
+        //btnGenerar = (Button) mContext.findViewById(R.id.btnGenerar);
         tv_count = (TextView) mContext.findViewById(R.id.tv_count);
         tv_total = (TextView) mContext.findViewById(R.id.tv_total);
         tv_time = (TextView) mContext.findViewById(R.id.tv_time);
@@ -237,7 +282,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         btInventory.setOnClickListener(this);
         btClear.setOnClickListener(this);
         btStop.setOnClickListener(this);
-        btnGenerar.setOnClickListener(this);
+        //btnGenerar.setOnClickListener(this);
 
         btInventoryPerMinute = mContext.findViewById(R.id.btInventoryPerMinute);
         btInventoryPerMinute.setOnClickListener(this);
@@ -476,15 +521,15 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         tagMap = new HashMap<>();
         tagMap.put(MainActivity.TAG_EPC, info.getEPC());
         tagMap.put(MainActivity.TAG_DATA, data);
-        tagMap.put(MainActivity.TAG_COUNT, String.valueOf(1));
+        tagMap.put(MainActivity.TAG_COUNT, valueOf(1));
         tagMap.put(MainActivity.TAG_RSSI, info.getRssi()==null?"":info.getRssi());
         //mostrar datos
         Log.d("HENRY",  tagMap.toString());
         tagList.add(index, tagMap);
         tempDatas.add(index,info.getEpcBytes());
         adapter.notifyDataSetChanged();
-        tv_count.setText(String.valueOf(adapter.getCount()));
-        tv_total.setText(String.valueOf(++total));
+        tv_count.setText(valueOf(adapter.getCount()));
+        tv_total.setText(valueOf(++total));
     }
     private void addEPCToList(List<UHFTAGInfo> list) {
         for(int i = 0; i < list.size(); i++){
@@ -533,9 +578,9 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
                     tagMap = tagList.get(judgeIndex);
                     int tagCount = Integer.parseInt(tagMap.get(MainActivity.TAG_COUNT), 10) + 1;
-                    tagMap.put(MainActivity.TAG_COUNT, String.valueOf(tagCount));
+                    tagMap.put(MainActivity.TAG_COUNT, valueOf(tagCount));
                     tagMap.put(MainActivity.TAG_RSSI, info.getRssi()==null?"":info.getRssi());
-                    tv_total.setText(String.valueOf(++total));
+                    tv_total.setText(valueOf(++total));
                     adapter.notifyDataSetChanged();
                     break;
                 }
@@ -605,7 +650,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    private void inventory() {
+    private void inventory() { // ESTUDIAR ESTE METODO PARA LA BUSQUEDA UNO A UNO, YA QUE ESTE ES (SINGLE)
         mStrTime = System.currentTimeMillis();
         UHFTAGInfo info = mContext.uhf.inventorySingleTag();
         if (info != null) {
@@ -615,6 +660,15 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         }
         handler.sendEmptyMessage(FLAG_UPDATE_TIME);
     }
+
+    private void cargarBDSQLite(){
+        for (int i = 0; i < listaCsv.size() ; i++) {
+            Log.d(TAG, "cargarBDSQLite: "+ listaCsv.get(i));
+
+        }
+    }
+
+
 
     private Toast mToast;
     public void showToast(String text) {

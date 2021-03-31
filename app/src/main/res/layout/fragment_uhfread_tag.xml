@@ -1,158 +1,163 @@
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="#00CE2222"
+tools:context="com.example.uhf_bt.fragment.UHFReadTagFragment">
+
+<LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context="com.example.uhf_bt.fragment.UHFReadTagFragment">
+    android:layout_height="match_parent"
+    android:background="@color/graywhite"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-    <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white_e0"
-        android:orientation="horizontal"
-        android:padding="2dp">
+        android:background="@color/cardview_dark_background"
+        android:weightSum="10"
+        android:orientation="horizontal">
 
         <com.jaredrummler.materialspinner.MaterialSpinner
             android:id="@+id/spinnerE"
-            android:layout_width="200dp"
-            android:layout_height="match_parent"
-            android:textColor="@color/black" />
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="5"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/cardview_dark_background" />
 
         <com.jaredrummler.materialspinner.MaterialSpinner
             android:id="@+id/spinnerU"
-            android:layout_width="200dp"
-            android:layout_height="match_parent"
-            android:textColor="@color/black" />
-
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="5"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/cardview_dark_background" />
     </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="horizontal"
+        android:padding="2dp">
+
+        <TextView
+            android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:background="@color/white_e0"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="2dp">
-
-            <TextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/tvTagEPC"
-                android:textSize="15sp"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/tv_count"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:paddingLeft="6dp"
-                android:text="0"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_total"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="0"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="0s"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.2"
-                android:gravity="center"
-                android:text="@string/tvTagCount"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.2"
-                android:gravity="center"
-                android:text="RSSI"
-                android:textSize="15sp"
-                android:visibility="visible" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:text="@string/tvTagEPC"
+            android:textSize="15sp"
+            android:visibility="gone" />
 
-            <ListView
-                android:id="@+id/LvTags"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:paddingLeft="6dp"
+            android:text="0"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/tv_total"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="0"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="0s"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text="@string/tvTagCount"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text="RSSI"
+            android:textSize="15sp"
+            android:visibility="visible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:background="@color/cardview_dark_background"
+        android:orientation="vertical"
+        android:weightSum="10">
+
+        <ListView
+            android:id="@+id/LvTags"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="8.7"
+            />
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
+            android:layout_height="0dip"
+            android:orientation="horizontal"
+            android:weightSum="8"
+            android:background="@color/sliding_menu_item_pressed"
+            android:layout_weight="1.3">
             <Button
                 android:id="@+id/btInventoryPerMinute"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="每6秒读一次"
                 android:visibility="gone" />
-
             <Button
                 android:id="@+id/btInventory"
-                android:layout_width="0dp"
+                android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@string/rbInventorySingle"
+                android:layout_weight="2"
                 android:visibility="visible" />
 
             <Button
                 android:id="@+id/InventoryLoop"
-                android:layout_width="0dp"
+                android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:text="@string/rbInventoryLoop" />
 
             <Button
                 android:id="@+id/btClear"
-                android:layout_width="0dp"
+                android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:text="@string/btClear" />
 
             <Button
-                android:id="@+id/btnGenerar"
-                android:layout_width="0dp"
+                android:id="@+id/btStop"
+                android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/title_generar_csv" />
+                android:layout_weight="2"
+                android:text="@string/title_stop" />
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btStop"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/title_stop" />
     </LinearLayout>
+
+
+</LinearLayout>
+
+
 </FrameLayout>

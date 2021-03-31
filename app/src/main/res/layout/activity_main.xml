@@ -11,7 +11,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rectangle_bg"
+            android:background="@color/cardview_dark_background"
             android:orientation="vertical">
 
             <LinearLayout
@@ -23,6 +23,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:background="@color/colorPrimaryDark"
                     android:text="@string/Connect" />
 
                 <Button
@@ -30,6 +31,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:background="@color/colorPrimaryDark"
                     android:text="@string/title_search" />
             </LinearLayout>
 
@@ -51,7 +53,7 @@
             android:saveEnabled="false"
             android:scrollbars="horizontal"
             android:scrollbarSize="2dp"
-            android:background="@color/blue_qian">
+            android:background="@color/colorPrimary">
 
             <TabWidget
                 android:id="@android:id/tabs"

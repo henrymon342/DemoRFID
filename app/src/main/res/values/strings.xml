@@ -116,7 +116,7 @@
     <string name="tvTagEPC">EPC</string>
     <string name="tvTagLen">Length</string>
     <string name="tvTagCount">Count</string>
-    <string name="btClear">Clear</string>
+    <string name="btClear">Limpiar</string>
 
     <string-array name="arrayAntiQ">
         <item>0</item>

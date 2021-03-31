@@ -1,0 +1,4 @@
+mostrar estado de la conexion con la BD
+mostrar datos actuales
+mostrar si tiene conexion a internet
+mostrarle si se encuentra conectado con el BT
