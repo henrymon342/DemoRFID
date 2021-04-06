@@ -47,7 +47,7 @@ public class LoginActivity extends BaseActivity {
     private Boolean swUpdate = false;
 
     private Button btn_login,btn_registro;
-    private TextView correo,password;
+    private TextView nombre,password;
     @TargetApi(Build.VERSION_CODES.GINGERBREAD_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -56,7 +56,7 @@ public class LoginActivity extends BaseActivity {
         //ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
 
         btn_login=(Button)findViewById(R.id.btn_login);
-        correo=findViewById(R.id.correo);
+        nombre=findViewById(R.id.nombre);
         password=findViewById(R.id.password);
         btn_registro=(Button)findViewById(R.id.btn_registro);
 
@@ -100,7 +100,7 @@ public class LoginActivity extends BaseActivity {
         ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
         SQLiteDatabase db= conn.getReadableDatabase();
 
-        String[] parametros={correo.getText().toString()};
+        String[] parametros={nombre.getText().toString()};
         String[] campos={utilidades.CAMPO_ID,utilidades.CAMPO_NOMBRE,utilidades.CAMPO_EMAIL,utilidades.CAMPO_PASSWORD};
 
         try {
@@ -109,7 +109,7 @@ public class LoginActivity extends BaseActivity {
             //Cursor cursor = db.query(utilidades.TABLA_USUARIO,campos,utilidades.CAMPO_EMAIL+"=?",parametros,null,null,null);
 
 
-            Cursor c = db.rawQuery("SELECT email,password FROM user ", null);
+            Cursor c = db.rawQuery("SELECT name,password FROM user ", null);
 
             if (c.moveToFirst()){
 
@@ -130,7 +130,7 @@ public class LoginActivity extends BaseActivity {
                 startActivity(loginIntend);
             }else{
                 Toast.makeText(getApplicationContext(),"el usuario o contraseña son incorrectos",Toast.LENGTH_LONG).show();
-                correo.setText("");
+                nombre.setText("");
                 password.setText("");
             }
 
@@ -138,10 +138,10 @@ public class LoginActivity extends BaseActivity {
             db.close();
 
         }catch (Exception e){
-            correo.setText("");
+            nombre.setText("");
             password.setText("");
             Log.d("RESPUESTA4",  "nunca entro");
-            if(buscarBDDotNet(correo.toString(), password.toString()) == true){
+            if(buscarBDDotNet(nombre.toString(), password.toString()) == true){
               startActivity(loginIntend);
             }else{
                 Toast.makeText(getApplicationContext(),"el usuario o contraseña son incorrectos",Toast.LENGTH_LONG).show();
