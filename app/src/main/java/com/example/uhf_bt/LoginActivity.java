@@ -202,10 +202,10 @@ public class LoginActivity extends BaseActivity {
         SQLiteDatabase db=conn.getWritableDatabase();
 
         ContentValues values=new ContentValues();
-        values.put(utilidades.CAMPO_ID,"8");
-        values.put(utilidades.CAMPO_NOMBRE,"henry");
-        values.put(utilidades.CAMPO_EMAIL,"henry");
-        values.put(utilidades.CAMPO_PASSWORD,"1234");
+        values.put(utilidades.CAMPO_ID,"u4");
+        values.put(utilidades.CAMPO_NOMBRE,"juan");
+        values.put(utilidades.CAMPO_EMAIL,"juan@gmail.com");
+        values.put(utilidades.CAMPO_PASSWORD,"12345");
 
         Long idResultante=db.insert(utilidades.TABLA_USUARIO,utilidades.CAMPO_ID,values);
 

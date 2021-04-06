@@ -34,11 +34,19 @@
             android:name=".MainActivity">
         </activity>
         <activity
+            android:name=".MissingActivity">
+        </activity>
+        <activity
+        android:name=".SincronizarActivity">
+    </activity>
+        <activity
+            android:name=".BusquedaActivity">
+        </activity>
+        <activity
             android:name=".PrincipalActivity">
         </activity>
         <activity
             android:name=".StartActivity" />
-
         <activity
             android:name=".DeviceListActivity"
             android:theme="@style/AlertNoActionBar" />
