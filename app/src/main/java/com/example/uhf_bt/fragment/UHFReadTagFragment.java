@@ -1,6 +1,8 @@
 package com.example.uhf_bt.fragment;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,13 +27,17 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.Backend.APIUtils;
+import com.example.Backend.Interfaces.UserService;
 import com.example.Interfaces.LogeoInterface;
 import com.example.Models.User;
+import com.example.uhf_bt.ConectionSQLiteHelper;
 import com.example.uhf_bt.DateUtils;
 import com.example.uhf_bt.FileUtils;
 import com.example.uhf_bt.MainActivity;
 import com.example.uhf_bt.NumberTool;
 import com.example.uhf_bt.R;
+import com.example.uhf_bt.Utilidades.utilidades;
 import com.example.uhf_bt.Utils;
 import com.example.uhf_bt.view.Articulo;
 import com.jaredrummler.materialspinner.MaterialSpinner;
@@ -60,6 +66,15 @@ import static java.lang.String.valueOf;
 
 
 public class UHFReadTagFragment extends Fragment implements View.OnClickListener {
+
+    private final String URL = "http://a2a256f3b766.ngrok.io/";
+    //final APIUtils urls = new APIUtils();
+    //final String URL = urls.getApiUrl();
+
+
+    UserService userService;
+    List<User> listUs;
+
 
     //lista para guardar los datos
     private ArrayList<String> listaCsv;
@@ -170,9 +185,10 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_uhfread_tag, container, false);
         initFilter(view);
-        getUsuarios();
-
-
+        //getUsuarios();
+        userService = APIUtils.getUserService();
+        listUs = new ArrayList<User>();
+        //actualizarUsuariosEnSQLite();
         return view;
     }
 
@@ -210,12 +226,12 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                 inventoryPerMinute();
                 break;
             case R.id.InventoryLoop: // auto
-                getUsuarios();
+                //getUsuarios();
                 //startThread();
                 break;
             case R.id.btInventory: // single
                 //inventory();
-                cargarBDSQLite();
+                //cargarBDSQLite();
                 break;
             case R.id.btStop: //stop
                 if (mContext.uhf.getConnectStatus() == ConnectionStatus.CONNECTED) {
@@ -234,9 +250,59 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         }
     }
 
+    private void actualizarUsuariosEnSQLite(){
+        Call<List<User>> call = userService.getUsers();
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if(response.isSuccessful()){
+                    Log.d("RESPONSE->   ", String.valueOf(response.body()));
+                    listUs = response.body();
+
+                    //enviarSQLite(listUs);
+
+                    for (int i = 0; i < listUs.size(); i++) {
+                        Log.d("RESPUESTAAPIitem", listUs.get(i).getName());
+                        Log.d("RESPUESTAAPIitem", listUs.get(i).getClave());
+                        Log.d("RESPUESTAAPIitem", String.valueOf(listUs.get(i).getId()));
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Log.e("ERROR: ", t.getMessage());
+            }
+        });
+    }
+
+    private void enviarSQLite(List<User> listUs) {
+
+        ConectionSQLiteHelper conn = new ConectionSQLiteHelper(mContext,"bdUser",null,1);
+        SQLiteDatabase db=conn.getWritableDatabase();
+
+        for (int i = 0; i < listUs.size(); i++) {
+            Log.d("RESPUESTAAPIitem", listUs.get(i).getName());
+            Log.d("RESPUESTAAPIitem", listUs.get(i).getClave());
+            Log.d("RESPUESTAAPIitem", String.valueOf(listUs.get(i).getId()));
+
+            ContentValues values=new ContentValues();
+            values.put(utilidades.CAMPO_ID, String.valueOf(listUs.get(i).getId()));
+            values.put(utilidades.CAMPO_NOMBRE, listUs.get(i).getName());
+            values.put(utilidades.CAMPO_EMAIL,listUs.get(i).getName());
+            values.put(utilidades.CAMPO_PASSWORD,listUs.get(i).getClave());
+
+            long idResultante = db.insert(utilidades.TABLA_USUARIO,utilidades.CAMPO_ID,values);
+            Toast.makeText(mContext,"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
+            db.close();
+        }
+    }
+
+
     private void getUsuarios() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://192.168.100.135:5001")
+                .baseUrl(this.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -247,7 +313,14 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if (!response.isSuccessful()){
+                    listUs = response.body();
+                    for (int i = 0; i < listUs.size(); i++) {
+                        Log.d("RESPUESTAAPIitem", listUs.get(i).toString());
+                    }
                     Log.d("RESPUESTAAPIsuccess", String.valueOf(response.code()));
+                    Log.d("RESPUESTAAPIsuccess", String.valueOf(response.message()));
+                    Log.d("RESPUESTAAPIsuccess", String.valueOf(response.body()));
+                    Log.d("RESPUESTAAPIsuccess", String.valueOf(response.errorBody()));
                     return;
                 }
             }
