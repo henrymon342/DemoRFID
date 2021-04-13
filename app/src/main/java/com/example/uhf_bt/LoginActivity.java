@@ -15,9 +15,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.Backend.APIUtils;
+import com.example.Backend.Interfaces.BuildingService;
+import com.example.Backend.Interfaces.RoomService;
 import com.example.Backend.Interfaces.UserService;
 import com.example.Interfaces.LogeoInterface;
 import com.example.Models.User;
+import com.example.entidades.Building;
+import com.example.entidades.Room;
 import com.example.uhf_bt.Utilidades.utilidades;
 import com.example.uhf_bt.tool.ToastUtils;
 
@@ -35,13 +39,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends BaseActivity {
 
-    final String URL = "http://a2a256f3b766.ngrok.io";
+    //final String URL = "http://734d5d5284c2.ngrok.io";
+    final String URL = "http://f2923df27d8e.ngrok.io";
     //final APIUtils urls = new APIUtils();
     //final String URL = urls.getApiUrl();
 
 
     UserService userService;
     List<User> listUs;
+
 
     private Boolean swGlobal = false;
     private Boolean swUpdate = false;
@@ -66,6 +72,7 @@ public class LoginActivity extends BaseActivity {
                 //registrar();
                 prueba();
                 actualizarDatosUsuarioDeDotNet();
+
             }
         });
         btn_login.setOnClickListener(new View.OnClickListener() {
@@ -316,5 +323,9 @@ public class LoginActivity extends BaseActivity {
             db.close();
         }
     }
+
+
+
+
 
 }

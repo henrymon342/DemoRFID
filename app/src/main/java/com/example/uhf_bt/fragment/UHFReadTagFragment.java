@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -28,9 +29,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.Backend.APIUtils;
+import com.example.Backend.Interfaces.BuildingService;
+import com.example.Backend.Interfaces.RoomService;
 import com.example.Backend.Interfaces.UserService;
 import com.example.Interfaces.LogeoInterface;
 import com.example.Models.User;
+import com.example.entidades.Building;
+import com.example.entidades.Room;
 import com.example.uhf_bt.ConectionSQLiteHelper;
 import com.example.uhf_bt.DateUtils;
 import com.example.uhf_bt.FileUtils;
@@ -47,6 +52,7 @@ import com.rscja.deviceapi.interfaces.ConnectionStatus;
 import com.rscja.deviceapi.interfaces.KeyEventCallback;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -67,7 +73,8 @@ import static java.lang.String.valueOf;
 
 public class UHFReadTagFragment extends Fragment implements View.OnClickListener {
 
-    private final String URL = "http://a2a256f3b766.ngrok.io/";
+
+    private final String URL = "http://f2923df27d8e.ngrok.io/";
     //final APIUtils urls = new APIUtils();
     //final String URL = urls.getApiUrl();
 
@@ -75,11 +82,20 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     UserService userService;
     List<User> listUs;
 
+    List<Building> listBuild ;
+    List<Room> listRoom;
+
+
+    List<String> buildingNames = new ArrayList<>();
+    List<String> roomNames = new ArrayList<>();
 
     //lista para guardar los datos
     private ArrayList<String> listaCsv;
     MaterialSpinner spinnerE;
     MaterialSpinner spinnerU;
+    ArrayAdapter<String> adapterE;
+    ArrayAdapter<String> adapterU;
+
 
     private String TAG = "UHFReadTagFragment";
     int lastIndex=-1;
@@ -184,11 +200,13 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_uhfread_tag, container, false);
-        initFilter(view);
+
         //getUsuarios();
         userService = APIUtils.getUserService();
         listUs = new ArrayList<User>();
         //actualizarUsuariosEnSQLite();
+
+        initFilter(view);
         return view;
     }
 
@@ -196,11 +214,14 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.i(TAG, "UHFReadTagFragment.onActivityCreated");
         super.onActivityCreated(savedInstanceState);
+
         lastIndex=-1;
         mContext = (MainActivity) getActivity();
         init();
         selectIndex=-1;
         mContext.selectEPC=null;
+
+
     }
 
     @Override
@@ -333,11 +354,10 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     }
 
 
-    private void adicionarALista(String cosita){
-        Log.d("ADD", cosita);
-    }
+
 
     private void init() {
+
         isExit = false;
         mContext.addConnectStatusNotice(mConnectStatus);
         LvTags = (ListView) mContext.findViewById(R.id.LvTags);
@@ -395,6 +415,9 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         });
 
         clearData();
+        actualizarDatosUbicacion();
+        setItemsEdificios();
+        actualizarRooms();
     }
 
 
@@ -413,27 +436,90 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         btnSetFilter = (Button) view.findViewById(R.id.btSet);
 
 
+
         //SPINNER
+
+
         spinnerE = view.findViewById(R.id.spinnerE);
         spinnerU = view.findViewById(R.id.spinnerU);
-
-        setItemsEdificios();
-
+        spinnerE.setItems("Choose");
+        spinnerU.setItems("Choose");
     }
 
     private void setItemsEdificios() {
-        spinnerE.setItems("EDIFICIO 1", "EDIFICIO 2", "EDIFICIO 3", "EDIFICIO 4", "EDIFICIO 5");
+        String xx = "";
+        for (int i = 0; i < buildingNames.size(); i++) {
+            xx = xx + buildingNames.get(i) + "\n";
+        }
+        showToast(xx);
+        adapterE = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, buildingNames);
+        adapterE.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerE.setAdapter(adapterE);
+
         spinnerE.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
             @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
                 Toast.makeText(mContext, item, Toast.LENGTH_SHORT).show();
+                roomNames.clear();
+                if(getIdBuilding(item)>=0){
+                    setItemsRooms(getIdBuilding(item));
+                }
             }
         });
-        spinnerU.setItems("ROOM 1", "ROOM 2", "ROOM 3", "ROOM 4", "ROOM 5");
+    }
+
+    private void setItemsRooms( int idBuilding) {
+        for (int i = 0; i < listRoom.size(); i++) {
+            Room aux = listRoom.get(i);
+            if (aux.getBuildingId().equals(idBuilding)){
+                roomNames.add(aux.getName());
+            }
+        }
+
+
+        String aux1 = "";
+        for (int i = 0; i < roomNames.size(); i++) {
+            aux1 = aux1 + "\n "+ roomNames.get(i);
+        }
+        //Toast.makeText(mContext, aux1, Toast.LENGTH_SHORT).show();
+
+        adapterU = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, roomNames);
+        adapterU.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerU.setAdapter(adapterU);
+
         spinnerU.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
             @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
                 Toast.makeText(mContext, item, Toast.LENGTH_SHORT).show();
             }
         });
+        /*
+        for (int i = 0; i < listRoom.size(); i++) {
+            Room aux = listRoom.get(i);
+            if (aux.getBuildingId().equals(idBuilding)){
+                roomNames.add(aux.getName());
+            }
+            Log.d("RESPUESTA-Room ", listRoom.get(i).getName());
+            Log.d("RESPUESTA-Room ", listRoom.get(i).getBuildingId().toString());
+            Log.d("RESPUESTA-Room ", listRoom.get(i).getId().toString());
+        }
+
+        adapterU = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, roomNames);
+        adapterU.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerU.setAdapter(adapterU);
+
+        spinnerU.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+            @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                Toast.makeText(mContext, item, Toast.LENGTH_SHORT).show();
+            }
+        });*/
+    }
+
+    private int getIdBuilding(String item) {
+        for (int i = 0; i < listBuild.size(); i++) {
+            if(listBuild.get(i).getName().equals(item)){
+                return listBuild.get(i).getId();
+            }
+        }
+        return -1;
     }
 
     @Override
@@ -809,5 +895,74 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     }
 
 
+    private void actualizarDatosUbicacion(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        BuildingService buildingService = retrofit.create(BuildingService.class);
+        Call<List<Building>> call = buildingService.getBuildings();
+        call.enqueue(new Callback<List<Building>>() {
+            @Override
+            public void onResponse(Call<List<Building>> call, Response<List<Building>> response) {
+                if(response.isSuccessful()){
+                    Log.d("RESPONSE->   ", String.valueOf(response.body()));
+                    listBuild = response.body();
+
+                    for (int i = 0; i < listBuild.size(); i++) {
+                        Log.d("RESPUESTA-UBICACION ", listBuild.get(i).getName());
+                        Log.d("RESPUESTA-UBICACION", listBuild.get(i).getId().toString());
+                        addToListNombresBuilding(listBuild.get(i).getName());
+                    }
+                    //actualizarRooms();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Building>> call, Throwable t) {
+                Log.e("ERROR: ", t.getMessage());
+            }
+        });
+    }
+
+    private void addToListNombresBuilding(String name) {
+        buildingNames.add(name);
+        String aux = "";
+        for (int i = 0; i < buildingNames.size(); i++) {
+            aux = aux + "\n "+ buildingNames.get(i);
+        }
+        //Toast.makeText(mContext, aux, Toast.LENGTH_SHORT).show();
+    }
+
+    private void actualizarRooms() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        RoomService roomService = retrofit.create(RoomService.class);
+        Call<List<Room>> call = roomService.getRooms();
+        call.enqueue(new Callback<List<Room>>() {
+            @Override
+            public void onResponse(Call<List<Room>> call, Response<List<Room>> response) {
+                if(response.isSuccessful()){
+                    Log.d("RESPONSE->   ", String.valueOf(response.body()));
+                    listRoom = response.body();
+
+                    for (int i = 0; i < listRoom.size(); i++) {
+                        Log.d("RESPUESTA-Room ", listRoom.get(i).getName());
+                        Log.d("RESPUESTA-Room ", listRoom.get(i).getBuildingId().toString());
+                        Log.d("RESPUESTA-Room ", listRoom.get(i).getId().toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Room>> call, Throwable t) {
+                Log.e("ERROR: ", t.getMessage());
+            }
+        });
+    }
 
 }

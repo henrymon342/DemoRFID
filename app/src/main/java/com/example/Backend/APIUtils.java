@@ -4,8 +4,9 @@ import com.example.Backend.Interfaces.UserService;
 
 public class APIUtils {
 
-    public static final String API_URL = "http://a2a256f3b766.ngrok.io";
-    //public static final String API_URL = "https://localhost:5001";
+    //public static final String API_URL = "http://734d5d5284c2.ngrok.io";
+
+    public static final String API_URL = "http://f2923df27d8e.ngrok.io";
 
     public APIUtils(){
 
