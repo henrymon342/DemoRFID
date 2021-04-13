@@ -1,0 +1,359 @@
+Index: app/src/main/res/layout/login.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:id=\"@+id/linearLayout\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:background=\"@color/white1\">\r\n\r\n    <EditText\r\n        android:id=\"@+id/nombre\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"45dp\"\r\n        android:layout_marginStart=\"32dp\"\r\n        android:layout_marginTop=\"300dp\"\r\n        android:layout_marginEnd=\"32dp\"\r\n        android:backgroundTint=\"@color/colorPrimary\"\r\n        android:ems=\"10\"\r\n        android:hint=\"Email\"\r\n        android:inputType=\"textPersonName\"\r\n        android:textColor=\"#0C0C0C\"\r\n        android:textColorHint=\"#CCCACA\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\" />\r\n\r\n    <EditText\r\n        android:id=\"@+id/password\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"32dp\"\r\n        android:layout_marginTop=\"52dp\"\r\n        android:layout_marginEnd=\"32dp\"\r\n        android:backgroundTint=\"@color/colorPrimary\"\r\n        android:ems=\"10\"\r\n        android:hint=\"Password\"\r\n        android:inputType=\"textPassword\"\r\n        android:textColor=\"#0C0C0C\"\r\n        android:textColorHint=\"#CCCACA\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.0\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/nombre\" />\r\n\r\n    <Button\r\n        android:id=\"@+id/btn_login\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginStart=\"32dp\"\r\n        android:layout_marginTop=\"56dp\"\r\n        android:layout_marginEnd=\"32dp\"\r\n        android:background=\"@drawable/button_rounded\"\r\n        android:text=\"Login\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"1.0\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/password\" />\r\n\r\n    <ImageView\r\n        android:id=\"@+id/imageView\"\r\n        android:layout_width=\"140dp\"\r\n        android:layout_height=\"0dp\"\r\n        android:layout_marginStart=\"8dp\"\r\n        android:layout_marginTop=\"32dp\"\r\n        android:layout_marginEnd=\"8dp\"\r\n        app:layout_constraintBottom_toTopOf=\"@+id/nombre\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:srcCompat=\"@drawable/user2\"\r\n        tools:srcCompat=\"@drawable/user2\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginBottom=\"8dp\"\r\n        android:text=\"Nombre: \"\r\n        android:textColor=\"#151010\"\r\n        android:textStyle=\"bold\"\r\n        app:layout_constraintBottom_toTopOf=\"@+id/nombre\"\r\n        app:layout_constraintStart_toStartOf=\"@+id/nombre\" />\r\n\r\n    <TextView\r\n        android:id=\"@+id/textView2\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginBottom=\"7dp\"\r\n        android:text=\"Contraseña: \"\r\n        android:textColor=\"#0C0C0C\"\r\n        android:textStyle=\"bold\"\r\n        app:layout_constraintBottom_toTopOf=\"@+id/password\"\r\n        app:layout_constraintStart_toStartOf=\"@+id/password\" />\r\n\r\n    <Button\r\n        android:id=\"@+id/btn_registro\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginBottom=\"32dp\"\r\n        android:text=\"Actualizar BD\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/btn_login\" />\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/login.xml	(date 1618274635000)
++++ app/src/main/res/layout/login.xml	(date 1618275037609)
+@@ -10,33 +10,36 @@
+     <EditText
+         android:id="@+id/nombre"
+         android:layout_width="match_parent"
+-        android:layout_height="45dp"
++        android:layout_height="wrap_content"
+         android:layout_marginStart="32dp"
+-        android:layout_marginTop="300dp"
+         android:layout_marginEnd="32dp"
++        android:layout_marginBottom="51dp"
+         android:backgroundTint="@color/colorPrimary"
+         android:ems="10"
+         android:hint="Email"
+         android:inputType="textPersonName"
+         android:textColor="#0C0C0C"
+         android:textColorHint="#CCCACA"
++        app:layout_constraintBottom_toTopOf="@+id/password"
+         app:layout_constraintEnd_toEndOf="parent"
++        app:layout_constraintHorizontal_bias="0.0"
+         app:layout_constraintStart_toStartOf="parent"
+-        app:layout_constraintTop_toTopOf="parent" />
++        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+ 
+     <EditText
+         android:id="@+id/password"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginStart="32dp"
+-        android:layout_marginTop="52dp"
+         android:layout_marginEnd="32dp"
++        android:layout_marginBottom="50dp"
+         android:backgroundTint="@color/colorPrimary"
+         android:ems="10"
+         android:hint="Password"
+         android:inputType="textPassword"
+         android:textColor="#0C0C0C"
+         android:textColorHint="#CCCACA"
++        app:layout_constraintBottom_toTopOf="@+id/btn_login"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintHorizontal_bias="0.0"
+         app:layout_constraintStart_toStartOf="parent"
+@@ -47,24 +50,30 @@
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginStart="32dp"
+-        android:layout_marginTop="56dp"
+         android:layout_marginEnd="32dp"
++        android:layout_marginBottom="130dp"
+         android:background="@drawable/button_rounded"
+         android:text="Login"
++        app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+-        app:layout_constraintHorizontal_bias="1.0"
++        app:layout_constraintHorizontal_bias="0.0"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@+id/password" />
+ 
+     <ImageView
+         android:id="@+id/imageView"
+-        android:layout_width="140dp"
++        android:layout_width="150dp"
+         android:layout_height="0dp"
+         android:layout_marginStart="8dp"
+-        android:layout_marginTop="32dp"
++        android:layout_marginTop="16dp"
+         android:layout_marginEnd="8dp"
++<<<<<<< HEAD
++=======
++        android:layout_marginBottom="124dp"
++>>>>>>> acb43d82d13c52ea8b0df346345f70a8731b3917
+         app:layout_constraintBottom_toTopOf="@+id/nombre"
+         app:layout_constraintEnd_toEndOf="parent"
++        app:layout_constraintHorizontal_bias="0.498"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+         app:srcCompat="@drawable/user2"
+@@ -96,11 +105,27 @@
+         android:id="@+id/btn_registro"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
++        android:layout_marginEnd="16dp"
+         android:layout_marginBottom="32dp"
+         android:text="Actualizar BD"
+         app:layout_constraintBottom_toBottomOf="parent"
++<<<<<<< HEAD
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
++=======
++        app:layout_constraintEnd_toEndOf="parent" />
++
++    <Button
++        android:id="@+id/btn_sqlite"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_marginStart="16dp"
++        android:layout_marginEnd="13dp"
++        android:text="RegistroSQLite"
++        app:layout_constraintBaseline_toBaselineOf="@+id/btn_registro"
++        app:layout_constraintEnd_toStartOf="@+id/btn_registro"
++        app:layout_constraintStart_toStartOf="parent" />
++>>>>>>> acb43d82d13c52ea8b0df346345f70a8731b3917
+ 
+ </androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
+Index: app/src/main/java/com/example/uhf_bt/LoginActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.uhf_bt;\r\n\r\nimport android.annotation.TargetApi;\r\nimport android.content.ContentValues;\r\nimport android.content.Intent;\r\nimport android.database.Cursor;\r\nimport android.database.DatabaseUtils;\r\nimport android.database.sqlite.SQLiteDatabase;\r\nimport android.os.Build;\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.View;\r\nimport android.widget.Button;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport com.example.Backend.APIUtils;\r\nimport com.example.Backend.Interfaces.BuildingService;\r\nimport com.example.Backend.Interfaces.RoomService;\r\nimport com.example.Backend.Interfaces.UserService;\r\nimport com.example.Interfaces.LogeoInterface;\r\nimport com.example.Models.User;\r\nimport com.example.entidades.Building;\r\nimport com.example.entidades.Room;\r\nimport com.example.uhf_bt.Utilidades.utilidades;\r\nimport com.example.uhf_bt.tool.ToastUtils;\r\n\r\nimport java.io.IOException;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\nimport no.nordicsemi.android.dfu.BuildConfig;\r\nimport androidx.constraintlayout.widget.ConstraintLayout;\r\nimport retrofit2.Call;\r\nimport retrofit2.Callback;\r\nimport retrofit2.Response;\r\nimport retrofit2.Retrofit;\r\nimport retrofit2.converter.gson.GsonConverterFactory;\r\n\r\npublic class LoginActivity extends BaseActivity {\r\n\r\n    //final String URL = \"http://734d5d5284c2.ngrok.io\";\r\n    final String URL = \"http://f2923df27d8e.ngrok.io\";\r\n    //final APIUtils urls = new APIUtils();\r\n    //final String URL = urls.getApiUrl();\r\n\r\n\r\n    UserService userService;\r\n    List<User> listUs;\r\n\r\n\r\n    private Boolean swGlobal = false;\r\n    private Boolean swUpdate = false;\r\n\r\n    private Button btn_login,btn_registro;\r\n    private TextView nombre,password;\r\n    @TargetApi(Build.VERSION_CODES.GINGERBREAD_MR1)\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState){\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.login);\r\n        //ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,\"bdUser\",null,1);\r\n\r\n        btn_login=(Button)findViewById(R.id.btn_login);\r\n        nombre=findViewById(R.id.nombre);\r\n        password=findViewById(R.id.password);\r\n        btn_registro=(Button)findViewById(R.id.btn_registro);\r\n\r\n        btn_registro.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                //registrar();\r\n                prueba();\r\n                actualizarDatosUsuarioDeDotNet();\r\n\r\n            }\r\n        });\r\n        btn_login.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                //setContentView(MainActivity);\r\n                logear();\r\n                //vaciarTablaUsuarios();  // vacia la tabla usuarios de la BD SQLite\r\n            }\r\n        });\r\n\r\n\r\n        //codigoHenry\r\n        userService = APIUtils.getUserService();\r\n\r\n    }\r\n\r\n    private void vaciarTablaUsuarios() {\r\n        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,\"bdUser\",null,1);\r\n        SQLiteDatabase db=conn.getWritableDatabase();\r\n\r\n        db.execSQL(utilidades.VACIAR_TABLA_USUARIO);\r\n\r\n        db.close();\r\n    }\r\n\r\n    public void logear(){\r\n        Boolean entro = false;\r\n        Intent loginIntend= new Intent(this,PrincipalActivity.class);\r\n        ArrayList<User> usuarios = new ArrayList<>();\r\n\r\n        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,\"bdUser\",null,1);\r\n        SQLiteDatabase db= conn.getReadableDatabase();\r\n\r\n        String[] parametros={nombre.getText().toString()};\r\n        String[] campos={utilidades.CAMPO_ID,utilidades.CAMPO_NOMBRE,utilidades.CAMPO_EMAIL,utilidades.CAMPO_PASSWORD};\r\n\r\n        try {\r\n            Log.d(\"RESPUESTA3\",  \"entro pero no funciono\");\r\n            //Cursor cursor = db.query(utilidades.TABLA_USUARIO,campos, utilidades.CAMPO_ID+\"=?\",parametros,null,null,null);\r\n            //Cursor cursor = db.query(utilidades.TABLA_USUARIO,campos,utilidades.CAMPO_EMAIL+\"=?\",parametros,null,null,null);\r\n\r\n\r\n            Cursor c = db.rawQuery(\"SELECT name,password FROM user \", null);\r\n\r\n            if (c.moveToFirst()){\r\n\r\n                do {\r\n                    Log.d(\"INDIVIDUO\",  c.getString(0));\r\n                    String corr = c.getString(0);\r\n                    String pass = c.getString(1);\r\n                    if(corr.equals(parametros[0]) && pass.equals(password.getText().toString())){\r\n                        Log.d(\"Entro->\", \"entro\");\r\n\r\n                        Log.d(\"USER\", pass);\r\n                        entro = true;\r\n                    }\r\n\r\n                } while(c.moveToNext());\r\n            }\r\n            if(entro == true) {\r\n                startActivity(loginIntend);\r\n            }else{\r\n                Toast.makeText(getApplicationContext(),\"el usuario o contraseña son incorrectos\",Toast.LENGTH_LONG).show();\r\n                nombre.setText(\"\");\r\n                password.setText(\"\");\r\n            }\r\n\r\n            c.close();\r\n            db.close();\r\n\r\n        }catch (Exception e){\r\n            nombre.setText(\"\");\r\n            password.setText(\"\");\r\n            Log.d(\"RESPUESTA4\",  \"nunca entro\");\r\n            if(buscarBDDotNet(nombre.toString(), password.toString()) == true){\r\n              startActivity(loginIntend);\r\n            }else{\r\n                Toast.makeText(getApplicationContext(),\"el usuario o contraseña son incorrectos\",Toast.LENGTH_LONG).show();\r\n            }\r\n        }\r\n    }\r\n\r\n    private Boolean buscarBDDotNet(final String correo, final String password) {\r\n         Boolean sw = false;\r\n        Call<List<User>> call = userService.getUsers();\r\n        call.enqueue(new Callback<List<User>>() {\r\n            @Override\r\n            public void onResponse(Call<List<User>> call, Response<List<User>> response) {\r\n                if(response.isSuccessful()){\r\n                    Log.d(\"RESPONSE->   \", String.valueOf(response.body()));\r\n                    listUs = response.body();\r\n\r\n                    for (int i = 0; i < listUs.size(); i++) {\r\n                        Log.d(\"RESPUESTAAPIitem\", listUs.get(i).getName());\r\n                        Log.d(\"RESPUESTAAPIitem\", listUs.get(i).getClave());\r\n                        Log.d(\"RESPUESTAAPIitem\", String.valueOf(listUs.get(i).getId()));\r\n                        if(listUs.get(i).getName().equals(correo) && listUs.get(i).getClave().equals(password)){\r\n                            registrarUsuarioSQLite(listUs.get(i));\r\n                            swGlobal = true;\r\n                            break;\r\n                        }\r\n                    }\r\n                    swGlobal = false;\r\n                }\r\n            }\r\n\r\n            @Override\r\n            public void onFailure(Call<List<User>> call, Throwable t) {\r\n                Log.e(\"ERROR: \", t.getMessage());\r\n            }\r\n        });\r\n        return swGlobal;\r\n    }\r\n\r\n    private void registrarUsuarioSQLite(User user) {\r\n        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,\"bdUser\",null,1);\r\n        SQLiteDatabase db=conn.getWritableDatabase();\r\n        ContentValues values=new ContentValues();\r\n        values.put(utilidades.CAMPO_ID,user.getId());\r\n        values.put(utilidades.CAMPO_NOMBRE,user.getName());\r\n        values.put(utilidades.CAMPO_EMAIL,user.getName());\r\n        values.put(utilidades.CAMPO_PASSWORD,user.getClave());\r\n\r\n        Long idResultante = db.insert(utilidades.TABLA_USUARIO,utilidades.CAMPO_ID,values);\r\n\r\n        Toast.makeText(getApplicationContext(),\"Id Registro: \"+idResultante,Toast.LENGTH_SHORT).show();\r\n        db.close();\r\n    }\r\n\r\n    public void registrar(){\r\n\r\n        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,\"bdUser\",null,1);\r\n        SQLiteDatabase db=conn.getWritableDatabase();\r\n\r\n        ContentValues values=new ContentValues();\r\n        values.put(utilidades.CAMPO_ID,\"u4\");\r\n        values.put(utilidades.CAMPO_NOMBRE,\"juan\");\r\n        values.put(utilidades.CAMPO_EMAIL,\"juan@gmail.com\");\r\n        values.put(utilidades.CAMPO_PASSWORD,\"12345\");\r\n\r\n        Long idResultante=db.insert(utilidades.TABLA_USUARIO,utilidades.CAMPO_ID,values);\r\n\r\n        Toast.makeText(getApplicationContext(),\"Id Registro: \"+idResultante,Toast.LENGTH_SHORT).show();\r\n        db.close();\r\n\r\n    }\r\n\r\n    private void actualizarDatosUsuarioDeDotNet(){\r\n\r\n        Log.d(\"URL\", URL);\r\n        Retrofit retrofit = new Retrofit.Builder()\r\n                .baseUrl(URL)\r\n                .addConverterFactory(GsonConverterFactory.create())\r\n                .build();\r\n\r\n        UserService userService = retrofit.create(UserService.class);\r\n        Call<List<User>> call = userService.getUsers();\r\n        call.enqueue(new Callback<List<User>>() {\r\n            @Override\r\n            public void onResponse(Call<List<User>> call, Response<List<User>> response) {\r\n                if(response.isSuccessful()){\r\n                    Log.d(\"RESPONSE->   \", String.valueOf(response.body()));\r\n                    listUs = response.body();\r\n\r\n                    for (int i = 0; i < listUs.size(); i++) {\r\n                        Log.d(\"RESPUESTAAPIitem\", listUs.get(i).getName());\r\n                        Log.d(\"RESPUESTAAPIitem\", listUs.get(i).getClave());\r\n                        Log.d(\"RESPUESTAAPIitem\", String.valueOf(listUs.get(i).getId()));\r\n                        User aux = new User(listUs.get(i).getId(), listUs.get(i).getName(), listUs.get(i).getClave());\r\n                        if(verSiEstaEnSQLite(listUs.get(i).getId())== false){\r\n                            registrarUsuarioSQLite(listUs.get(i));\r\n                            swUpdate = true;\r\n                        }\r\n                    }\r\n                }\r\n                if(swUpdate == true){\r\n                    Toast.makeText(getApplicationContext(), \"SE ACTUALIZO LA BD SQLITE\", Toast.LENGTH_SHORT).show();\r\n                }else{\r\n                    Toast.makeText(getApplicationContext(), \"SQLITE NADA QUE ACTUALIZAR\", Toast.LENGTH_SHORT).show();\r\n                }\r\n            }\r\n\r\n            @Override\r\n            public void onFailure(Call<List<User>> call, Throwable t) {\r\n                Log.e(\"ERROR: \", t.getMessage());\r\n            }\r\n        });\r\n    }\r\n\r\n    private boolean verSiEstaEnSQLite(int ide) {\r\n        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,\"bdUser\",null,1);\r\n        SQLiteDatabase db = conn.getReadableDatabase();\r\n\r\n        Cursor c = db.rawQuery(\"SELECT id FROM user \", null);\r\n        if (c.moveToFirst()){\r\n            do {\r\n                String idd = c.getString(0);\r\n                if(idd.equals(String.valueOf(ide))){\r\n                    Log.d(\"LORA->\", \"son iguales \"+ ide +\" == \"+ idd);\r\n                    return true;\r\n                }\r\n\r\n            } while(c.moveToNext());\r\n        }\r\n        c.close();\r\n        db.close();\r\n\r\n        return false;\r\n    }\r\n\r\n    private void prueba(){\r\n        //verSiEstaEnSQLite(8);\r\n        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,\"bdUser\",null,1);\r\n        SQLiteDatabase db = conn.getReadableDatabase();\r\n        Cursor c = db.rawQuery(\"SELECT id,password FROM user \", null);\r\n        if (c.moveToFirst()){\r\n            do {\r\n                // Passing values\r\n                String idd = c.getString(0);\r\n                Log.d(\"LORA->\", idd+ c.getString(1));\r\n                // Do something Here with values\r\n            } while(c.moveToNext());\r\n        }\r\n        c.close();\r\n        db.close();\r\n    }\r\n\r\n\r\n    private void enviarSQLite(List<User> listUs) {\r\n\r\n        ConectionSQLiteHelper conn = new ConectionSQLiteHelper(this,\"bdUser\",null,1);\r\n        SQLiteDatabase db=conn.getWritableDatabase();\r\n\r\n        for (int i = 0; i < listUs.size(); i++) {\r\n            Log.d(\"RESPUESTAAPIitem\", listUs.get(i).getName());\r\n            Log.d(\"RESPUESTAAPIitem\", listUs.get(i).getClave());\r\n            Log.d(\"RESPUESTAAPIitem\", String.valueOf(listUs.get(i).getId()));\r\n\r\n            ContentValues values=new ContentValues();\r\n            values.put(utilidades.CAMPO_ID, String.valueOf(listUs.get(i).getId()));\r\n            values.put(utilidades.CAMPO_NOMBRE, listUs.get(i).getName());\r\n            values.put(utilidades.CAMPO_EMAIL,listUs.get(i).getName());\r\n            values.put(utilidades.CAMPO_PASSWORD,listUs.get(i).getClave());\r\n\r\n            long idResultante = db.insert(utilidades.TABLA_USUARIO,utilidades.CAMPO_ID,values);\r\n            Toast.makeText(this,\"Id Registro: \"+idResultante,Toast.LENGTH_SHORT).show();\r\n            db.close();\r\n        }\r\n    }\r\n\r\n\r\n\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/uhf_bt/LoginActivity.java	(date 1618274635000)
++++ app/src/main/java/com/example/uhf_bt/LoginActivity.java	(date 1618275037554)
+@@ -4,7 +4,6 @@
+ import android.content.ContentValues;
+ import android.content.Intent;
+ import android.database.Cursor;
+-import android.database.DatabaseUtils;
+ import android.database.sqlite.SQLiteDatabase;
+ import android.os.Build;
+ import android.os.Bundle;
+@@ -13,24 +12,16 @@
+ import android.widget.Button;
+ import android.widget.TextView;
+ import android.widget.Toast;
+-
+ import com.example.Backend.APIUtils;
+ import com.example.Backend.Interfaces.BuildingService;
+ import com.example.Backend.Interfaces.RoomService;
+ import com.example.Backend.Interfaces.UserService;
+-import com.example.Interfaces.LogeoInterface;
+ import com.example.Models.User;
+ import com.example.entidades.Building;
+ import com.example.entidades.Room;
+ import com.example.uhf_bt.Utilidades.utilidades;
+-import com.example.uhf_bt.tool.ToastUtils;
+-
+-import java.io.IOException;
+ import java.util.ArrayList;
+ import java.util.List;
+-
+-import no.nordicsemi.android.dfu.BuildConfig;
+-import androidx.constraintlayout.widget.ConstraintLayout;
+ import retrofit2.Call;
+ import retrofit2.Callback;
+ import retrofit2.Response;
+@@ -39,12 +30,16 @@
+ 
+ public class LoginActivity extends BaseActivity {
+ 
++<<<<<<< HEAD
+     //final String URL = "http://734d5d5284c2.ngrok.io";
+     final String URL = "http://f2923df27d8e.ngrok.io";
+     //final APIUtils urls = new APIUtils();
+     //final String URL = urls.getApiUrl();
+ 
+ 
++=======
++    final String URL = "http://a2a256f3b766.ngrok.io";
++>>>>>>> acb43d82d13c52ea8b0df346345f70a8731b3917
+     UserService userService;
+     List<User> listUs;
+ 
+@@ -52,7 +47,7 @@
+     private Boolean swGlobal = false;
+     private Boolean swUpdate = false;
+ 
+-    private Button btn_login,btn_registro;
++    private Button btn_login,btn_registro,btn_sqlite;
+     private TextView nombre,password;
+     @TargetApi(Build.VERSION_CODES.GINGERBREAD_MR1)
+     @Override
+@@ -60,11 +55,11 @@
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.login);
+         //ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
+-
+         btn_login=(Button)findViewById(R.id.btn_login);
+         nombre=findViewById(R.id.nombre);
+         password=findViewById(R.id.password);
+         btn_registro=(Button)findViewById(R.id.btn_registro);
++        btn_sqlite=(Button)findViewById(R.id.btn_sqlite);
+ 
+         btn_registro.setOnClickListener(new View.OnClickListener() {
+             @Override
+@@ -83,8 +78,12 @@
+                 //vaciarTablaUsuarios();  // vacia la tabla usuarios de la BD SQLite
+             }
+         });
+-
+-
++        btn_sqlite.setOnClickListener(new View.OnClickListener() {
++          @Override
++          public void onClick(View v) {
++              registrar();
++          }
++        });
+         //codigoHenry
+         userService = APIUtils.getUserService();
+ 
+@@ -93,9 +92,7 @@
+     private void vaciarTablaUsuarios() {
+         ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
+         SQLiteDatabase db=conn.getWritableDatabase();
+-
+         db.execSQL(utilidades.VACIAR_TABLA_USUARIO);
+-
+         db.close();
+     }
+ 
+@@ -103,10 +100,8 @@
+         Boolean entro = false;
+         Intent loginIntend= new Intent(this,PrincipalActivity.class);
+         ArrayList<User> usuarios = new ArrayList<>();
+-
+         ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
+         SQLiteDatabase db= conn.getReadableDatabase();
+-
+         String[] parametros={nombre.getText().toString()};
+         String[] campos={utilidades.CAMPO_ID,utilidades.CAMPO_NOMBRE,utilidades.CAMPO_EMAIL,utilidades.CAMPO_PASSWORD};
+ 
+@@ -114,23 +109,17 @@
+             Log.d("RESPUESTA3",  "entro pero no funciono");
+             //Cursor cursor = db.query(utilidades.TABLA_USUARIO,campos, utilidades.CAMPO_ID+"=?",parametros,null,null,null);
+             //Cursor cursor = db.query(utilidades.TABLA_USUARIO,campos,utilidades.CAMPO_EMAIL+"=?",parametros,null,null,null);
+-
+-
+             Cursor c = db.rawQuery("SELECT name,password FROM user ", null);
+-
+             if (c.moveToFirst()){
+-
+                 do {
+                     Log.d("INDIVIDUO",  c.getString(0));
+                     String corr = c.getString(0);
+                     String pass = c.getString(1);
+                     if(corr.equals(parametros[0]) && pass.equals(password.getText().toString())){
+                         Log.d("Entro->", "entro");
+-
+                         Log.d("USER", pass);
+                         entro = true;
+                     }
+-
+                 } while(c.moveToNext());
+             }
+             if(entro == true) {
+@@ -140,10 +129,8 @@
+                 nombre.setText("");
+                 password.setText("");
+             }
+-
+             c.close();
+             db.close();
+-
+         }catch (Exception e){
+             nombre.setText("");
+             password.setText("");
+@@ -179,7 +166,6 @@
+                     swGlobal = false;
+                 }
+             }
+-
+             @Override
+             public void onFailure(Call<List<User>> call, Throwable t) {
+                 Log.e("ERROR: ", t.getMessage());
+@@ -196,29 +182,22 @@
+         values.put(utilidades.CAMPO_NOMBRE,user.getName());
+         values.put(utilidades.CAMPO_EMAIL,user.getName());
+         values.put(utilidades.CAMPO_PASSWORD,user.getClave());
+-
+         Long idResultante = db.insert(utilidades.TABLA_USUARIO,utilidades.CAMPO_ID,values);
+-
+         Toast.makeText(getApplicationContext(),"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
+         db.close();
+     }
+ 
+     public void registrar(){
+-
+         ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
+         SQLiteDatabase db=conn.getWritableDatabase();
+-
+         ContentValues values=new ContentValues();
+-        values.put(utilidades.CAMPO_ID,"u4");
++        values.put(utilidades.CAMPO_ID,"u1");
+         values.put(utilidades.CAMPO_NOMBRE,"juan");
+         values.put(utilidades.CAMPO_EMAIL,"juan@gmail.com");
+         values.put(utilidades.CAMPO_PASSWORD,"12345");
+-
+         Long idResultante=db.insert(utilidades.TABLA_USUARIO,utilidades.CAMPO_ID,values);
+-
+         Toast.makeText(getApplicationContext(),"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
+         db.close();
+-
+     }
+ 
+     private void actualizarDatosUsuarioDeDotNet(){
+@@ -228,7 +207,6 @@
+                 .baseUrl(URL)
+                 .addConverterFactory(GsonConverterFactory.create())
+                 .build();
+-
+         UserService userService = retrofit.create(UserService.class);
+         Call<List<User>> call = userService.getUsers();
+         call.enqueue(new Callback<List<User>>() {
+@@ -237,7 +215,6 @@
+                 if(response.isSuccessful()){
+                     Log.d("RESPONSE->   ", String.valueOf(response.body()));
+                     listUs = response.body();
+-
+                     for (int i = 0; i < listUs.size(); i++) {
+                         Log.d("RESPUESTAAPIitem", listUs.get(i).getName());
+                         Log.d("RESPUESTAAPIitem", listUs.get(i).getClave());
+@@ -255,7 +232,6 @@
+                     Toast.makeText(getApplicationContext(), "SQLITE NADA QUE ACTUALIZAR", Toast.LENGTH_SHORT).show();
+                 }
+             }
+-
+             @Override
+             public void onFailure(Call<List<User>> call, Throwable t) {
+                 Log.e("ERROR: ", t.getMessage());
+@@ -280,7 +256,6 @@
+         }
+         c.close();
+         db.close();
+-
+         return false;
+     }
+ 
+@@ -303,21 +278,17 @@
+ 
+ 
+     private void enviarSQLite(List<User> listUs) {
+-
+         ConectionSQLiteHelper conn = new ConectionSQLiteHelper(this,"bdUser",null,1);
+         SQLiteDatabase db=conn.getWritableDatabase();
+-
+         for (int i = 0; i < listUs.size(); i++) {
+             Log.d("RESPUESTAAPIitem", listUs.get(i).getName());
+             Log.d("RESPUESTAAPIitem", listUs.get(i).getClave());
+             Log.d("RESPUESTAAPIitem", String.valueOf(listUs.get(i).getId()));
+-
+             ContentValues values=new ContentValues();
+             values.put(utilidades.CAMPO_ID, String.valueOf(listUs.get(i).getId()));
+             values.put(utilidades.CAMPO_NOMBRE, listUs.get(i).getName());
+             values.put(utilidades.CAMPO_EMAIL,listUs.get(i).getName());
+             values.put(utilidades.CAMPO_PASSWORD,listUs.get(i).getClave());
+-
+             long idResultante = db.insert(utilidades.TABLA_USUARIO,utilidades.CAMPO_ID,values);
+             Toast.makeText(this,"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
+             db.close();
