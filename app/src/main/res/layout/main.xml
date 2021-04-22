@@ -93,7 +93,6 @@
             android:minHeight="48dp"
             android:paddingLeft="15dp"
             android:paddingRight="10dp"
-            android:text="RFID SLED READER"
             android:textColor="#1B1111" />
     </LinearLayout>
 
