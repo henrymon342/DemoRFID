@@ -309,12 +309,11 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             Log.d("RESPUESTAAPIitem", String.valueOf(listUs.get(i).getId()));
 
             ContentValues values=new ContentValues();
-            values.put(utilidades.CAMPO_ID, String.valueOf(listUs.get(i).getId()));
+            values.put(utilidades.CAMPO_ID_USER, String.valueOf(listUs.get(i).getId()));
             values.put(utilidades.CAMPO_NOMBRE, listUs.get(i).getName());
-            values.put(utilidades.CAMPO_EMAIL,listUs.get(i).getName());
             values.put(utilidades.CAMPO_PASSWORD,listUs.get(i).getClave());
 
-            long idResultante = db.insert(utilidades.TABLA_USUARIO,utilidades.CAMPO_ID,values);
+            long idResultante = db.insert(utilidades.TABLA_USUARIO,utilidades.CAMPO_ID_USER,values);
             Toast.makeText(mContext,"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
             db.close();
         }

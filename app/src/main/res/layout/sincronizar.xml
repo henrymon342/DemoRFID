@@ -50,6 +50,7 @@
         android:text="Haga clic en FROM DATABASE para sincronizar los datos del menu desplegable de Edificios y Ubicaciones con el dispositivo"
         android:textAlignment="center"
         android:textAllCaps="false"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -61,6 +62,7 @@
         android:layout_marginTop="57dp"
         android:text="Haga clic en TO DATABASE para sincronizar los datos de Invernadero con una base de datos de PC"
         android:textAlignment="center"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_fromDatabase" />

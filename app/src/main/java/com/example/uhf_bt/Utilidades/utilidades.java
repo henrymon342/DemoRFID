@@ -1,24 +1,57 @@
 package com.example.uhf_bt.Utilidades;
 
 public class utilidades {
+    // USUARIO
     public static final String TABLA_USUARIO = "user";
-    public static final String CAMPO_ID = "id";
+    public static final String CAMPO_ID_USER = "id";
     public static final String CAMPO_NOMBRE = "name";
-    public static final String CAMPO_EMAIL = "email";
     public static final String CAMPO_PASSWORD = "password";
 
-    public static final String TABLA_BUILDING = "building";
-    public static final String CAMPO_ID_BUILDING = "idbuilding";
-    public static final String CAMPO_NOMBRE_BUILDING = "nombre";
+    // RFID
+    public static final String TABLA_RFID_TAG_LIST = "rfid";
+    public static final String CAMPO_ID_RFID = "id";
+    public static final String CAMPO_TID = "tid";
+    public static final String CAMPO_USER_MEMORY = "memory";
+    public static final String CAMPO_ANTENNA_NAME = "antenna";
+    public static final String CAMPO_PEAK_RSSI = "rssi";
+    public static final String CAMPO_DATE_TIME = "time";
+    public static final String CAMPO_READER_NAME = "reader";
+    public static final String CAMPO_START_EVENT = "event";
+    public static final String CAMPO_COUNT = "count";
+    public static final String CAMPO_TAG_EVENT = "tag";
+    public static final String CAMPO_DIRECTION = "direction";
 
-    public static final String TABLA_ROOM = "room";
-    public static final String CAMPO_ID_ROOM = "idroom";
-    //public static final String CAMPO_ID_BUILDING = "idbuilding";
-    public static final String CAMPO_NOMBRE_ROOM = "nombre";
+    // UBICACION
+    public static final String TABLA_UBICACION= "ubicacion";
+    public static final String CAMPO_ID_UBICACION = "id";
+    public static final String CAMPO_EDIFICIO = "edificio";
+    public static final String CAMPO_ROOM = "room";
 
-    public static final String CREAR_TABLA_USUARIO = "CREATE TABLE " + TABLA_USUARIO + "(" + CAMPO_ID + " INTEGER, " + CAMPO_NOMBRE + " TEXT, " + CAMPO_EMAIL + " TEXT, " + CAMPO_PASSWORD + " TEXT)";
-    public static final String CREAR_TABLA_BUILDING = "CREATE TABLE " + TABLA_BUILDING + "(" + CAMPO_ID_BUILDING + " INTEGER, " + CAMPO_NOMBRE_BUILDING + " TEXT)";
-    public static final String CREAR_TABLA_ROOM = "CREATE TABLE " + TABLA_ROOM + "(" + CAMPO_ID_ROOM +" INTERGER PRIMARY KEY AUTOINCREMENT, " + " INTEGER, " + CAMPO_NOMBRE_ROOM + " TEXT, " + CAMPO_ID_BUILDING + " INTEGER)" ;
-    public static final String VACIAR_TABLA_USUARIO = "DELETE FROM " + TABLA_USUARIO + "; UPDATE sqlite_sequence set seq=0 where name=" + TABLA_USUARIO;
-    public static final String USUARIO_X_ID = "SELECT * FROM "+ TABLA_USUARIO + "WHERE "+CAMPO_ID+"= ?";
+
+    // CREAR USUARIO
+    public static final String CREAR_TABLA_USUARIO = "CREATE TABLE " + TABLA_USUARIO + "("
+            + CAMPO_ID_USER + " INTEGER PRIMARY KEY, "
+            + CAMPO_NOMBRE + " TEXT, "
+            + CAMPO_PASSWORD + " TEXT)";
+
+    // CREAR RFID
+    public static final String CREAR_TABLA_RFID = "CREATE TABLE " + TABLA_RFID_TAG_LIST + "("
+            + CAMPO_ID_RFID + " INTEGER PRIMARY KEY, "
+            + CAMPO_TID + " TEXT, "
+            + CAMPO_USER_MEMORY + " TEXT, "
+            + CAMPO_ANTENNA_NAME + " TEXT, "
+            + CAMPO_PEAK_RSSI + " TEXT, "
+            + CAMPO_DATE_TIME + " TEXT, "
+            + CAMPO_READER_NAME + " TEXT, "
+            + CAMPO_START_EVENT + " TEXT, "
+            + CAMPO_COUNT + " TEXT, "
+            + CAMPO_TAG_EVENT + " TEXT, "
+            + CAMPO_DIRECTION + " TEXT)";
+
+    // CREAR UBICACION
+    public static final String CREAR_TABLA_UBICACION = "CREATE TABLE " + TABLA_UBICACION + "("
+            + CAMPO_ID_UBICACION +" INTEGER PRIMARY KEY, "
+            + CAMPO_EDIFICIO + " TEXT, "
+            + CAMPO_ROOM + " TEXT)" ;
+
 }

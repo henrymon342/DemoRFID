@@ -40,7 +40,7 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        //ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
+        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
         btn_login=(Button)findViewById(R.id.btn_login);
         nombre=findViewById(R.id.nombre);
         password=findViewById(R.id.password);
@@ -50,23 +50,19 @@ public class LoginActivity extends BaseActivity {
         btn_registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //registrar();
-                prueba();
                 actualizarDatosUsuarioDeDotNet();
             }
         });
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //setContentView(MainActivity);
                 logear();
-                //vaciarTablaUsuarios();  // vacia la tabla usuarios de la BD SQLite
             }
         });
         btn_sqlite.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-              registrar();
+              registrarUsuarioSQLite();
           }
         });
         //codigoHenry
@@ -74,54 +70,20 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    private void vaciarTablaUsuarios() {
-        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
-        SQLiteDatabase db=conn.getWritableDatabase();
-        db.execSQL(utilidades.VACIAR_TABLA_USUARIO);
-        db.close();
-    }
-
     public void logear(){
-        Boolean entro = false;
         Intent loginIntend= new Intent(this,PrincipalActivity.class);
-        ArrayList<User> usuarios = new ArrayList<>();
-        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
-        SQLiteDatabase db= conn.getReadableDatabase();
-        String[] parametros={nombre.getText().toString()};
-        String[] campos={utilidades.CAMPO_ID,utilidades.CAMPO_NOMBRE,utilidades.CAMPO_EMAIL,utilidades.CAMPO_PASSWORD};
-
-        try {
-            Log.d("RESPUESTA3",  "entro pero no funciono");
-            //Cursor cursor = db.query(utilidades.TABLA_USUARIO,campos, utilidades.CAMPO_ID+"=?",parametros,null,null,null);
-            //Cursor cursor = db.query(utilidades.TABLA_USUARIO,campos,utilidades.CAMPO_EMAIL+"=?",parametros,null,null,null);
-            Cursor c = db.rawQuery("SELECT name,password FROM user ", null);
-            if (c.moveToFirst()){
-                do {
-                    Log.d("INDIVIDUO",  c.getString(0));
-                    String corr = c.getString(0);
-                    String pass = c.getString(1);
-                    if(corr.equals(parametros[0]) && pass.equals(password.getText().toString())){
-                        Log.d("Entro->", "entro");
-                        Log.d("USER", pass);
-                        entro = true;
-                    }
-                } while(c.moveToNext());
-            }
-            if(entro == true) {
-                startActivity(loginIntend);
-            }else{
-                Toast.makeText(getApplicationContext(),"el usuario o contraseña son incorrectos",Toast.LENGTH_LONG).show();
-                nombre.setText("");
-                password.setText("");
-            }
-            c.close();
-            db.close();
-        }catch (Exception e){
+        Boolean estaEnSQLite=false;
+        if (estaEnUsuarioSQLite(nombre.getText().toString(),password.getText().toString()))  {
+            startActivity(loginIntend);
             nombre.setText("");
             password.setText("");
-            Log.d("RESPUESTA4",  "nunca entro");
+            estaEnSQLite=true;
+        }
+        nombre.setText("");
+        password.setText("");
+        if (!estaEnSQLite){
             if(buscarBDDotNet(nombre.toString(), password.toString()) == true){
-              startActivity(loginIntend);
+                startActivity(loginIntend);
             }else{
                 Toast.makeText(getApplicationContext(),"el usuario o contraseña son incorrectos",Toast.LENGTH_LONG).show();
             }
@@ -129,7 +91,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private Boolean buscarBDDotNet(final String correo, final String password) {
-         Boolean sw = false;
+        Boolean sw = false;
         Call<List<User>> call = userService.getUsers();
         call.enqueue(new Callback<List<User>>() {
             @Override
@@ -143,7 +105,7 @@ public class LoginActivity extends BaseActivity {
                         Log.d("RESPUESTAAPIitem", listUs.get(i).getClave());
                         Log.d("RESPUESTAAPIitem", String.valueOf(listUs.get(i).getId()));
                         if(listUs.get(i).getName().equals(correo) && listUs.get(i).getClave().equals(password)){
-                            registrarUsuarioSQLite(listUs.get(i));
+                            //registrarUsuarioSQLite(listUs.get(i));
                             swGlobal = true;
                             break;
                         }
@@ -159,29 +121,45 @@ public class LoginActivity extends BaseActivity {
         return swGlobal;
     }
 
-    private void registrarUsuarioSQLite(User user) {
+    private void registrarUsuarioSQLite() {
         ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
         ContentValues values=new ContentValues();
-        values.put(utilidades.CAMPO_ID,user.getId());
-        values.put(utilidades.CAMPO_NOMBRE,user.getName());
-        values.put(utilidades.CAMPO_EMAIL,user.getName());
-        values.put(utilidades.CAMPO_PASSWORD,user.getClave());
-        Long idResultante = db.insert(utilidades.TABLA_USUARIO,utilidades.CAMPO_ID,values);
+        values.put(utilidades.CAMPO_NOMBRE,nombre.getText().toString());
+        values.put(utilidades.CAMPO_PASSWORD,password.getText().toString());
+        Long idResultante = db.insert(utilidades.TABLA_USUARIO,utilidades.CAMPO_ID_USER,values);
         Toast.makeText(getApplicationContext(),"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
         db.close();
     }
-
-    public void registrar(){
+    private boolean estaEnUsuarioSQLite(String name,String pass){
+        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
+        SQLiteDatabase db=conn.getReadableDatabase();
+        String[] parametros={name};
+        String[] campos={utilidades.CAMPO_NOMBRE,utilidades.CAMPO_PASSWORD};
+        String resUser="";
+        String resPass="";
+        try {
+            Cursor cursor=db.query(utilidades.TABLA_USUARIO,campos,utilidades.CAMPO_NOMBRE+"=?",parametros,null,null,null);
+            cursor.moveToFirst();
+            resUser=cursor.getString(0);
+            resPass=cursor.getString(1);
+            Log.d("LOGEO user", resUser);
+            Log.d("LOGEO pass", resPass);
+            cursor.close();
+            db.close();
+            if (resUser.equals(name)&& resPass.equals(pass) ){
+                return true;
+            }
+        }catch (Exception e){
+            db.close();
+        }
+        return false;
+    }
+    private void eliminar(){
         ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
-        ContentValues values=new ContentValues();
-        values.put(utilidades.CAMPO_ID,"u1");
-        values.put(utilidades.CAMPO_NOMBRE,"juan");
-        values.put(utilidades.CAMPO_EMAIL,"juan@gmail.com");
-        values.put(utilidades.CAMPO_PASSWORD,"12345");
-        Long idResultante=db.insert(utilidades.TABLA_USUARIO,utilidades.CAMPO_ID,values);
-        Toast.makeText(getApplicationContext(),"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
+        String delete = "DROP TABLE "+utilidades.TABLA_USUARIO;
+        db.execSQL(delete);
         db.close();
     }
 
@@ -206,7 +184,7 @@ public class LoginActivity extends BaseActivity {
                         Log.d("RESPUESTAAPIitem", String.valueOf(listUs.get(i).getId()));
                         User aux = new User(listUs.get(i).getId(), listUs.get(i).getName(), listUs.get(i).getClave());
                         if(verSiEstaEnSQLite(listUs.get(i).getId())== false){
-                            registrarUsuarioSQLite(listUs.get(i));
+                            //registrarUsuarioSQLite(listUs.get(i));
                             swUpdate = true;
                         }
                     }
@@ -244,40 +222,8 @@ public class LoginActivity extends BaseActivity {
         return false;
     }
 
-    private void prueba(){
-        //verSiEstaEnSQLite(8);
-        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
-        SQLiteDatabase db = conn.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT id,password FROM user ", null);
-        if (c.moveToFirst()){
-            do {
-                // Passing values
-                String idd = c.getString(0);
-                Log.d("LORA->", idd+ c.getString(1));
-                // Do something Here with values
-            } while(c.moveToNext());
-        }
-        c.close();
-        db.close();
-    }
 
 
-    private void enviarSQLite(List<User> listUs) {
-        ConectionSQLiteHelper conn = new ConectionSQLiteHelper(this,"bdUser",null,1);
-        SQLiteDatabase db=conn.getWritableDatabase();
-        for (int i = 0; i < listUs.size(); i++) {
-            Log.d("RESPUESTAAPIitem", listUs.get(i).getName());
-            Log.d("RESPUESTAAPIitem", listUs.get(i).getClave());
-            Log.d("RESPUESTAAPIitem", String.valueOf(listUs.get(i).getId()));
-            ContentValues values=new ContentValues();
-            values.put(utilidades.CAMPO_ID, String.valueOf(listUs.get(i).getId()));
-            values.put(utilidades.CAMPO_NOMBRE, listUs.get(i).getName());
-            values.put(utilidades.CAMPO_EMAIL,listUs.get(i).getName());
-            values.put(utilidades.CAMPO_PASSWORD,listUs.get(i).getClave());
-            long idResultante = db.insert(utilidades.TABLA_USUARIO,utilidades.CAMPO_ID,values);
-            Toast.makeText(this,"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
-            db.close();
-        }
-    }
+
 
 }

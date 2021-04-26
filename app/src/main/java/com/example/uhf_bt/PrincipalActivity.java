@@ -12,7 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Process;
+
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,11 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.fragment.app.FragmentTabHost;
 
-import com.example.uhf_bt.fragment.UHFLocationFragment;
-import com.example.uhf_bt.fragment.UHFReadTagFragment;
-import com.example.uhf_bt.fragment.UHFSetFragment;
 import com.rscja.deviceapi.RFIDWithUHFBLE;
 import com.rscja.deviceapi.interfaces.ConnectionStatus;
 import com.rscja.deviceapi.interfaces.ConnectionStatusCallback;
