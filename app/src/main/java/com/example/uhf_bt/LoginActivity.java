@@ -2,18 +2,29 @@ package com.example.uhf_bt;
 
 import android.annotation.TargetApi;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.Backend.APIUtils;
-import com.example.Backend.Interfaces.UserService;
+import com.example.Interfaces.BuildingInterface;
+import com.example.Interfaces.LogeoInterface;
+import com.example.Interfaces.RoomInterface;
+import com.example.Models.Building;
+import com.example.Models.Room;
 import com.example.Models.User;
 import com.example.uhf_bt.Utilidades.utilidades;
 import java.util.List;
@@ -23,10 +34,20 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import com.example.uhf_bt.Utilidades.GLOBAL;
+
+
 public class LoginActivity extends BaseActivity {
-    final String URL = "http://a2a256f3b766.ngrok.io";
-    UserService userService;
+
+    //final String URL = "http://a2a256f3b766.ngrok.io";
+    final String URL = GLOBAL.URL;
+    LogeoInterface userService;
+    BuildingInterface buildingInterface;
+    RoomInterface roomInterface;
     List<User> listUs;
+    List<Building> listBui;
+    List<Room> listRooms;
+
     private Boolean swGlobal = false;
     private Boolean swUpdate = false;
     private Button btn_login,btn_registro,btn_sqlite;
@@ -60,8 +81,128 @@ public class LoginActivity extends BaseActivity {
           }
         });
         //codigoHenry
-        userService = APIUtils.getUserService();
+        userService = APIUtils.getUsers();
+        buildingInterface = APIUtils.getBuildings();
+        roomInterface = APIUtils.getRooms();
+        actualizarDatos();
     }
+
+    public void actualizarDatos(){
+        if(verInternet()){
+            actualizarDatosUuarios();
+            actualizarDatosBuildings();
+            actualizarDatosRooms();
+        }else{
+            Toast.makeText(this, "NO HAY CONEXIÓN A INTERNET", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private Boolean verInternet() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            Log.d("MIAPP", "Estás online");
+
+            Log.d("MIAPP", " Estado actual: " + networkInfo.getState());
+            return true;
+        } else {
+            Log.d("MIAPP", "Estás offline");
+            return false;
+        }
+    }
+
+    private void actualizarDatosRooms() {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        RoomInterface roomInterface = retrofit.create(RoomInterface.class);
+        Call<List<Room>> call = roomInterface.getRooms();
+        call.enqueue(new Callback<List<Room>>() {
+            @Override
+            public void onResponse(Call<List<Room>> call, Response<List<Room>> response) {
+                if(response.isSuccessful()){
+                    //Log.d("RESPONSE->   ", String.valueOf(response.body()));
+                    listRooms = response.body();
+                    for (int i = 0; i < listRooms.size(); i++) {
+                        Log.d("ROOM:", listRooms.get(i).toString());
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Room>> call, Throwable t) {
+                Log.e("ERROR: ", t.getMessage());
+            }
+        });
+
+    }
+
+
+    private void actualizarDatosUuarios() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        LogeoInterface userService = retrofit.create(LogeoInterface.class);
+        Call<List<User>> call = userService.getUsers();
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if(response.isSuccessful()){
+                    //Log.d("RESPONSE->   ", String.valueOf(response.body()));
+                    listUs = response.body();
+                    for (int i = 0; i < listUs.size(); i++) {
+                        User aux = new User(listUs.get(i).getId(), listUs.get(i).getName(), listUs.get(i).getClave());
+                        Log.d("USUARIO:", aux.toString());
+                        /*
+                        if(verSiEstaEnSQLite(listUs.get(i).getId())== false){
+                            registrarUsuarioSQLite(listUs.get(i));
+                            swUpdate = true;
+                        }
+                        */
+                    }
+                }
+                if(swUpdate == true){
+                    Toast.makeText(getApplicationContext(), "SE ACTUALIZO LA BD SQLITE", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "SQLITE NADA QUE ACTUALIZAR", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Log.e("ERROR: ", t.getMessage());
+            }
+        });
+    }
+
+    private void actualizarDatosBuildings() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        BuildingInterface buildingService = retrofit.create(BuildingInterface.class);
+        Call<List<Building>> call = buildingService.getBuildings();
+        call.enqueue(new Callback<List<Building>>() {
+            @Override
+            public void onResponse(Call<List<Building>> call, Response<List<Building>> response) {
+                if(response.isSuccessful()){
+                    listBui = response.body();
+                    for (int i = 0; i < listBui.size(); i++) {
+                        Log.d("BUILDING:", listBui.get(i).getId()+ listBui.get(i).getName());
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Building>> call, Throwable t) {
+                Log.e("ERROR: ", t.getMessage());
+            }
+        });
+    }
+
+
 
     public void logear(){
         Intent loginIntend= new Intent(this,PrincipalActivity.class);
@@ -163,7 +304,7 @@ public class LoginActivity extends BaseActivity {
                 .baseUrl(URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        UserService userService = retrofit.create(UserService.class);
+        LogeoInterface userService = retrofit.create(LogeoInterface.class);
         Call<List<User>> call = userService.getUsers();
         call.enqueue(new Callback<List<User>>() {
             @Override

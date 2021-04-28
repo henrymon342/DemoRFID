@@ -12,6 +12,15 @@ public class User {
         this.clave = clave;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", clave='" + clave + '\'' +
+                '}';
+    }
+
     public int getId() {
         return id;
     }

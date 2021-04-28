@@ -17,9 +17,12 @@ import androidx.fragment.app.Fragment;
 import com.example.uhf_bt.MainActivity;
 import com.example.uhf_bt.R;
 import com.example.uhf_bt.view.UhfLocationCanvasView;
+import com.rscja.deviceapi.entity.UHFTAGInfo;
 import com.rscja.deviceapi.interfaces.IUHF;
 import com.rscja.deviceapi.interfaces.IUHFLocationCallback;
 import com.rscja.utility.LogUtility;
+
+import java.util.Random;
 
 
 public class UHFLocationFragment extends Fragment {
@@ -92,23 +95,37 @@ public class UHFLocationFragment extends Fragment {
 
     private void startLocation(){
         LogUtility.setDebug(true);
-       String epc = etEPC.getText().toString();
-       if(epc != null && epc.length()>0) {
+        String epc = etEPC.getText().toString();
+        if(epc != null && epc.length()>0) {
 
-           boolean result = mContext.uhf.startLocation(mContext, epc, IUHF.Bank_EPC, 32, new IUHFLocationCallback() {
-               @Override
-               public void getLocationValue(int Value) {
-                   llChart.setData(Value);
-               }
-           });
-           Log.d(TAG, "RESULT: "+ mContext);
-           if (!result) {
-               Toast.makeText(mContext, R.string.psam_msg_fail, Toast.LENGTH_SHORT).show();
-               return;
-           }
-           btStart.setEnabled(false);
-           etEPC.setEnabled(false);
-       }
+            boolean result = mContext.uhf.startLocation(mContext, epc, IUHF.Bank_EPC, 32, new IUHFLocationCallback() {
+                @Override
+                public void getLocationValue(int Value) {
+
+                    UHFTAGInfo hallado = mContext.uhf.readTagFromBuffer();
+                    //Log.d(TAG, "RESULT: "+ mContext.uhf.getCW());
+                    //Log.d(TAG, "RESULT: "+ mContext.uhf.getRFLink());
+                    Log.d(TAG, "RESULT_FINAL : "+ hallado);
+
+                    if (hallado!=null && hallado.getEPC() != null){
+                        Log.d(TAG, "RESULT: "+ hallado.getRssi());
+                        llChart.setData(50);
+                    }else{
+                        llChart.setData(0);
+                    }
+
+                }
+
+            });
+            Log.d(TAG, "RESULT: "+ result);
+
+            if (!result) {
+                Toast.makeText(mContext, R.string.psam_msg_fail, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            btStart.setEnabled(false);
+            etEPC.setEnabled(false);
+        }
     }
 
    public void stopLocation(){
