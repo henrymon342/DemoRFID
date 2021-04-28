@@ -41,7 +41,7 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
     private long timeCountCur;
     public BluetoothAdapter mBtAdapter = null;
     private boolean mIsActiveDisconnect = true;
-    private Button btn_inventario,btn_busqueda,btn_missing,btn_sincronizar;
+    private Button btn_inventario,btn_busqueda,btn_missing,btn_sincronizar, btn_checkin, btn_checkout;
     private TextView tvAddress;
     private Button btn_connect, btn_search;
     private static final int WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST = 101;
@@ -110,6 +110,21 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
                 busqueda();
             }
         });
+        btn_checkin=(Button)findViewById(R.id.btn_checkin);
+        btn_checkin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkin();
+            }
+        });
+        btn_checkout=(Button)findViewById(R.id.btn_checkout);
+        btn_checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkout();
+            }
+        });
+
         initUI();
         uhf.init(getApplicationContext());
         Utils.initSound(getApplicationContext());
@@ -152,8 +167,17 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
     public void sincronizar(){
         Intent mainIntend= new Intent(this,SincronizarActivity.class);
         startActivity(mainIntend);
-    }public void busqueda() {
+    }
+    public void busqueda() {
         Intent mainIntend = new Intent(this, BusquedaActivity.class);
+        startActivity(mainIntend);
+    }
+    public void checkin() {
+        Intent mainIntend = new Intent(this, CheckIn.class);
+        startActivity(mainIntend);
+    }
+    public void checkout(){
+        Intent mainIntend = new Intent(this, CheckOut.class);
         startActivity(mainIntend);
     }
     protected void initUI() {

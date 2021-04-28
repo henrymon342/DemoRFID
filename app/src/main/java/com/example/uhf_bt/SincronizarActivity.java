@@ -15,12 +15,11 @@ public class SincronizarActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sincronizar);
-        final Intent atrasIntend= new Intent(this,PrincipalActivity.class);
-        btn_atras=(Button)findViewById(R.id.btn_atrasSincro);
+        btn_atras=findViewById(R.id.btn_atrasBusqueda);
         btn_atras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(atrasIntend);
+                finish();
             }
         });
     }

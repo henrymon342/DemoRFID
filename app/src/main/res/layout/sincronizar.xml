@@ -68,11 +68,11 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_fromDatabase" />
 
     <Button
-        android:id="@+id/btn_atrasSincro"
+        android:id="@+id/btn_atrasBusqueda"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/button_bg_down2"
         android:text="Atras"
-        android:background="@drawable/button_rounded"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -16,7 +16,6 @@ import com.example.Backend.APIUtils;
 import com.example.Backend.Interfaces.UserService;
 import com.example.Models.User;
 import com.example.uhf_bt.Utilidades.utilidades;
-import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,14 +24,11 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends BaseActivity {
-
     final String URL = "http://a2a256f3b766.ngrok.io";
     UserService userService;
     List<User> listUs;
-
     private Boolean swGlobal = false;
     private Boolean swUpdate = false;
-
     private Button btn_login,btn_registro,btn_sqlite;
     private TextView nombre,password;
     @TargetApi(Build.VERSION_CODES.GINGERBREAD_MR1)
@@ -40,13 +36,11 @@ public class LoginActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
         btn_login=(Button)findViewById(R.id.btn_login);
         nombre=findViewById(R.id.nombre);
         password=findViewById(R.id.password);
         btn_registro=(Button)findViewById(R.id.btn_registro);
         btn_sqlite=(Button)findViewById(R.id.btn_sqlite);
-
         btn_registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +61,6 @@ public class LoginActivity extends BaseActivity {
         });
         //codigoHenry
         userService = APIUtils.getUserService();
-
     }
 
     public void logear(){
