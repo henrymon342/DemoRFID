@@ -1,13 +1,8 @@
 package com.example.uhf_bt.Utilidades;
 
-public class GLOBAL {
+public interface GLOBAL {
 
-    private String URL = "http://1602fb06cc25.ngrok.io";
 
-    public GLOBAL() {
-    }
+    public final String URL = "http://9b707a5d72d4.ngrok.io";
 
-    public String getURL() {
-        return this.URL;
-    }
 }
