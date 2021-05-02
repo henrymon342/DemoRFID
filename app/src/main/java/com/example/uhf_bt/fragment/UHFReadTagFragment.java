@@ -241,6 +241,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             case R.id.btInventory: // single
                 //inventory();
                 //cargarBDSQLite();
+                guardarInventario();
                 break;
             case R.id.btStop: //stop
                 if (mContext.uhf.getConnectStatus() == ConnectionStatus.CONNECTED) {
@@ -260,7 +261,25 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     }
 
 
+    private void guardarInventario(){
+        for (int i = 0; i < tagList.size(); i++) {
 
+            String tag_data = tagList.get(i).get(MainActivity.TAG_DATA);
+            String tag_count = tagList.get(i).get(MainActivity.TAG_COUNT);
+            String tag_epc_tid_user = tagList.get(i).get(MainActivity.TAG_EPC);
+            //Log.d("INVENTARIO", tag_data);
+            Log.d("INVENTARIO", tag_epc_tid_user);
+            String the_tid = tag_epc_tid_user.substring(0,24);
+            String the_epc = tag_epc_tid_user.substring(24,48);
+            Log.d("INVENTARIO", the_epc);
+            Log.d("INVENTARIO", the_tid);
+            Log.d("INVENTARIO", tag_count);
+        }
+        String duracion = tv_time.getText().toString();
+        String tag_total = tv_total.getText().toString();
+        Log.d("INVENTARIO", duracion);
+        Log.d("INVENTARIO", tag_total);
+    }
 
 
 
