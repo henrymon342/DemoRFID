@@ -2,6 +2,7 @@ package com.example.uhf_bt.fragment;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -282,10 +283,6 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         Log.d("INVENTARIO", duracion);
         Log.d("INVENTARIO", tag_total);
     }
-
-
-
-
 
 
 
@@ -784,5 +781,27 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         values.put(utilidades.CAMPO_TAG_EVENT," ");
         values.put(utilidades.CAMPO_DIRECTION," ");
         db.close();
+    }
+    private boolean estaEnUsuarioSQLite(){
+        ConeectionSQLHelperI conn=new ConeectionSQLHelperI(mContext,"bdUser",null,1);
+        SQLiteDatabase db=conn.getReadableDatabase();
+        String[] parametros={};
+        String[] campos={utilidades.CAMPO_TID,utilidades.CAMPO_COUNT};
+        String resTid="";
+        String resCount="";
+        try {
+            Cursor cursor=db.query(utilidades.TABLA_RFID_TAG_LIST,campos,utilidades.CAMPO_TID+"=?",parametros,null,null,null);
+            cursor.moveToFirst();
+            resTid=cursor.getString(0);
+            resCount=cursor.getString(1);
+            Log.d("TID inventario", resTid);
+            Log.d("COUNT inventario", resCount);
+            cursor.close();
+            db.close();
+            return true;
+        }catch (Exception e){
+            db.close();
+        }
+        return false;
     }
 }
