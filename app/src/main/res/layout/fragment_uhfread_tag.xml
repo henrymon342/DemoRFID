@@ -158,6 +158,14 @@ tools:context="com.example.uhf_bt.fragment.UHFReadTagFragment">
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:text="@string/title_stop" />
+
+            <Button
+                android:id="@+id/btnGenerar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="mostrar" />
+
         </LinearLayout>
     </LinearLayout>
 

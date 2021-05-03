@@ -250,15 +250,10 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                     stopInventory();
                 }
                 break;
-                /**
-            case R.id.btnGenerar:
-                Log.d("CSV", " entro!!!!");
-                for (int i = 0; i < tagList.size(); i++) {
 
-                    Log.d("CSV",  String.valueOf( tagList.get(i).get("tagData")));
-                }
-                break;
-                 */
+            case R.id.btnGenerar:
+
+                estaEnUsuarioSQLite();
         }
     }
 
@@ -296,7 +291,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         btStop = (Button) mContext.findViewById(R.id.btStop);
         btStop.setEnabled(false);
         btClear = (Button) mContext.findViewById(R.id.btClear);
-        //btnGenerar = (Button) mContext.findViewById(R.id.btnGenerar);
+        btnGenerar = (Button) mContext.findViewById(R.id.btnGenerar);
         tv_count = (TextView) mContext.findViewById(R.id.tv_count);
         tv_total = (TextView) mContext.findViewById(R.id.tv_total);
         tv_time = (TextView) mContext.findViewById(R.id.tv_time);
@@ -305,7 +300,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         btInventory.setOnClickListener(this);
         btClear.setOnClickListener(this);
         btStop.setOnClickListener(this);
-        //btnGenerar.setOnClickListener(this);
+        btnGenerar.setOnClickListener(this);
 
         btInventoryPerMinute = mContext.findViewById(R.id.btInventoryPerMinute);
         btInventoryPerMinute.setOnClickListener(this);
@@ -785,12 +780,12 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     private boolean estaEnUsuarioSQLite(){
         ConeectionSQLHelperI conn=new ConeectionSQLHelperI(mContext,"bdUser",null,1);
         SQLiteDatabase db=conn.getReadableDatabase();
-        String[] parametros={};
+        String[] parametros={ "1" };
         String[] campos={utilidades.CAMPO_TID,utilidades.CAMPO_COUNT};
         String resTid="";
         String resCount="";
         try {
-            Cursor cursor=db.query(utilidades.TABLA_RFID_TAG_LIST,campos,utilidades.CAMPO_TID+"=?",parametros,null,null,null);
+            Cursor cursor=db.query(utilidades.TABLA_RFID_TAG_LIST,campos,utilidades.CAMPO_ID_RFID+"=?",parametros,null,null,null);
             cursor.moveToFirst();
             resTid=cursor.getString(0);
             resCount=cursor.getString(1);
@@ -800,6 +795,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             db.close();
             return true;
         }catch (Exception e){
+            Log.d("INVENTARIO", e.getMessage());
             db.close();
         }
         return false;
