@@ -124,12 +124,7 @@ tools:context="com.example.uhf_bt.fragment.UHFReadTagFragment">
             android:weightSum="8"
             android:background="@color/sliding_menu_item_pressed"
             android:layout_weight="1.3">
-            <Button
-                android:id="@+id/btInventoryPerMinute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="每6秒读一次"
-                android:visibility="gone" />
+
             <Button
                 android:id="@+id/btInventory"
                 android:layout_width="0dip"
@@ -138,12 +133,7 @@ tools:context="com.example.uhf_bt.fragment.UHFReadTagFragment">
                 android:layout_weight="2"
                 android:visibility="visible" />
 
-            <Button
-                android:id="@+id/InventoryLoop"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="@string/rbInventoryLoop" />
+
 
             <Button
                 android:id="@+id/btClear"
@@ -161,10 +151,10 @@ tools:context="com.example.uhf_bt.fragment.UHFReadTagFragment">
 
             <Button
                 android:id="@+id/btnGenerar"
-                android:layout_width="wrap_content"
+                android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="mostrar" />
+                android:layout_weight="2"
+                android:text="guardar" />
 
         </LinearLayout>
     </LinearLayout>

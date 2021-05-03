@@ -15,6 +15,13 @@
             android:background="@color/cardview_dark_background"
             android:orientation="vertical">
 
+            <Button
+                android:id="@+id/btnseenvio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:text="sincronizar" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

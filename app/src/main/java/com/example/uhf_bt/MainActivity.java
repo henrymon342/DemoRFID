@@ -2,33 +2,25 @@ package com.example.uhf_bt;
 
 
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.ContentValues;
-import android.content.DialogInterface;
-import android.content.Intent;
 
-import android.database.sqlite.SQLiteDatabase;
+import android.content.DialogInterface;
+
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.os.Process;
 
-import android.text.TextUtils;
-import android.util.Log;
+
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-
-import com.example.uhf_bt.Utilidades.utilidades;
 import com.example.uhf_bt.fragment.UHFLocationFragment;
 import com.example.uhf_bt.fragment.UHFReadTagFragment;
 import com.example.uhf_bt.fragment.UHFSetFragment;
@@ -47,6 +39,10 @@ import androidx.fragment.app.FragmentTabHost;
 
 
 public class MainActivity extends BaseActivity{
+
+
+    public boolean seenvio = false;
+    public Button btnseenvio;
 
     public boolean isScanning = false;
     public String selectEPC=null;
@@ -77,7 +73,16 @@ public class MainActivity extends BaseActivity{
         initUI();
         uhf.init(getApplicationContext());
         Utils.initSound(getApplicationContext());
-
+        btnseenvio = (Button) this.findViewById(R.id.btnseenvio);
+        btnseenvio.setBackgroundColor(Color.YELLOW);
+        btnseenvio.setTextColor(Color.GRAY);
+        btnseenvio.setVisibility(View.INVISIBLE);
+        btnseenvio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                seEnvio();
+            }
+        });
     }
 
 
@@ -179,6 +184,14 @@ public class MainActivity extends BaseActivity{
 
     public interface IConnectStatus {
         void getStatus(ConnectionStatus connectionStatus);
+    }
+
+    public void seEnvio() {
+        if(this.seenvio){
+            btnseenvio.setVisibility(View.INVISIBLE);
+            Toast.makeText(this, "SE ENVIO A LA BD .NET", Toast.LENGTH_SHORT).show();
+            this.seenvio = false;
+        }
     }
 
 }

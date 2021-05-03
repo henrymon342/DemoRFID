@@ -38,6 +38,7 @@ import com.example.uhf_bt.FileUtils;
 import com.example.uhf_bt.LoginActivity;
 import com.example.uhf_bt.MainActivity;
 import com.example.uhf_bt.NumberTool;
+import com.example.uhf_bt.PrincipalActivity;
 import com.example.uhf_bt.R;
 import com.example.uhf_bt.Utilidades.GLOBAL;
 import com.example.uhf_bt.Utilidades.utilidades;
@@ -91,8 +92,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     int lastIndex=-1;
     private boolean loopFlag = false;
     private ListView LvTags;
-    private Button InventoryLoop, btInventory, btStop;//
-    private Button btInventoryPerMinute;
+    private Button btInventory, btStop;//
     private Button btClear;
     private Button btnGenerar;
     private TextView tv_count, tv_total, tv_time;
@@ -123,13 +123,14 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case FLAG_STOP:
+                    btnGenerar.setBackgroundColor(Color.GREEN);
+                    btnGenerar.setTextColor(Color.GRAY);
                     if (msg.arg1 == FLAG_SUCCESS) {
                         //停止成功
                         btClear.setEnabled(true);
                         btStop.setEnabled(false);
-                        InventoryLoop.setEnabled(true);
+
                         btInventory.setEnabled(true);
-                        btInventoryPerMinute.setEnabled(true);
                     } else {
                         //停止失败
                         Utils.playSound(2);
@@ -156,9 +157,9 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                         //开始读取标签成功
                         btClear.setEnabled(false);
                         btStop.setEnabled(true);
-                        InventoryLoop.setEnabled(false);
+
                         btInventory.setEnabled(false);
-                        btInventoryPerMinute.setEnabled(false);
+
                     } else {
                         //开始读取标签失败
                         Utils.playSound(2);
@@ -231,12 +232,10 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btClear: // limpiar
-                //clearData();
-                registrarInventarioSQLite();
+                clearData();
+                //registrarInventarioSQLite();
                 break;
-            case R.id.btInventoryPerMinute:
-                inventoryPerMinute();
-                break;
+
             case R.id.InventoryLoop: // auto
                 //getUsuarios();
                 //startThread();
@@ -253,10 +252,17 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                 break;
 
             case R.id.btnGenerar:
+                mContext.seenvio = true;
+                mContext.btnseenvio.setVisibility(View.VISIBLE);
+                btnGenerar.setBackgroundColor(Color.DKGRAY);
+                btnGenerar.setTextColor(Color.WHITE);
+                //estaEnUsuarioSQLite();
+                break;
 
-                estaEnUsuarioSQLite();
         }
     }
+
+
 
 
     private void guardarInventario(){
@@ -278,17 +284,20 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         String tag_total = tv_total.getText().toString();
         Log.d("INVENTARIO", duracion);
         Log.d("INVENTARIO", tag_total);
+
+
     }
 
 
 
     private void init() {
 
+
         isExit = false;
         mContext.addConnectStatusNotice(mConnectStatus);
         LvTags = (ListView) mContext.findViewById(R.id.LvTags);
         btInventory = (Button) mContext.findViewById(R.id.btInventory);
-        InventoryLoop = (Button) mContext.findViewById(R.id.InventoryLoop);
+
         btStop = (Button) mContext.findViewById(R.id.btStop);
         btStop.setEnabled(false);
         btClear = (Button) mContext.findViewById(R.id.btClear);
@@ -297,14 +306,14 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         tv_total = (TextView) mContext.findViewById(R.id.tv_total);
         tv_time = (TextView) mContext.findViewById(R.id.tv_time);
 
-        InventoryLoop.setOnClickListener(this);
+
         btInventory.setOnClickListener(this);
         btClear.setOnClickListener(this);
         btStop.setOnClickListener(this);
         btnGenerar.setOnClickListener(this);
 
-        btInventoryPerMinute = mContext.findViewById(R.id.btInventoryPerMinute);
-        btInventoryPerMinute.setOnClickListener(this);
+
+
 
         listaCsv = new ArrayList<>();
 
@@ -380,15 +389,15 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     public void onResume() {
         super.onResume();
         if (mContext.uhf.getConnectStatus() == ConnectionStatus.CONNECTED) {
-            InventoryLoop.setEnabled(true);
+
             btInventory.setEnabled(true);
-            btInventoryPerMinute.setEnabled(true);
+
 
 
         } else {
-            InventoryLoop.setEnabled(false);
+
             btInventory.setEnabled(false);
-            btInventoryPerMinute.setEnabled(false);
+
 
         }
     }
@@ -439,9 +448,9 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    InventoryLoop.setEnabled(true);
+
                     btInventory.setEnabled(true);
-                    btInventoryPerMinute.setEnabled(true);
+
                 }
 
 
@@ -450,9 +459,9 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                 mContext.isScanning = false;
                 btClear.setEnabled(true);
                 btStop.setEnabled(false);
-                InventoryLoop.setEnabled(false);
+
                 btInventory.setEnabled(false);
-                btInventoryPerMinute.setEnabled(false);
+
 
             }
         }
@@ -637,24 +646,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     private long period = 6 * 1000; // 每隔多少ms
     private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "BluetoothReader" + File.separator;
     private String fileName;
-    private void inventoryPerMinute() {
-        cancelInventoryTask();
-        btInventoryPerMinute.setEnabled(false);
-        btInventory.setEnabled(false);
-        InventoryLoop.setEnabled(false);
-        btStop.setEnabled(true);
-        mContext.isScanning = true;
-        fileName = path + "battery_" + DateUtils.getCurrFormatDate(DateUtils.DATEFORMAT_FULL) + ".txt";
-        mInventoryPerMinuteTask = new TimerTask() {
-            @Override
-            public void run() {
-                String data = DateUtils.getCurrFormatDate(DateUtils.DATEFORMAT_FULL) + "\t电量：" + mContext.uhf.getBattery() + "%\n";
-                FileUtils.writeFile(fileName, data, true);
-                inventory();
-            }
-        };
-        mTimer.schedule(mInventoryPerMinuteTask, 0, period);
-    }
+
 
     private void cancelInventoryTask() {
         if(mInventoryPerMinuteTask != null) {
@@ -767,15 +759,18 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         ContentValues values=new ContentValues();
         values.put(utilidades.CAMPO_EPC,epc);
         values.put(utilidades.CAMPO_TID,tid);
-        values.put(utilidades.CAMPO_USER_MEMORY," ");
-        values.put(utilidades.CAMPO_ANTENNA_NAME," ");
-        values.put(utilidades.CAMPO_PEAK_RSSI," ");
-        values.put(utilidades.CAMPO_DATE_TIME," ");
-        values.put(utilidades.CAMPO_READER_NAME," ");
-        values.put(utilidades.CAMPO_START_EVENT," ");
+        values.put(utilidades.CAMPO_USER_MEMORY,"123");
+        values.put(utilidades.CAMPO_ANTENNA_NAME,"123");
+        values.put(utilidades.CAMPO_PEAK_RSSI,"123");
+        values.put(utilidades.CAMPO_DATE_TIME,"123");
+        values.put(utilidades.CAMPO_READER_NAME,"123");
+        values.put(utilidades.CAMPO_START_EVENT,"123");
         values.put(utilidades.CAMPO_COUNT,count);
-        values.put(utilidades.CAMPO_TAG_EVENT," ");
-        values.put(utilidades.CAMPO_DIRECTION," ");
+        values.put(utilidades.CAMPO_TAG_EVENT,"123");
+        values.put(utilidades.CAMPO_DIRECTION,"123");
+
+        Long idResultante = db.insert(utilidades.TABLA_RFID_TAG_LIST,utilidades.CAMPO_ID_RFID,values);
+        Toast.makeText(mContext,"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
         db.close();
     }
     private boolean estaEnUsuarioSQLite(){
