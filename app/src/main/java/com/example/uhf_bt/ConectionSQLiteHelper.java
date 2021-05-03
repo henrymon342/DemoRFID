@@ -21,8 +21,6 @@ public class ConectionSQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS user");
-        db.execSQL("DROP TABLE IF EXISTS rfid");
-        db.execSQL("DROP TABLE IF EXISTS ubicacion");
         onCreate(db);
     }
 }

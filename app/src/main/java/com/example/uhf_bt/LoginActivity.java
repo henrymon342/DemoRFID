@@ -60,6 +60,10 @@ public class LoginActivity extends BaseActivity {
         password=findViewById(R.id.password);
         btn_registro=(Button)findViewById(R.id.btn_registro);
         btn_sqlite=(Button)findViewById(R.id.btn_sqlite);
+
+        //ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
+        //ConectionSQLRfid conn2=new ConectionSQLRfid(this,"bdUser",null,2);
+
         btn_registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +74,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 logear();
+                crearRfid();
             }
         });
         btn_sqlite.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +88,7 @@ public class LoginActivity extends BaseActivity {
         buildingInterface = APIUtils.getBuildings();
         roomInterface = APIUtils.getRooms();
         actualizarDatos();
+
     }
 
     public void actualizarDatos(){
@@ -354,8 +360,12 @@ public class LoginActivity extends BaseActivity {
         db.close();
         return false;
     }
-
-
+    private void crearRfid() {
+        ConectionSQLRfid conn=new ConectionSQLRfid(this,"bdUser",null,1);
+        SQLiteDatabase db=conn.getWritableDatabase();
+        ContentValues values=new ContentValues();
+        db.close();
+    }
 
 
 

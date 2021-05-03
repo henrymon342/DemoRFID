@@ -231,7 +231,8 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btClear: // limpiar
-                clearData();
+                //clearData();
+                registrarInventarioSQLite();
                 break;
             case R.id.btInventoryPerMinute:
                 inventoryPerMinute();
@@ -803,5 +804,25 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             db.close();
         }
         return false;
+    }
+    private void registrarInventarioSQLite() {
+        ConeectionSQLHelperI conn=new ConeectionSQLHelperI(mContext,"bdUser",null,1);
+        SQLiteDatabase db=conn.getWritableDatabase();
+        ContentValues values=new ContentValues();
+        values.put(utilidades.CAMPO_EPC,"0000001");
+        values.put(utilidades.CAMPO_TID,"0000002");
+        values.put(utilidades.CAMPO_USER_MEMORY,"1234");
+        values.put(utilidades.CAMPO_ANTENNA_NAME,"123");
+        values.put(utilidades.CAMPO_PEAK_RSSI,"123");
+        values.put(utilidades.CAMPO_DATE_TIME,"123");
+        values.put(utilidades.CAMPO_READER_NAME,"123");
+        values.put(utilidades.CAMPO_START_EVENT,"123");
+        values.put(utilidades.CAMPO_COUNT,"50");
+        values.put(utilidades.CAMPO_TAG_EVENT,"123");
+        values.put(utilidades.CAMPO_DIRECTION,"123");
+
+        Long idResultante = db.insert(utilidades.TABLA_RFID_TAG_LIST,utilidades.CAMPO_ID_RFID,values);
+        Toast.makeText(mContext,"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
+        db.close();
     }
 }
