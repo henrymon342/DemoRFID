@@ -772,6 +772,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         ConeectionSQLHelperI conn=new ConeectionSQLHelperI(mContext,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
         ContentValues values=new ContentValues();
+        values.put(utilidades.CAMPO_EPC,epc);
         values.put(utilidades.CAMPO_TID,tid);
         values.put(utilidades.CAMPO_USER_MEMORY," ");
         values.put(utilidades.CAMPO_ANTENNA_NAME," ");
@@ -780,7 +781,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         values.put(utilidades.CAMPO_READER_NAME," ");
         values.put(utilidades.CAMPO_START_EVENT," ");
         values.put(utilidades.CAMPO_COUNT,count);
-        values.put(utilidades.CAMPO_TAG_EVENT,epc);
+        values.put(utilidades.CAMPO_TAG_EVENT," ");
         values.put(utilidades.CAMPO_DIRECTION," ");
         db.close();
     }

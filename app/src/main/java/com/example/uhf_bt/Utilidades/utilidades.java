@@ -10,6 +10,7 @@ public class utilidades {
     // RFID
     public static final String TABLA_RFID_TAG_LIST = "rfid";
     public static final String CAMPO_ID_RFID = "id";
+    public static final String CAMPO_EPC = "epc";
     public static final String CAMPO_TID = "tid";
     public static final String CAMPO_USER_MEMORY = "memory";
     public static final String CAMPO_ANTENNA_NAME = "antenna";
@@ -37,6 +38,7 @@ public class utilidades {
     // CREAR RFID
     public static final String CREAR_TABLA_RFID = "CREATE TABLE " + TABLA_RFID_TAG_LIST + "("
             + CAMPO_ID_RFID + " INTEGER PRIMARY KEY, "
+            + CAMPO_EPC + " TEXT, "
             + CAMPO_TID + " TEXT, "
             + CAMPO_USER_MEMORY + " TEXT, "
             + CAMPO_ANTENNA_NAME + " TEXT, "
