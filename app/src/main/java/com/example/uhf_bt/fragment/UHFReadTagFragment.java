@@ -10,7 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.text.TextUtils;
-import android.util.JsonReader;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,48 +19,48 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.SimpleAdapter;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.Backend.APIUtils;
 
-import com.example.Interfaces.LogeoInterface;
 import com.example.Models.User;
 
+import com.example.uhf_bt.BaseActivity;
+import com.example.uhf_bt.ConectionSQLiteHelper;
+import com.example.uhf_bt.ConeectionSQLHelperI;
 import com.example.uhf_bt.DateUtils;
 import com.example.uhf_bt.FileUtils;
+import com.example.uhf_bt.LoginActivity;
 import com.example.uhf_bt.MainActivity;
 import com.example.uhf_bt.NumberTool;
 import com.example.uhf_bt.R;
 import com.example.uhf_bt.Utilidades.GLOBAL;
 import com.example.uhf_bt.Utilidades.utilidades;
 import com.example.uhf_bt.Utils;
-import com.example.uhf_bt.view.Articulo;
+
 import com.jaredrummler.materialspinner.MaterialSpinner;
-import com.rscja.deviceapi.RFIDWithUHFBLE;
+
 import com.rscja.deviceapi.entity.UHFTAGInfo;
 import com.rscja.deviceapi.interfaces.ConnectionStatus;
 import com.rscja.deviceapi.interfaces.KeyEventCallback;
 
 import java.io.File;
-import java.lang.reflect.Array;
+
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
 import androidx.fragment.app.Fragment;
 
-
+import android.database.sqlite.SQLiteDatabase;
 import static java.lang.String.valueOf;
 
 
@@ -186,6 +186,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         }
     };
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_uhfread_tag, container, false);
@@ -263,7 +264,6 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
     private void guardarInventario(){
         for (int i = 0; i < tagList.size(); i++) {
-
             String tag_data = tagList.get(i).get(MainActivity.TAG_DATA);
             String tag_count = tagList.get(i).get(MainActivity.TAG_COUNT);
             String tag_epc_tid_user = tagList.get(i).get(MainActivity.TAG_EPC);
@@ -274,6 +274,8 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             Log.d("INVENTARIO", the_epc);
             Log.d("INVENTARIO", the_tid);
             Log.d("INVENTARIO", tag_count);
+            hacerInventario(tag_count,the_epc,the_tid);
+
         }
         String duracion = tv_time.getText().toString();
         String tag_total = tv_total.getText().toString();
@@ -766,5 +768,20 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     }
 
 
-
+    private void hacerInventario(String count,String epc,String tid) {
+        ConeectionSQLHelperI conn=new ConeectionSQLHelperI(mContext,"bdUser",null,1);
+        SQLiteDatabase db=conn.getWritableDatabase();
+        ContentValues values=new ContentValues();
+        values.put(utilidades.CAMPO_TID,tid);
+        values.put(utilidades.CAMPO_USER_MEMORY," ");
+        values.put(utilidades.CAMPO_ANTENNA_NAME," ");
+        values.put(utilidades.CAMPO_PEAK_RSSI," ");
+        values.put(utilidades.CAMPO_DATE_TIME," ");
+        values.put(utilidades.CAMPO_READER_NAME," ");
+        values.put(utilidades.CAMPO_START_EVENT," ");
+        values.put(utilidades.CAMPO_COUNT,count);
+        values.put(utilidades.CAMPO_TAG_EVENT,epc);
+        values.put(utilidades.CAMPO_DIRECTION," ");
+        db.close();
+    }
 }

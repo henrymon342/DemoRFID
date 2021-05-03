@@ -5,9 +5,11 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,24 +25,25 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import android.widget.Spinner;
+import android.widget.Toast;
 
 
+import com.example.uhf_bt.Utilidades.utilidades;
 import com.example.uhf_bt.fragment.UHFLocationFragment;
 import com.example.uhf_bt.fragment.UHFReadTagFragment;
 import com.example.uhf_bt.fragment.UHFSetFragment;
 import com.rscja.deviceapi.RFIDWithUHFBLE;
 import com.rscja.deviceapi.interfaces.ConnectionStatus;
-import com.rscja.deviceapi.interfaces.ConnectionStatusCallback;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTabHost;
-import androidx.constraintlayout.widget.ConstraintLayout;
+
 
 
 public class MainActivity extends BaseActivity{
@@ -177,7 +180,5 @@ public class MainActivity extends BaseActivity{
     public interface IConnectStatus {
         void getStatus(ConnectionStatus connectionStatus);
     }
-
-
 
 }

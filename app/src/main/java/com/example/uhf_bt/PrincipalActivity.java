@@ -80,7 +80,6 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         checkReadWritePermission();
-        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
         btn_inventario=(Button)findViewById(R.id.btn_inventario);
         btn_inventario.setOnClickListener(new View.OnClickListener() {
             @Override
