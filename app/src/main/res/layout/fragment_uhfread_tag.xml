@@ -116,7 +116,7 @@ tools:context="com.example.uhf_bt.fragment.UHFReadTagFragment">
             android:layout_width="match_parent"
             android:layout_height="0dip"
             android:layout_weight="8.7"
-            />
+            android:background="@drawable/button_bg_down" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dip"

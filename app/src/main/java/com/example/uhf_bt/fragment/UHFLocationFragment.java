@@ -103,8 +103,6 @@ public class UHFLocationFragment extends Fragment {
                 public void getLocationValue(int Value) {
 
                     UHFTAGInfo hallado = mContext.uhf.readTagFromBuffer();
-                    //Log.d(TAG, "RESULT: "+ mContext.uhf.getCW());
-                    //Log.d(TAG, "RESULT: "+ mContext.uhf.getRFLink());
                     Log.d(TAG, "RESULT_FINAL : "+ hallado);
 
                     if (hallado!=null && hallado.getEPC() != null){

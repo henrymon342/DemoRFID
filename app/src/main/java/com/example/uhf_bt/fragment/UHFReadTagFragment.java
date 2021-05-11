@@ -243,7 +243,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             case R.id.btInventory: // single
                 //inventory();
                 //cargarBDSQLite();
-                guardarInventario();
+                //guardarInventario();
                 break;
             case R.id.btStop: //stop
                 if (mContext.uhf.getConnectStatus() == ConnectionStatus.CONNECTED) {
@@ -252,6 +252,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                 break;
 
             case R.id.btnGenerar:
+                guardarInventario();
                 mContext.seenvio = true;
                 mContext.btnseenvio.setVisibility(View.VISIBLE);
                 btnGenerar.setBackgroundColor(Color.DKGRAY);
