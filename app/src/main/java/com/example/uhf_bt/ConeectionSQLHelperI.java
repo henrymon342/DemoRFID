@@ -12,6 +12,7 @@ public class ConeectionSQLHelperI extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(utilidades.CREAR_TABLA_RFID);
+        db.execSQL(utilidades.CREAR_TABLA_INVENTARIO);
     }
 
     @Override

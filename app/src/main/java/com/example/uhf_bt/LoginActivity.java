@@ -96,6 +96,7 @@ public class LoginActivity extends BaseActivity {
             actualizarDatosUuarios();
             actualizarDatosBuildings();
             actualizarDatosRooms();
+
         }else{
             Toast.makeText(this, "NO HAY CONEXIÓN A INTERNET", Toast.LENGTH_LONG).show();
         }

@@ -59,7 +59,7 @@ public class utilidades {
             + CAMPO_COUNT + " TEXT, "
             + CAMPO_TAG_EVENT + " TEXT, "
             + CAMPO_DIRECTION + " TEXT, "
-            + CAMPO_FID_INVENTARIO + " TEXT, "
+            + CAMPO_FID_INVENTARIO + " INTEGER, "
             + "FOREIGN KEY ("+CAMPO_FID_INVENTARIO+") REFERENCES "+TABLA_INVENTARIO+" ("+CAMPO_ID_INVENTARIO+")" ;
 
     // CREAR UBICACION
