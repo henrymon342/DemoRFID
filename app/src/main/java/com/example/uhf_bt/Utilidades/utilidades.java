@@ -21,12 +21,22 @@ public class utilidades {
     public static final String CAMPO_COUNT = "count";
     public static final String CAMPO_TAG_EVENT = "tag";
     public static final String CAMPO_DIRECTION = "direction";
+    public static final String CAMPO_FID_INVENTARIO = "idInventario";
 
     // UBICACION
     public static final String TABLA_UBICACION= "ubicacion";
     public static final String CAMPO_ID_UBICACION = "id";
     public static final String CAMPO_EDIFICIO = "edificio";
     public static final String CAMPO_ROOM = "room";
+
+    // INVENTARIO
+    public static final String TABLA_INVENTARIO="inventario";
+    public static final String CAMPO_ID_INVENTARIO="id";
+    public static final String CAMPO_DURACION="duracion";
+    public static final String CAMPO_CANTIDAD_TAGS="cantidad_tags";
+    public static final String CAMPO_FECHA_ESCANEO="fecha_escaneo";
+    public static final String CAMPO_NAME_BUILDING="building";
+    public static final String CAMPO_NAME_ROOM="room";
 
 
     // CREAR USUARIO
@@ -48,12 +58,23 @@ public class utilidades {
             + CAMPO_START_EVENT + " TEXT, "
             + CAMPO_COUNT + " TEXT, "
             + CAMPO_TAG_EVENT + " TEXT, "
-            + CAMPO_DIRECTION + " TEXT)";
+            + CAMPO_DIRECTION + " TEXT, "
+            + CAMPO_FID_INVENTARIO + " TEXT, "
+            + "FOREIGN KEY ("+CAMPO_FID_INVENTARIO+") REFERENCES "+TABLA_INVENTARIO+" ("+CAMPO_ID_INVENTARIO+")" ;
 
     // CREAR UBICACION
     public static final String CREAR_TABLA_UBICACION = "CREATE TABLE " + TABLA_UBICACION + "("
             + CAMPO_ID_UBICACION +" INTEGER PRIMARY KEY, "
             + CAMPO_EDIFICIO + " TEXT, "
             + CAMPO_ROOM + " TEXT)" ;
+
+    // CREAR INVENTARIO
+    public static final String CREAR_TABLA_INVENTARIO="CREATE TABLE " + TABLA_INVENTARIO + "("
+            + CAMPO_ID_INVENTARIO +" INTEGER PRIMARY KEY, "
+            + CAMPO_DURACION + " TEXT, "
+            + CAMPO_CANTIDAD_TAGS + " TEXT, "
+            + CAMPO_FECHA_ESCANEO + " TEXT, "
+            + CAMPO_NAME_BUILDING + " TEXT, "
+            + CAMPO_NAME_ROOM + " TEXT)" ;
 
 }

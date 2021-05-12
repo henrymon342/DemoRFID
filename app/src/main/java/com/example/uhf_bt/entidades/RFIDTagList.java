@@ -125,4 +125,7 @@ public class RFIDTagList {
     public void setDirection(String direction) {
         Direction = direction;
     }
+    public RFIDTagList(){
+
+    }
 }

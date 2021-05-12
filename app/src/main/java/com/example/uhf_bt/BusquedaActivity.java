@@ -1,13 +1,23 @@
 package com.example.uhf_bt;
 
 import android.annotation.TargetApi;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.uhf_bt.Utilidades.utilidades;
+import com.example.uhf_bt.entidades.RFIDTagList;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class BusquedaActivity extends BaseActivity{
-    private Button btn_atras;
+    private Button btn_atras,btn_getlist;
+    ArrayList<RFIDTagList> rfidList;
     @TargetApi(Build.VERSION_CODES.GINGERBREAD_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -21,5 +31,42 @@ public class BusquedaActivity extends BaseActivity{
                 finish();
             }
         });
+        btn_getlist=findViewById(R.id.btn_getlist);
+        btn_getlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                estaEnInventarioSQLite();
+            }
+        });
+
+    }
+
+    private boolean estaEnInventarioSQLite(){
+        BusquedaSQLiteHelper conn=new BusquedaSQLiteHelper(this,"bdUser",null,1);
+        SQLiteDatabase db=conn.getReadableDatabase();
+        RFIDTagList RFID=null;
+        rfidList =new ArrayList<RFIDTagList>();
+        try {
+            Cursor cursor=db.rawQuery("select * from "+utilidades.TABLA_RFID_TAG_LIST,null);
+            while (cursor.moveToNext()){
+                RFID=new RFIDTagList();
+                RFID.setId(cursor.getString(0));
+                RFID.setEPC(cursor.getString(1));
+                RFID.setTID(cursor.getString(2));
+                RFID.setPeakRSSI(cursor.getString(5));
+                RFID.setCount(cursor.getString(9));
+                Log.d("id ",RFID.getId().toString());
+                Log.d("epc ",RFID.getEPC().toString());
+                Log.d("tid ",RFID.getTID().toString());
+                Log.d("count ",RFID.getCount().toString());
+                rfidList.add(RFID);
+            }
+            cursor.close();
+            db.close();
+            return true;
+        }catch (Exception e){
+            db.close();
+        }
+        return false;
     }
 }

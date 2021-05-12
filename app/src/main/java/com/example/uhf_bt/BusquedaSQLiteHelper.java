@@ -2,11 +2,13 @@ package com.example.uhf_bt;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import com.example.uhf_bt.Utilidades.utilidades;
 
-public class ConectionSQLiteHelper extends SQLiteOpenHelper {
+public class BusquedaSQLiteHelper extends SQLiteOpenHelper {
 
-    public ConectionSQLiteHelper(LoginActivity context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+
+    public BusquedaSQLiteHelper(BusquedaActivity context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 
@@ -16,7 +18,6 @@ public class ConectionSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(utilidades.CREAR_TABLA_USUARIO);
         db.execSQL(utilidades.CREAR_TABLA_RFID);
         db.execSQL(utilidades.CREAR_TABLA_UBICACION);
-        db.execSQL(utilidades.CREAR_TABLA_INVENTARIO);
     }
 
     @Override
