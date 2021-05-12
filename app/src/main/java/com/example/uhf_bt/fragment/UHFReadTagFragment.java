@@ -52,8 +52,10 @@ import com.rscja.deviceapi.interfaces.KeyEventCallback;
 
 import java.io.File;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -267,6 +269,24 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
 
     private void guardarInventario(){
+
+
+        // PEDIR DATOS A JORGE PARA ID BUILDING Y EL ID ROOM
+
+
+
+        //DATOS PARA LA TABLA INVENTARIO
+        String duracion = tv_time.getText().toString();
+        String tag_total = tv_total.getText().toString();
+        Log.d("INVENTARIO", duracion);
+        Log.d("INVENTARIO", tag_total);
+        Date myDate = new Date();
+
+        //Aquí obtienes el formato que deseas
+        String fechaScaneo = new SimpleDateFormat("dd-MM-yyyy").format(myDate);
+        Log.d("FECHA", fechaScaneo);
+
+        //DATOS PARA LA TABLA TAG
         for (int i = 0; i < tagList.size(); i++) {
             String tag_data = tagList.get(i).get(MainActivity.TAG_DATA);
             String tag_count = tagList.get(i).get(MainActivity.TAG_COUNT);
@@ -281,10 +301,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             hacerInventario(tag_count,the_epc,the_tid);
 
         }
-        String duracion = tv_time.getText().toString();
-        String tag_total = tv_total.getText().toString();
-        Log.d("INVENTARIO", duracion);
-        Log.d("INVENTARIO", tag_total);
+
 
 
     }
@@ -378,6 +395,9 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         spinnerU = view.findViewById(R.id.spinnerU);
         spinnerE.setItems("Choose");
         spinnerU.setItems("Choose");
+
+        spinnerE.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener) this);
+        spinnerE.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener) this);
     }
 
 
