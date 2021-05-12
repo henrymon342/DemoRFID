@@ -44,7 +44,7 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
     private long timeCountCur;
     public BluetoothAdapter mBtAdapter = null;
     private boolean mIsActiveDisconnect = true;
-    private Button btn_inventario,btn_busqueda,btn_missing,btn_sincronizar, btn_checkin, btn_checkout, btnseenvio;
+    private Button btn_inventario,btn_busqueda,btn_missing,btn_sincronizar, btn_checkin, btn_checkout;
     private TextView tvAddress;
     private Button btn_connect, btn_search;
     private static final int WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST = 101;
@@ -126,30 +126,14 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
                 checkout();
             }
         });
-        btnseenvio=(Button)findViewById(R.id.btn_seenvio);
-        btnseenvio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { seEnvio();
-            }
-        });
+
 
         initUI();
         uhf.init(getApplicationContext());
         Utils.initSound(getApplicationContext());
     }
 
-    private void seEnvio() {
 
-        this.seenvio = !this.seenvio;
-        if(this.seenvio){
-            btnseenvio.setVisibility(View.VISIBLE);
-        }else{
-
-            btnseenvio.setVisibility(View.INVISIBLE);
-        }
-
-
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
