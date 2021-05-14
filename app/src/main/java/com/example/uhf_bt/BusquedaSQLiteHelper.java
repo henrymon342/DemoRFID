@@ -15,14 +15,14 @@ public class BusquedaSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(utilidades.CREAR_TABLA_USUARIO);
+        //db.execSQL(utilidades.CREAR_TABLA_USUARIO);
         db.execSQL(utilidades.CREAR_TABLA_RFID);
-        db.execSQL(utilidades.CREAR_TABLA_UBICACION);
+        //db.execSQL(utilidades.CREAR_TABLA_UBICACION);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS user");
+        db.execSQL("DROP TABLE IF EXISTS rfid");
         onCreate(db);
     }
 }
