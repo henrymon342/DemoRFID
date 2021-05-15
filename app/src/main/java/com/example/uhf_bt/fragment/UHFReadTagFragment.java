@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.example.Models.User;
 
 import com.example.uhf_bt.BaseActivity;
+import com.example.uhf_bt.ConectionSQLRfid;
 import com.example.uhf_bt.ConectionSQLiteHelper;
 import com.example.uhf_bt.ConeectionSQLHelperI;
 import com.example.uhf_bt.DateUtils;
@@ -286,6 +287,8 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         String fechaScaneo = new SimpleDateFormat("dd-MM-yyyy").format(myDate);
         Log.d("FECHA", fechaScaneo);
 
+        int id_foranea=registrarInventarioSQLite(duracion,tag_total,fechaScaneo,"b","r");
+
         //DATOS PARA LA TABLA TAG
         for (int i = 0; i < tagList.size(); i++) {
             String tag_data = tagList.get(i).get(MainActivity.TAG_DATA);
@@ -298,7 +301,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             Log.d("INVENTARIO", the_epc);
             Log.d("INVENTARIO", the_tid);
             Log.d("INVENTARIO", tag_count);
-            hacerInventario(tag_count,the_epc,the_tid);
+            hacerInventario(tag_count,the_epc,the_tid,id_foranea);
 
         }
 
@@ -306,7 +309,20 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
     }
 
-
+    private int registrarInventarioSQLite(String duracion,String cantidad, String fecha, String build,String room) {
+        ConeectionSQLHelperI conn=new ConeectionSQLHelperI(mContext,"bdUser",null,1);
+        SQLiteDatabase db=conn.getWritableDatabase();
+        ContentValues values=new ContentValues();
+        values.put(utilidades.CAMPO_DURACION,duracion);
+        values.put(utilidades.CAMPO_CANTIDAD_TAGS,cantidad);
+        values.put(utilidades.CAMPO_FECHA_ESCANEO,fecha);
+        values.put(utilidades.CAMPO_NAME_BUILDING,build);
+        values.put(utilidades.CAMPO_NAME_ROOM,room);
+        Long idResultante = db.insert(utilidades.TABLA_INVENTARIO,utilidades.CAMPO_ID_INVENTARIO,values);
+        Toast.makeText(mContext,"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
+        db.close();
+        return Integer.parseInt(String.valueOf(idResultante)) ;
+    }
 
     private void init() {
 
@@ -803,7 +819,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     }
 
 
-    private void hacerInventario(String count,String epc,String tid) {
+    private void hacerInventario(String count,String epc,String tid,int fid) {
         ConeectionSQLHelperI conn=new ConeectionSQLHelperI(mContext,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
         ContentValues values=new ContentValues();
@@ -818,6 +834,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         values.put(utilidades.CAMPO_COUNT,count);
         values.put(utilidades.CAMPO_TAG_EVENT,"123");
         values.put(utilidades.CAMPO_DIRECTION,"123");
+        values.put(utilidades.CAMPO_FID_INVENTARIO,fid);
 
         Long idResultante = db.insert(utilidades.TABLA_RFID_TAG_LIST,utilidades.CAMPO_ID_RFID,values);
         Toast.makeText(mContext,"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();

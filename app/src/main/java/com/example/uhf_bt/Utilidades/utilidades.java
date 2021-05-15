@@ -29,6 +29,18 @@ public class utilidades {
     public static final String CAMPO_EDIFICIO = "edificio";
     public static final String CAMPO_ROOM = "room";
 
+    // ROOM
+    public static final String TABLA_ROOM= "room";
+    public static final String CAMPO_ID_ROOM = "id";
+    public static final String CAMPO_ROOM_NAME = "name";
+    public static final String CAMPO_FID_BUILDING = "fid";
+
+    // BUILDING
+    public static final String TABLA_BUILDING= "building";
+    public static final String CAMPO_ID_BUILDING = "id";
+    public static final String CAMPO_BUILDING_NAME = "name";
+
+
     // INVENTARIO
     public static final String TABLA_INVENTARIO="inventario";
     public static final String CAMPO_ID_INVENTARIO="id";
@@ -59,14 +71,26 @@ public class utilidades {
             + CAMPO_COUNT + " TEXT, "
             + CAMPO_TAG_EVENT + " TEXT, "
             + CAMPO_DIRECTION + " TEXT, "
-            + CAMPO_FID_INVENTARIO + " TEXT, "
-            + "FOREIGN KEY ("+CAMPO_FID_INVENTARIO+") REFERENCES "+TABLA_INVENTARIO+" ("+CAMPO_ID_INVENTARIO+")" ;
+            + CAMPO_FID_INVENTARIO + " INTEGER, "
+            + "FOREIGN KEY ("+CAMPO_FID_INVENTARIO+") REFERENCES "+TABLA_INVENTARIO+" ("+CAMPO_ID_INVENTARIO+"))" ;
 
     // CREAR UBICACION
     public static final String CREAR_TABLA_UBICACION = "CREATE TABLE " + TABLA_UBICACION + "("
             + CAMPO_ID_UBICACION +" INTEGER PRIMARY KEY, "
             + CAMPO_EDIFICIO + " TEXT, "
             + CAMPO_ROOM + " TEXT)" ;
+
+    // CREAR ROOM
+    public static final String CREAR_TABLA_ROOM = "CREATE TABLE " + TABLA_ROOM + "("
+            + CAMPO_ID_ROOM +" INTEGER PRIMARY KEY, "
+            + CAMPO_ROOM_NAME + " TEXT, "
+            + CAMPO_FID_BUILDING + " INTEGER, "
+            + "FOREIGN KEY ("+CAMPO_FID_BUILDING+") REFERENCES "+TABLA_BUILDING+" ("+CAMPO_ID_BUILDING+"))" ;;
+
+    // CREAR BUILDING
+    public static final String CREAR_TABLA_BUILDING = "CREATE TABLE " + TABLA_BUILDING + "("
+            + CAMPO_ID_BUILDING +" INTEGER PRIMARY KEY, "
+            + CAMPO_BUILDING_NAME + " TEXT)" ;
 
     // CREAR INVENTARIO
     public static final String CREAR_TABLA_INVENTARIO="CREATE TABLE " + TABLA_INVENTARIO + "("
