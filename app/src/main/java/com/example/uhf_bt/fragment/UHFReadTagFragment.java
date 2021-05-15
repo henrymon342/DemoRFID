@@ -367,6 +367,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             }
         });
 
+
         clearData();
 
     }
@@ -393,17 +394,45 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
         spinnerE = view.findViewById(R.id.spinnerE);
         spinnerU = view.findViewById(R.id.spinnerU);
-        spinnerE.setItems("Choose");
-        spinnerU.setItems("Choose");
+        //spinnerE.setItems("Choose");
+        //spinnerU.setItems("Choose");
 
-        spinnerE.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener) this);
-        spinnerE.setOnItemSelectedListener((MaterialSpinner.OnItemSelectedListener) this);
+        initListasUbicacion();
+
+        adapterE = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, buildingNames);
+        adapterU = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, roomNames);
+        adapterE.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerE.setAdapter(adapterE);
+
+        spinnerE.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+                if (position != -1){
+                    String selected = (String) spinnerE.getItems().get(position);
+                    Toast.makeText(mContext, selected, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        adapterU.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerU.setAdapter(adapterU);
+
+        spinnerU.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+                if (position != -1){
+                    String selected = (String) spinnerU.getItems().get(position);
+                    Toast.makeText(mContext, selected, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
-
-
-
-
+    private void initListasUbicacion() {
+        for (int i = 0; i < 10; i++) {
+            buildingNames.add(i+"");
+            roomNames.add(10-i+"");
+        }
+    }
 
 
     @Override
