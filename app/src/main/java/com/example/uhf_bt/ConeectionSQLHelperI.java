@@ -15,15 +15,14 @@ public class ConeectionSQLHelperI extends SQLiteOpenHelper {
         db.execSQL(utilidades.CREAR_TABLA_INVENTARIO);
         db.execSQL(utilidades.CREAR_TABLA_BUILDING);
         db.execSQL(utilidades.CREAR_TABLA_ROOM);
-        //db.execSQL(utilidades.CREAR_TABLA_ROOM);
-       // db.execSQL(utilidades.CREAR_TABLA_BUILDING);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS rfid");
         db.execSQL("DROP TABLE IF EXISTS inventario");
-        //db.execSQL("DROP TABLE IF EXISTS room");
+        db.execSQL("DROP TABLE IF EXISTS building");
+        db.execSQL("DROP TABLE IF EXISTS room");
         onCreate(db);
     }
 }

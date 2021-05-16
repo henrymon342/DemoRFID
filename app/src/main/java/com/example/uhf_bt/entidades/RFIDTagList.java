@@ -4,30 +4,18 @@ public class RFIDTagList {
     private String id;
     private String EPC;
     private String TID;
-    private String UserMemory;
-    private String AntennaName;
-    private String PeakRSSI;
-    private String DateTime;
-    private String ReaderName;
-    private String StartEvent;
     private String Count;
-    private String TagEvent;
-    private String Direction;
+    private String Descripcion;
+    private String idInventario;
 
 
-    public RFIDTagList(String id, String EPC, String TID,String UserMemory, String AntennaName,String PeakRSSI, String DateTime, String ReaderName, String StartEvent, String Count, String TagEvent,String Direction) {
+    public RFIDTagList(String id, String EPC, String TID,String Count, String Descripcion,String idInventario) {
         this.id = id;
         this.EPC = EPC;
         this.TID=TID;
-        this.UserMemory=UserMemory;
-        this.AntennaName=AntennaName;
-        this.PeakRSSI=PeakRSSI;
-        this.DateTime=DateTime;
-        this.ReaderName=ReaderName;
-        this.StartEvent=StartEvent;
         this.Count=Count;
-        this.TagEvent=TagEvent;
-        this.Direction=Direction;
+        this.Descripcion=Descripcion;
+        this.idInventario=idInventario;
     }
 
     public String getId() {
@@ -54,54 +42,6 @@ public class RFIDTagList {
         this.TID = TID;
     }
 
-    public String getUserMemory() {
-        return UserMemory;
-    }
-
-    public void setUserMemory(String userMemory) {
-        UserMemory = userMemory;
-    }
-
-    public String getAntennaName() {
-        return AntennaName;
-    }
-
-    public void setAntennaName(String antennaName) {
-        AntennaName = antennaName;
-    }
-
-    public String getPeakRSSI() {
-        return PeakRSSI;
-    }
-
-    public void setPeakRSSI(String peakRSSI) {
-        PeakRSSI = peakRSSI;
-    }
-
-    public String getDateTime() {
-        return DateTime;
-    }
-
-    public void setDateTime(String dateTime) {
-        DateTime = dateTime;
-    }
-
-    public String getReaderName() {
-        return ReaderName;
-    }
-
-    public void setReaderName(String readerName) {
-        ReaderName = readerName;
-    }
-
-    public String getStartEvent() {
-        return StartEvent;
-    }
-
-    public void setStartEvent(String startEvent) {
-        StartEvent = startEvent;
-    }
-
     public String getCount() {
         return Count;
     }
@@ -110,21 +50,22 @@ public class RFIDTagList {
         Count = count;
     }
 
-    public String getTagEvent() {
-        return TagEvent;
+    public String getDescripcion() {
+        return Descripcion;
     }
 
-    public void setTagEvent(String tagEvent) {
-        TagEvent = tagEvent;
+    public void setDescripcion(String descripcion) {
+        Descripcion = descripcion;
     }
 
-    public String getDirection() {
-        return Direction;
+    public String getIdInventario() {
+        return idInventario;
     }
 
-    public void setDirection(String direction) {
-        Direction = direction;
+    public void setIdInventario(String idInventario) {
+        this.idInventario = idInventario;
     }
+
     public RFIDTagList(){
 
     }

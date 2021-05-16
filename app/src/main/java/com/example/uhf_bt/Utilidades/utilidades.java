@@ -12,22 +12,10 @@ public class utilidades {
     public static final String CAMPO_ID_RFID = "id";
     public static final String CAMPO_EPC = "epc";
     public static final String CAMPO_TID = "tid";
-    public static final String CAMPO_USER_MEMORY = "memory";
-    public static final String CAMPO_ANTENNA_NAME = "antenna";
-    public static final String CAMPO_PEAK_RSSI = "rssi";
-    public static final String CAMPO_DATE_TIME = "time";
-    public static final String CAMPO_READER_NAME = "reader";
-    public static final String CAMPO_START_EVENT = "event";
     public static final String CAMPO_COUNT = "count";
-    public static final String CAMPO_TAG_EVENT = "tag";
-    public static final String CAMPO_DIRECTION = "direction";
+    public static final String CAMPO_DESCRIPCION = "descripcion";
     public static final String CAMPO_FID_INVENTARIO = "idInventario";
 
-    // UBICACION
-    public static final String TABLA_UBICACION= "ubicacion";
-    public static final String CAMPO_ID_UBICACION = "id";
-    public static final String CAMPO_EDIFICIO = "edificio";
-    public static final String CAMPO_ROOM = "room";
 
     // ROOM
     public static final String TABLA_ROOM= "room";
@@ -62,23 +50,11 @@ public class utilidades {
             + CAMPO_ID_RFID + " INTEGER PRIMARY KEY, "
             + CAMPO_EPC + " TEXT, "
             + CAMPO_TID + " TEXT, "
-            + CAMPO_USER_MEMORY + " TEXT, "
-            + CAMPO_ANTENNA_NAME + " TEXT, "
-            + CAMPO_PEAK_RSSI + " TEXT, "
-            + CAMPO_DATE_TIME + " TEXT, "
-            + CAMPO_READER_NAME + " TEXT, "
-            + CAMPO_START_EVENT + " TEXT, "
             + CAMPO_COUNT + " TEXT, "
-            + CAMPO_TAG_EVENT + " TEXT, "
-            + CAMPO_DIRECTION + " TEXT, "
+            + CAMPO_DESCRIPCION + " TEXT, "
             + CAMPO_FID_INVENTARIO + " INTEGER, "
             + "FOREIGN KEY ("+CAMPO_FID_INVENTARIO+") REFERENCES "+TABLA_INVENTARIO+" ("+CAMPO_ID_INVENTARIO+"))" ;
 
-    // CREAR UBICACION
-    public static final String CREAR_TABLA_UBICACION = "CREATE TABLE " + TABLA_UBICACION + "("
-            + CAMPO_ID_UBICACION +" INTEGER PRIMARY KEY, "
-            + CAMPO_EDIFICIO + " TEXT, "
-            + CAMPO_ROOM + " TEXT)" ;
 
     // CREAR ROOM
     public static final String CREAR_TABLA_ROOM = "CREATE TABLE " + TABLA_ROOM + "("

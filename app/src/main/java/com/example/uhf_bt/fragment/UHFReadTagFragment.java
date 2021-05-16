@@ -28,9 +28,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.Models.Building;
+import com.example.Models.Room;
 import com.example.Models.User;
 
 import com.example.uhf_bt.BaseActivity;
+import com.example.uhf_bt.BusquedaSQLiteHelper;
 import com.example.uhf_bt.ConectionSQLRfid;
 import com.example.uhf_bt.ConectionSQLiteHelper;
 import com.example.uhf_bt.ConeectionSQLHelperI;
@@ -45,6 +48,7 @@ import com.example.uhf_bt.Utilidades.GLOBAL;
 import com.example.uhf_bt.Utilidades.utilidades;
 import com.example.uhf_bt.Utils;
 
+import com.example.uhf_bt.entidades.RFIDTagList;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import com.rscja.deviceapi.entity.UHFTAGInfo;
@@ -109,6 +113,8 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
     private ConnectStatus mConnectStatus = new ConnectStatus();
 
+    ArrayList<Building> buildingList;
+    ArrayList<Room> roomList;
     //--------------------------------------获取 解析数据-------------------------------------------------
     final int FLAG_START = 0;//开始
     final int FLAG_STOP = 1;//停止
@@ -234,19 +240,34 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btClear: // limpiar
-                clearData();
-                //registrarInventarioSQLite();
+            case R.id.btClear:
+                // limpiar
+                //clearData();
+
+                // crea una tabla rfid de forma manual
+                // registrarInventarioSQLite();
+
+                // crea una tabla building de forma manual
+                // registroBuilding();
+
+                // crea una tabla room de forma manual
+                // registroRoom();
+
+                // trae todos los valores de la tabla building
+                //getBuildingSQLite();
+
+                // trae todos los valores de la tabla room
+                //getRoomSQLite();
                 break;
 
             case R.id.InventoryLoop: // auto
                 //getUsuarios();
                 //startThread();
                 break;
-            case R.id.btInventory: // single
-                //inventory();
+            case R.id.btInventory: // single  //inventory();
                 //cargarBDSQLite();
                 //guardarInventario();
+
                 break;
             case R.id.btStop: //stop
                 if (mContext.uhf.getConnectStatus() == ConnectionStatus.CONNECTED) {
@@ -825,17 +846,9 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         ContentValues values=new ContentValues();
         values.put(utilidades.CAMPO_EPC,epc);
         values.put(utilidades.CAMPO_TID,tid);
-        values.put(utilidades.CAMPO_USER_MEMORY,"123");
-        values.put(utilidades.CAMPO_ANTENNA_NAME,"123");
-        values.put(utilidades.CAMPO_PEAK_RSSI,"123");
-        values.put(utilidades.CAMPO_DATE_TIME,"123");
-        values.put(utilidades.CAMPO_READER_NAME,"123");
-        values.put(utilidades.CAMPO_START_EVENT,"123");
         values.put(utilidades.CAMPO_COUNT,count);
-        values.put(utilidades.CAMPO_TAG_EVENT,"123");
-        values.put(utilidades.CAMPO_DIRECTION,"123");
+        values.put(utilidades.CAMPO_DESCRIPCION,"detalle");
         values.put(utilidades.CAMPO_FID_INVENTARIO,fid);
-
         Long idResultante = db.insert(utilidades.TABLA_RFID_TAG_LIST,utilidades.CAMPO_ID_RFID,values);
         Toast.makeText(mContext,"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
         db.close();
@@ -867,20 +880,80 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         ConeectionSQLHelperI conn=new ConeectionSQLHelperI(mContext,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
         ContentValues values=new ContentValues();
-        values.put(utilidades.CAMPO_EPC,"0000001");
-        values.put(utilidades.CAMPO_TID,"0000002");
-        values.put(utilidades.CAMPO_USER_MEMORY,"1234");
-        values.put(utilidades.CAMPO_ANTENNA_NAME,"123");
-        values.put(utilidades.CAMPO_PEAK_RSSI,"123");
-        values.put(utilidades.CAMPO_DATE_TIME,"123");
-        values.put(utilidades.CAMPO_READER_NAME,"123");
-        values.put(utilidades.CAMPO_START_EVENT,"123");
-        values.put(utilidades.CAMPO_COUNT,"50");
-        values.put(utilidades.CAMPO_TAG_EVENT,"123");
-        values.put(utilidades.CAMPO_DIRECTION,"123");
-
+        values.put(utilidades.CAMPO_EPC,"11111113");
+        values.put(utilidades.CAMPO_TID,"34567890");
+        values.put(utilidades.CAMPO_COUNT,"45");
+        values.put(utilidades.CAMPO_DESCRIPCION,"teclado");
+        values.put(utilidades.CAMPO_FID_INVENTARIO,1);
         Long idResultante = db.insert(utilidades.TABLA_RFID_TAG_LIST,utilidades.CAMPO_ID_RFID,values);
-        Toast.makeText(mContext,"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext,"Id Rfid: "+idResultante,Toast.LENGTH_SHORT).show();
         db.close();
+    }
+    private void registroBuilding(){
+        ConeectionSQLHelperI conn=new ConeectionSQLHelperI(mContext,"bdUser",null,1);
+        SQLiteDatabase db=conn.getWritableDatabase();
+        ContentValues values=new ContentValues();
+        values.put(utilidades.CAMPO_BUILDING_NAME,"edificio 2");
+        Long idResultante = db.insert(utilidades.TABLA_BUILDING,utilidades.CAMPO_ID_BUILDING,values);
+        Toast.makeText(mContext,"Id Building: "+idResultante,Toast.LENGTH_SHORT).show();
+        db.close();
+    }
+    private void registroRoom(){
+        ConeectionSQLHelperI conn=new ConeectionSQLHelperI(mContext,"bdUser",null,1);
+        SQLiteDatabase db=conn.getWritableDatabase();
+        ContentValues values=new ContentValues();
+        values.put(utilidades.CAMPO_ROOM_NAME,"room 3");
+        values.put(utilidades.CAMPO_FID_BUILDING,2);
+        Long idResultante = db.insert(utilidades.TABLA_ROOM,utilidades.CAMPO_ID_ROOM,values);
+        Toast.makeText(mContext,"Id Room: "+idResultante,Toast.LENGTH_SHORT).show();
+        db.close();
+    }
+    private boolean getBuildingSQLite(){
+        ConeectionSQLHelperI conn=new ConeectionSQLHelperI(mContext,"bdUser",null,1);
+        SQLiteDatabase db=conn.getReadableDatabase();
+        Building BUILDING=null;
+        buildingList =new ArrayList<Building>();
+        try {
+            Cursor cursor=db.rawQuery("select * from "+utilidades.TABLA_BUILDING,null);
+            while (cursor.moveToNext()){
+                BUILDING=new Building();
+                BUILDING.setId(Integer.parseInt(cursor.getString(0)));
+                BUILDING.setName(cursor.getString(1));
+                Log.d("id ",BUILDING.getId()+" ");
+                Log.d("nameRoom ",BUILDING.getName());
+                buildingList.add(BUILDING);
+            }
+            cursor.close();
+            db.close();
+            return true;
+        }catch (Exception e){
+            db.close();
+        }
+        return false;
+    }
+    private boolean getRoomSQLite(){
+        ConeectionSQLHelperI conn=new ConeectionSQLHelperI(mContext,"bdUser",null,1);
+        SQLiteDatabase db=conn.getReadableDatabase();
+        Room ROOM=null;
+        roomList =new ArrayList<Room>();
+        try {
+            Cursor cursor=db.rawQuery("select * from "+utilidades.TABLA_ROOM,null);
+            while (cursor.moveToNext()){
+                ROOM=new Room();
+                ROOM.setId(Integer.parseInt(cursor.getString(0)));
+                ROOM.setName(cursor.getString(1));
+                ROOM.setBuildingId(Integer.parseInt(cursor.getString(2)));
+                Log.d("id ",ROOM.getId()+" ");
+                Log.d("nameBuilding ",ROOM.getName());
+                Log.d("fid ",ROOM.getBuildingId()+"");
+                roomList.add(ROOM);
+            }
+            cursor.close();
+            db.close();
+            return true;
+        }catch (Exception e){
+            db.close();
+        }
+        return false;
     }
 }

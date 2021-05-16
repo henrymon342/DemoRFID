@@ -20,6 +20,7 @@ public class Room {
         this.buildingId = buildingId;
         this.name = name;
     }
+    public Room(){}
 
     public int getId() {
         return id;

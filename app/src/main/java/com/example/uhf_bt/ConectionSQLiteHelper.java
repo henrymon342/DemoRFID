@@ -18,8 +18,6 @@ public class ConectionSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(utilidades.CREAR_TABLA_RFID);
         db.execSQL(utilidades.CREAR_TABLA_BUILDING);
         db.execSQL(utilidades.CREAR_TABLA_ROOM);
-
-
     }
 
     @Override
