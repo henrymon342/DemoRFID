@@ -465,10 +465,14 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     }
 
     private void initListasUbicacion() {
+        /*
         for (int i = 0; i < 10; i++) {
             buildingNames.add(i+"");
             roomNames.add(10-i+"");
         }
+         */
+        getRoomSQLite();
+        getBuildingSQLite();
     }
 
 
@@ -922,6 +926,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                 Log.d("id ",BUILDING.getId()+" ");
                 Log.d("nameRoom ",BUILDING.getName());
                 buildingList.add(BUILDING);
+                buildingNames.add(BUILDING.getName());
             }
             cursor.close();
             db.close();
@@ -947,6 +952,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                 Log.d("nameBuilding ",ROOM.getName());
                 Log.d("fid ",ROOM.getBuildingId()+"");
                 roomList.add(ROOM);
+                roomNames.add(ROOM.getName());
             }
             cursor.close();
             db.close();

@@ -134,6 +134,7 @@ public class LoginActivity extends BaseActivity {
                     listRooms = response.body();
                     for (int i = 0; i < listRooms.size(); i++) {
                         Log.d("ROOM:", listRooms.get(i).toString());
+                        registroRoom(listRooms.get(i).getBuildingId(), listRooms.get(i).getName());
                     }
                 }
             }
@@ -197,6 +198,7 @@ public class LoginActivity extends BaseActivity {
                     listBui = response.body();
                     for (int i = 0; i < listBui.size(); i++) {
                         Log.d("BUILDING:", listBui.get(i).getId()+ listBui.get(i).getName());
+                        registroBuilding(listBui.get(i).getName());
                     }
                 }
             }
@@ -368,6 +370,24 @@ public class LoginActivity extends BaseActivity {
         db.close();
     }
 
-
+    private void registroBuilding(String nombreEdificio){
+        ConectionSQLiteHelper conn=new ConectionSQLiteHelper( this,"bdUser",null,1);
+        SQLiteDatabase db=conn.getWritableDatabase();
+        ContentValues values=new ContentValues();
+        values.put(utilidades.CAMPO_BUILDING_NAME,nombreEdificio);
+        Long idResultante = db.insert(utilidades.TABLA_BUILDING,utilidades.CAMPO_ID_BUILDING,values);
+        Toast.makeText(this,"Id Building: "+idResultante,Toast.LENGTH_SHORT).show();
+        db.close();
+    }
+    private void registroRoom(int idBuilding, String nombreRoom){
+        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
+        SQLiteDatabase db=conn.getWritableDatabase();
+        ContentValues values=new ContentValues();
+        values.put(utilidades.CAMPO_ROOM_NAME, nombreRoom);
+        values.put(utilidades.CAMPO_FID_BUILDING, idBuilding);
+        Long idResultante = db.insert(utilidades.TABLA_ROOM,utilidades.CAMPO_ID_ROOM,values);
+        Toast.makeText(this,"Id Room: "+idResultante,Toast.LENGTH_SHORT).show();
+        db.close();
+    }
 
 }
