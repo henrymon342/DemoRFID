@@ -9,6 +9,9 @@ public class ConectionSQLiteHelper extends SQLiteOpenHelper {
     public ConectionSQLiteHelper(LoginActivity context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
+    public ConectionSQLiteHelper(SincronizarActivity context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+        super(context, name, factory, version);
+    }
 
 
     @Override
