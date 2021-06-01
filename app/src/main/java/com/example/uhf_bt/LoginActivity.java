@@ -134,7 +134,7 @@ public class LoginActivity extends BaseActivity {
                     listRooms = response.body();
                     for (int i = 0; i < listRooms.size(); i++) {
                         Log.d("ROOM:", listRooms.get(i).toString());
-                        registroRoom(listRooms.get(i).getBuildingId(), listRooms.get(i).getName());
+                        registroRoom(listRooms.get(i).getIdBuilding(), listRooms.get(i).getName());
                     }
                 }
             }

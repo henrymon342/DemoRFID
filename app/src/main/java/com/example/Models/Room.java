@@ -2,40 +2,25 @@ package com.example.Models;
 
 public class Room {
 
-    private  int id;
-    private  int buildingId;
+    private String id;
     private String name;
+    private int idBuilding;
 
-    @Override
-    public String toString() {
-        return "Room{" +
-                "id=" + id +
-                ", buildingId=" + buildingId +
-                ", name='" + name + '\'' +
-                '}';
-    }
-
-    public Room(int id, int buildingId, String name) {
+    public Room(String id, String name, int idBuilding) {
         this.id = id;
-        this.buildingId = buildingId;
         this.name = name;
+        this.idBuilding = idBuilding;
     }
-    public Room(){}
 
-    public int getId() {
+    public Room() {
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public int getBuildingId() {
-        return buildingId;
-    }
-
-    public void setBuildingId(int buildingId) {
-        this.buildingId = buildingId;
     }
 
     public String getName() {
@@ -44,5 +29,13 @@ public class Room {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getIdBuilding() {
+        return idBuilding;
+    }
+
+    public void setIdBuilding(int idBuilding) {
+        this.idBuilding = idBuilding;
     }
 }

@@ -1,6 +1,9 @@
 package com.example.uhf_bt.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,23 +16,54 @@ import android.widget.Toast;
 
 import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.example.uhf_bt.MainActivity;
+import com.example.uhf_bt.NumberTool;
 import com.example.uhf_bt.R;
+import com.example.uhf_bt.Utils;
 import com.example.uhf_bt.view.UhfLocationCanvasView;
 import com.rscja.deviceapi.entity.UHFTAGInfo;
+import com.rscja.deviceapi.interfaces.ConnectionStatus;
 import com.rscja.deviceapi.interfaces.IUHF;
 import com.rscja.deviceapi.interfaces.IUHFLocationCallback;
 import com.rscja.utility.LogUtility;
 
+import java.util.List;
 import java.util.Random;
+
+import static java.lang.String.valueOf;
 
 
 public class UHFLocationFragment extends Fragment {
 
-    String TAG="UHF_LocationFragment";
+    private long mStrTime;
+
+    private long valorX;
+
+    List<UHFTAGInfo> listAux;
+
+    final
+
+    boolean isRuning = false;
+
+    final int FLAG_START = 0;//开始
+    final int FLAG_STOP = 1;//停止
+    final int FLAG_UPDATE_TIME = 2; // 更新时间
+    final int FLAG_UHFINFO = 3;
+    final int FLAG_UHFINFO_LIST = 5;
+    final int FLAG_SUCCESS = 10;//成功
+    final int FLAG_FAIL = 11;//失败
+
+    String TAG = "UHF_LocationFragment";
     private MainActivity mContext;
     private UhfLocationCanvasView llChart;
+
+    ProgressBar progressBar1;
+    private boolean loopFlag = false;
+
+    FragmentActivity uhfContext;
+
 
     private EditText etEPC;
     private Button btStart,btStop;
@@ -49,15 +83,19 @@ public class UHFLocationFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         mContext = (MainActivity) getActivity();
+
+        progressBar1 = (ProgressBar) mContext.findViewById(R.id.progressBar1);
+
+        progressBar1.setMax(100);
+
         Log.d(TAG, " ACTIVIDAD BUSCADA: "+ ((Object)mContext).getClass().getSimpleName());
-        llChart=mContext.findViewById(R.id.llChart);
         etEPC=mContext.findViewById(R.id.etEPC);
         btStart=mContext.findViewById(R.id.btStart);
         btStop=mContext.findViewById(R.id.btStop);
         getView().post(new Runnable() {
             @Override
             public void run() {
-                llChart.clean();
+                //llChart.clean();
             }
         });
         btStart.setOnClickListener(new View.OnClickListener() {
@@ -94,44 +132,142 @@ public class UHFLocationFragment extends Fragment {
     }
 
     private void startLocation(){
-        LogUtility.setDebug(true);
-        String epc = etEPC.getText().toString();
-        if(epc != null && epc.length()>0) {
 
-            boolean result = mContext.uhf.startLocation(mContext, epc, IUHF.Bank_EPC, 32, new IUHFLocationCallback() {
-                @Override
-                public void getLocationValue(int Value) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-                    UHFTAGInfo hallado = mContext.uhf.readTagFromBuffer();
-                    Log.d(TAG, "RESULT_FINAL : "+ hallado);
+                for (int i = 0; i < 50; i++) {
 
-                    if (hallado!=null && hallado.getEPC() != null){
-                        Log.d(TAG, "RESULT: "+ hallado.getRssi());
-                        llChart.setData(50);
-                    }else{
-                        llChart.setData(0);
+                    try {
+                        Thread.sleep(250);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
 
+
+
+                        valorX = inventory();
+
+
+
+                    getActivity().runOnUiThread(new Runnable(){
+                        @Override
+                        public void run(){
+
+                            Log.d("VALORX", String.valueOf(valorX));
+                            progressBar1.setProgress((int) valorX);
+
+                        }
+                    });
+
+
+
+
+
+
+                    Log.d(TAG, "run: "+" contando");
                 }
+                Log.d(TAG, "run: "+" terminado!!!");
 
-            });
-            Log.d(TAG, "RESULT: "+ result);
+                // PARA CAMBIAR LA INTERFAZ
 
-            if (!result) {
-                Toast.makeText(mContext, R.string.psam_msg_fail, Toast.LENGTH_SHORT).show();
-                return;
             }
-            btStart.setEnabled(false);
-            etEPC.setEnabled(false);
-        }
+        }).start();
+
     }
 
    public void stopLocation(){
+
+
+       stopInventory();
        mContext.uhf.stopLocation();
        btStart.setEnabled(true);
        etEPC.setEnabled(true);
    }
 
 
+
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+
+
+                case FLAG_UPDATE_TIME:
+                    float useTime = (System.currentTimeMillis() - mStrTime) / 1000.0F;
+                    Log.d(TAG, "TIMMER "+ useTime);
+                    //tv_time.setText(NumberTool.getPointDouble(loopFlag ? 1 : 3, useTime) + "s");
+                    break;
+
+                case FLAG_UHFINFO:
+                    UHFTAGInfo info = (UHFTAGInfo) msg.obj;
+                    //listAux.add(info);
+
+                    Log.d(TAG, "TIMMER-RSSI "+ info.getRssi());
+                    Log.d(TAG, "TIMMER-EPC "+ info.getEPC());
+                    break;
+            }
+        }
+    };
+
+    private void actual(final String rssi) {
+
+        getView().post(new Runnable() {
+            @Override
+            public void run() {
+
+                progressBar1.setProgress(Integer.parseInt(rssi));
+            }
+        });
+    }
+
+
+    public Long inventory() { // ESTUDIAR ESTE METODO PARA LA BUSQUEDA UNO A UNO, YA QUE ESTE ES (SINGLE)
+        Long rssiValue = Long.valueOf(0);
+        mStrTime = System.currentTimeMillis();
+        UHFTAGInfo info = mContext.uhf.inventorySingleTag();
+        if (info != null) {
+            Message msg = handler.obtainMessage(FLAG_UHFINFO);
+            msg.obj = info;
+            //listAux.add(info);
+
+            if(info.getEPC().equals(etEPC.getText().toString())){
+                Log.d(TAG, " ENCONTRADO...");
+                Utils.playSound(1);
+                rssiValue = Long.parseLong(info.getRssi().substring(0, 3))*(-1);
+                Log.d("VALOR", rssiValue.toString());
+
+            }
+
+            Log.d("BUSQUEDA", info.getEPC());
+            Log.d("BUSQUEDA", info.getRssi());
+            //Log.d("BUSQUEDA", info.getTid());
+            handler.sendMessage(msg);
+        }
+        handler.sendEmptyMessage(FLAG_UPDATE_TIME);
+        return rssiValue;
+    }
+
+
+
+
+    private void stopInventory() {
+        //isRuning= false;
+        //loopFlag = false;
+        //boolean result = mContext.uhf.stopInventory();
+        //mostrarLista();
+    }
+
+    private void mostrarLista() {
+
+        for (int i = 0; i < listAux.size() ; i++) {
+            Log.d("BUSQUEDA-lista", listAux.get(i).getEPC());
+            Log.d("BUSQUEDA-lista", listAux.get(i).getRssi());
+            Log.d("BUSQUEDA-lista", listAux.get(i).getTid());
+        }
+
+    }
 
 }

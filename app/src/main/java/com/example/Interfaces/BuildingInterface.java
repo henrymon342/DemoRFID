@@ -1,7 +1,6 @@
 package com.example.Interfaces;
 
 import com.example.Models.Building;
-import com.example.Models.User;
 
 import java.util.List;
 

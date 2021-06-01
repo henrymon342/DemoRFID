@@ -33,6 +33,7 @@ import com.example.Models.Room;
 import com.example.Models.User;
 
 import com.example.uhf_bt.ConnectionSQLiteHelper;
+
 import com.example.uhf_bt.MainActivity;
 import com.example.uhf_bt.NumberTool;
 import com.example.uhf_bt.R;
@@ -66,13 +67,13 @@ import static java.lang.String.valueOf;
 public class UHFReadTagFragment extends Fragment implements View.OnClickListener {
 
 
+    boolean swbusqueda = false;
+
     //private final String URL = "http://f2923df27d8e.ngrok.io/";
     private  final String URL = GLOBAL.URL;
 
 
     List<User> listUs;
-
-
 
     List<String> buildingNames = new ArrayList<>();
     List<String> roomNames = new ArrayList<>();
@@ -99,6 +100,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     private MyAdapter adapter;
     private HashMap<String, String> tagMap = new HashMap<>();
     private List<byte[]> tempDatas = new ArrayList<>();
+    private List<String> tempData = new ArrayList<>();
     private ArrayList<HashMap<String, String>> tagList;
 
     private ConnectStatus mConnectStatus = new ConnectStatus();
@@ -117,7 +119,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     boolean isRuning = false;
     private long mStrTime;
 
-    Handler handler = new Handler() {
+    public Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -168,25 +170,106 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                     float useTime = (System.currentTimeMillis() - mStrTime) / 1000.0F;
                     tv_time.setText(NumberTool.getPointDouble(loopFlag ? 1 : 3, useTime) + "s");
                     break;
-                case FLAG_UHFINFO:
-                    UHFTAGInfo info = (UHFTAGInfo) msg.obj;
-                    Log.d("HENRY", info.toString());
-
-                    List<UHFTAGInfo> list2 = ( List<UHFTAGInfo>) msg.obj;
-                    UHFTAGInfo cosa2 = list2.get(0);
-                    String cc = cosa2.getEPC();
-                    Log.d("HENRYLISTA   ", cc);
-                    // la captura de objetos uno por uno
-                    listaCsv.add(list2.get(0).toString());
-                    //adicionarALista(cc);
-                    List list1=new ArrayList<UHFTAGInfo>();
-                    list1.add(info);
-                    addEPCToList(list1);
+                    case FLAG_UHFINFO:
+                        UHFTAGInfo info = (UHFTAGInfo) msg.obj;
+                        addEPCToList(info);
                     break;
             }
         }
     };
 
+
+    private StringBuilder stringBuilder = new StringBuilder();
+
+    private void addEPCToList(UHFTAGInfo uhftagInfo) {
+        addEPCToList(uhftagInfo, true);
+    }
+
+
+    private void addEPCToList(UHFTAGInfo uhftagInfo, boolean isRepeat) {
+        if (!TextUtils.isEmpty(uhftagInfo.getEPC())) {
+
+            int index = checkIsExist(uhftagInfo.getEPC());
+
+            stringBuilder.setLength(0);
+            stringBuilder.append("EPC:");
+            stringBuilder.append(uhftagInfo.getEPC());
+            if (!TextUtils.isEmpty(uhftagInfo.getTid())) {
+                stringBuilder.append("\r\nTID:");
+                stringBuilder.append(uhftagInfo.getTid());
+            }
+            if (!TextUtils.isEmpty(uhftagInfo.getUser())) {
+                stringBuilder.append("\r\nUSER:");
+                stringBuilder.append(uhftagInfo.getUser());
+            }
+
+            tagMap = new HashMap<>();
+            tagMap.put(MainActivity.TAG_EPC, uhftagInfo.getEPC());
+            tagMap.put(MainActivity.TAG_DATA, stringBuilder.toString());
+            tagMap.put(MainActivity.TAG_COUNT, String.valueOf(1));
+            tagMap.put(MainActivity.TAG_RSSI, uhftagInfo.getRssi());
+
+            if (index == -1) {
+                tagList.add(tagMap);
+                tempData.add(uhftagInfo.getEPC());
+                tv_count.setText(String.valueOf(adapter.getCount()));
+                tv_total.setText(String.valueOf(++total));
+                adapter.notifyDataSetChanged();
+                Utils.playSound(1);
+
+            } else if(isRepeat) {
+                int tagCount = Integer.parseInt(tagList.get(index).get(MainActivity.TAG_COUNT), 10) + 1;
+                tagMap.put(MainActivity.TAG_COUNT, String.valueOf(tagCount));
+                tagList.set(index, tagMap);
+                tv_total.setText(String.valueOf(++total));
+                adapter.notifyDataSetChanged();
+                Utils.playSound(1);
+            }
+        }
+    }
+
+    public int checkIsExist(String epc) {
+        if (TextUtils.isEmpty(epc)) {
+            return -1;
+        }
+        return binarySearch(tempData, epc);
+    }
+
+
+    static int binarySearch(List<String> array, String src) {
+        int left = 0;
+        int right = array.size() - 1;
+        // 这里必须是 <=
+        while (left <= right) {
+            if (compareString(array.get(left), src)) {
+                return left;
+            } else if (left != right) {
+                if (compareString(array.get(right), src))
+                    return right;
+            }
+            left++;
+            right--;
+        }
+        return -1;
+    }
+
+    static boolean compareString(String str1, String str2) {
+        if (str1.length() != str2.length()) {
+            return false;
+        } else if (str1.hashCode() != str2.hashCode()) {
+            return false;
+        } else {
+            char[] value1 = str1.toCharArray();
+            char[] value2 = str2.toCharArray();
+            int size = value1.length;
+            for (int k = 0; k < size; k++) {
+                if (value1[k] != value2[k]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -231,8 +314,9 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btClear:
+
                 // limpiar
-                //clearData();
+                clearData();
 
                 // crea una tabla rfid de forma manual
                 // registrarInventarioSQLite();
@@ -254,7 +338,11 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                 //getUsuarios();
                 //startThread();
                 break;
-            case R.id.btInventory: // single  //inventory();
+            case R.id.btInventory: // single
+
+                inventory();
+
+
                 //cargarBDSQLite();
                 //guardarInventario();
 
@@ -392,7 +480,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             }
         });
 
-
+        initListasUbicacion();
         clearData();
 
     }
@@ -422,7 +510,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         //spinnerE.setItems("Choose");
         //spinnerU.setItems("Choose");
 
-        initListasUbicacion();
+
 
         adapterE = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, buildingNames);
         adapterU = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, roomNames);
@@ -435,6 +523,8 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                 if (position != -1){
                     String selected = (String) spinnerE.getItems().get(position);
                     Toast.makeText(mContext, selected, Toast.LENGTH_SHORT).show();
+
+                    chooseRoom(position);
                 }
             }
         });
@@ -452,6 +542,11 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         });
     }
 
+    private void chooseRoom(int item) {
+        Log.d("OBB", buildingNames.get(item));
+        Log.d("OBB", buildingNames.get(item));
+    }
+
     private void initListasUbicacion() {
         /*
         for (int i = 0; i < 10; i++) {
@@ -459,6 +554,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             roomNames.add(10-i+"");
         }
          */
+        //Log.d("CONTEXTO", String.valueOf(mContext));
         getRoomSQLite();
         getBuildingSQLite();
     }
@@ -571,22 +667,41 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             isRuning = false;//执行完成设置成false
             long startTime=System.currentTimeMillis();
             while (loopFlag) {
-                List<UHFTAGInfo> list = getUHFInfo();
-                if(list==null || list.size()==0){
-                    SystemClock.sleep(1);
-                }else{
-                    Utils.playSound(1);
-                    handler.sendMessage(handler.obtainMessage(FLAG_UHFINFO_LIST, list));
-                }
-                if(System.currentTimeMillis()-startTime>100){
-                    startTime=System.currentTimeMillis();
-                    handler.sendEmptyMessage(FLAG_UPDATE_TIME);
-                }
-
+                getUHFInfoAux();
+                handler.sendEmptyMessage(FLAG_UPDATE_TIME);
             }
             stopInventory();
+            // while (loopFlag) {
+            //     List<UHFTAGInfo> list = getUHFInfo();
+            //     if(list==null || list.size()==0){
+            //         SystemClock.sleep(1);
+            //     }else{
+            //         Utils.playSound(1);
+            //         handler.sendMessage(handler.obtainMessage(FLAG_UHFINFO_LIST, list));
+            //     }
+            //     if(System.currentTimeMillis()-startTime>100){
+            //         startTime=System.currentTimeMillis();
+            //         handler.sendEmptyMessage(FLAG_UPDATE_TIME);
+            //     }
+
+            // }
+            // stopInventory();
         }
     }
+
+    private void getUHFInfoAux() {
+        List<UHFTAGInfo> list = mContext.uhf.readTagFromBufferList();
+        if (list != null && !list.isEmpty()) {
+            for (int k = 0; k < list.size(); k++) {
+                Message msg = handler.obtainMessage(FLAG_UHFINFO, list.get(k));
+                handler.sendMessage(msg);
+                if(!loopFlag) {
+                    break;
+                }
+            }
+        }
+    }
+
 
     private synchronized   List<UHFTAGInfo> getUHFInfo() {
         List<UHFTAGInfo> list=null;
@@ -595,7 +710,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             list = mContext.uhf.readTagFromBufferList_EpcTidUser();
         }else {
             //La función readTagFromBufferList de la placa base del lector versión 2.20-2.29 admite la salida Rssi, no es necesario llamar a readTagFromBufferList_EpcTidUser
-           list = mContext.uhf.readTagFromBufferList();
+            list = mContext.uhf.readTagFromBufferList();
         }
         return list;
     }
@@ -734,7 +849,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    private void inventory() { // ESTUDIAR ESTE METODO PARA LA BUSQUEDA UNO A UNO, YA QUE ESTE ES (SINGLE)
+    public void inventory() { // ESTUDIAR ESTE METODO PARA LA BUSQUEDA UNO A UNO, YA QUE ESTE ES (SINGLE)
         mStrTime = System.currentTimeMillis();
         UHFTAGInfo info = mContext.uhf.inventorySingleTag();
         if (info != null) {
@@ -933,12 +1048,12 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             Cursor cursor=db.rawQuery("select * from "+utilidades.TABLA_ROOM,null);
             while (cursor.moveToNext()){
                 ROOM=new Room();
-                ROOM.setId(Integer.parseInt(cursor.getString(0)));
+                ROOM.setId(cursor.getString(0));
                 ROOM.setName(cursor.getString(1));
-                ROOM.setBuildingId(Integer.parseInt(cursor.getString(2)));
+                ROOM.setIdBuilding(Integer.parseInt(cursor.getString(2)));
                 Log.d("id ",ROOM.getId()+" ");
                 Log.d("nameBuilding ",ROOM.getName());
-                Log.d("fid ",ROOM.getBuildingId()+"");
+                Log.d("fid ",ROOM.getIdBuilding()+"");
                 roomList.add(ROOM);
                 roomNames.add(ROOM.getName());
             }

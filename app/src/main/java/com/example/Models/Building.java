@@ -6,25 +6,14 @@ public class Building {
 
     private  int id;
     private String name;
-    private String rooms[];
 
-    @Override
-    public String toString() {
-        return "Building{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", rooms=" + Arrays.toString(rooms) +
-                '}';
-    }
 
-    public Building(int id, String name, String[] rooms) {
+    public Building(int id, String name) {
         this.id = id;
         this.name = name;
-        this.rooms = rooms;
     }
 
-    public Building(){
-
+    public Building() {
     }
 
     public int getId() {
@@ -41,13 +30,5 @@ public class Building {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String[] getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(String[] rooms) {
-        this.rooms = rooms;
     }
 }
