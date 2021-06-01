@@ -32,10 +32,8 @@ public class utilidades {
     // INVENTARIO
     public static final String TABLA_INVENTARIO="inventario";
     public static final String CAMPO_ID_INVENTARIO="id";
-    public static final String CAMPO_DURACION="duracion";
     public static final String CAMPO_CANTIDAD_TAGS="cantidad_tags";
     public static final String CAMPO_FECHA_ESCANEO="fecha_escaneo";
-    public static final String CAMPO_NAME_BUILDING="building";
     public static final String CAMPO_NAME_ROOM="room";
 
 
@@ -71,10 +69,8 @@ public class utilidades {
     // CREAR INVENTARIO
     public static final String CREAR_TABLA_INVENTARIO="CREATE TABLE " + TABLA_INVENTARIO + "("
             + CAMPO_ID_INVENTARIO +" INTEGER PRIMARY KEY, "
-            + CAMPO_DURACION + " TEXT, "
             + CAMPO_CANTIDAD_TAGS + " TEXT, "
             + CAMPO_FECHA_ESCANEO + " TEXT, "
-            + CAMPO_NAME_BUILDING + " TEXT, "
             + CAMPO_NAME_ROOM + " TEXT)" ;
 
 }

@@ -32,23 +32,14 @@ import com.example.Models.Building;
 import com.example.Models.Room;
 import com.example.Models.User;
 
-import com.example.uhf_bt.BaseActivity;
-import com.example.uhf_bt.BusquedaSQLiteHelper;
-import com.example.uhf_bt.ConectionSQLRfid;
-import com.example.uhf_bt.ConectionSQLiteHelper;
-import com.example.uhf_bt.ConeectionSQLHelperI;
-import com.example.uhf_bt.DateUtils;
-import com.example.uhf_bt.FileUtils;
-import com.example.uhf_bt.LoginActivity;
+import com.example.uhf_bt.ConnectionSQLiteHelper;
 import com.example.uhf_bt.MainActivity;
 import com.example.uhf_bt.NumberTool;
-import com.example.uhf_bt.PrincipalActivity;
 import com.example.uhf_bt.R;
 import com.example.uhf_bt.Utilidades.GLOBAL;
 import com.example.uhf_bt.Utilidades.utilidades;
 import com.example.uhf_bt.Utils;
 
-import com.example.uhf_bt.entidades.RFIDTagList;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import com.rscja.deviceapi.entity.UHFTAGInfo;
@@ -69,7 +60,6 @@ import java.util.TimerTask;
 
 import androidx.fragment.app.Fragment;
 
-import android.database.sqlite.SQLiteDatabase;
 import static java.lang.String.valueOf;
 
 
@@ -308,7 +298,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         String fechaScaneo = new SimpleDateFormat("dd-MM-yyyy").format(myDate);
         Log.d("FECHA", fechaScaneo);
 
-        int id_foranea=registrarInventarioSQLite(duracion,tag_total,fechaScaneo,"b","r");
+        int id_foranea=registrarInventarioSQLite(tag_total,fechaScaneo,"r");
 
         //DATOS PARA LA TABLA TAG
         for (int i = 0; i < tagList.size(); i++) {
@@ -330,14 +320,12 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
     }
 
-    private int registrarInventarioSQLite(String duracion,String cantidad, String fecha, String build,String room) {
-        ConeectionSQLHelperI conn=new ConeectionSQLHelperI(mContext,"bdUser",null,1);
+    private int registrarInventarioSQLite(String cantidad, String fecha,String room) {
+        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(mContext,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
         ContentValues values=new ContentValues();
-        values.put(utilidades.CAMPO_DURACION,duracion);
         values.put(utilidades.CAMPO_CANTIDAD_TAGS,cantidad);
         values.put(utilidades.CAMPO_FECHA_ESCANEO,fecha);
-        values.put(utilidades.CAMPO_NAME_BUILDING,build);
         values.put(utilidades.CAMPO_NAME_ROOM,room);
         Long idResultante = db.insert(utilidades.TABLA_INVENTARIO,utilidades.CAMPO_ID_INVENTARIO,values);
         Toast.makeText(mContext,"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
@@ -845,7 +833,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
 
     private void hacerInventario(String count,String epc,String tid,int fid) {
-        ConeectionSQLHelperI conn=new ConeectionSQLHelperI(mContext,"bdUser",null,1);
+        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(mContext,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
         ContentValues values=new ContentValues();
         values.put(utilidades.CAMPO_EPC,epc);
@@ -858,7 +846,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         db.close();
     }
     private boolean estaEnUsuarioSQLite(){
-        ConeectionSQLHelperI conn=new ConeectionSQLHelperI(mContext,"bdUser",null,1);
+        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(mContext,"bdUser",null,1);
         SQLiteDatabase db=conn.getReadableDatabase();
         String[] parametros={ "1" };
         String[] campos={utilidades.CAMPO_TID,utilidades.CAMPO_COUNT};
@@ -881,7 +869,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         return false;
     }
     private void registrarInventarioSQLite() {
-        ConeectionSQLHelperI conn=new ConeectionSQLHelperI(mContext,"bdUser",null,1);
+        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(mContext,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
         ContentValues values=new ContentValues();
         values.put(utilidades.CAMPO_EPC,"11111113");
@@ -894,7 +882,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         db.close();
     }
     private void registroBuilding(){
-        ConeectionSQLHelperI conn=new ConeectionSQLHelperI(mContext,"bdUser",null,1);
+        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(mContext,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
         ContentValues values=new ContentValues();
         values.put(utilidades.CAMPO_BUILDING_NAME,"edificio 2");
@@ -903,7 +891,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         db.close();
     }
     private void registroRoom(){
-        ConeectionSQLHelperI conn=new ConeectionSQLHelperI(mContext,"bdUser",null,1);
+        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(mContext,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
         ContentValues values=new ContentValues();
         values.put(utilidades.CAMPO_ROOM_NAME,"room 3");
@@ -913,7 +901,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         db.close();
     }
     private boolean getBuildingSQLite(){
-        ConeectionSQLHelperI conn=new ConeectionSQLHelperI(mContext,"bdUser",null,1);
+        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(mContext,"bdUser",null,1);
         SQLiteDatabase db=conn.getReadableDatabase();
         Building BUILDING=null;
         buildingList =new ArrayList<Building>();
@@ -937,7 +925,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         return false;
     }
     private boolean getRoomSQLite(){
-        ConeectionSQLHelperI conn=new ConeectionSQLHelperI(mContext,"bdUser",null,1);
+        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(mContext,"bdUser",null,1);
         SQLiteDatabase db=conn.getReadableDatabase();
         Room ROOM=null;
         roomList =new ArrayList<Room>();

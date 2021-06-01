@@ -62,7 +62,7 @@ public class LoginActivity extends BaseActivity {
         btn_sqlite=(Button)findViewById(R.id.btn_sqlite);
 
         //ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
-        //ConectionSQLRfid conn2=new ConectionSQLRfid(this,"bdUser",null,2);
+        //ConnectionSQLiteHelper conn2=new ConnectionSQLiteHelper(this,"bdUser",null,2);
 
         btn_registro.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -263,7 +263,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void registrarUsuarioSQLite() {
-        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
+        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(this,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
         ContentValues values=new ContentValues();
         values.put(utilidades.CAMPO_NOMBRE,nombre.getText().toString());
@@ -274,7 +274,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private boolean estaEnUsuarioSQLite(String name,String pass){
-        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
+        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(this,"bdUser",null,1);
         SQLiteDatabase db=conn.getReadableDatabase();
         String[] parametros={name};
         String[] campos={utilidades.CAMPO_NOMBRE,utilidades.CAMPO_PASSWORD};
@@ -298,7 +298,7 @@ public class LoginActivity extends BaseActivity {
         return false;
     }
     private void eliminar(){
-        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
+        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(this,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
         String delete = "DROP TABLE "+utilidades.TABLA_USUARIO;
         db.execSQL(delete);
@@ -345,7 +345,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private boolean verSiEstaEnSQLite(int ide) {
-        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
+        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(this,"bdUser",null,1);
         SQLiteDatabase db = conn.getReadableDatabase();
 
         Cursor c = db.rawQuery("SELECT id FROM user ", null);
@@ -364,14 +364,14 @@ public class LoginActivity extends BaseActivity {
         return false;
     }
     private void crearRfid() {
-        ConectionSQLRfid conn=new ConectionSQLRfid(this,"bdUser",null,1);
+        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(this,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
         ContentValues values=new ContentValues();
         db.close();
     }
 
     private void registroBuilding(String nombreEdificio){
-        ConectionSQLiteHelper conn=new ConectionSQLiteHelper( this,"bdUser",null,1);
+        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper( this,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
         ContentValues values=new ContentValues();
         values.put(utilidades.CAMPO_BUILDING_NAME,nombreEdificio);
@@ -380,7 +380,7 @@ public class LoginActivity extends BaseActivity {
         db.close();
     }
     private void registroRoom(int idBuilding, String nombreRoom){
-        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
+        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(this,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
         ContentValues values=new ContentValues();
         values.put(utilidades.CAMPO_ROOM_NAME, nombreRoom);

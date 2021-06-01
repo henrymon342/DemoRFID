@@ -42,7 +42,7 @@ public class BusquedaActivity extends BaseActivity{
     }
 
     private boolean getRfidSQLite(){
-        BusquedaSQLiteHelper conn=new BusquedaSQLiteHelper(this,"bdUser",null,1);
+        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(this,"bdUser",null,1);
         SQLiteDatabase db=conn.getReadableDatabase();
         RFIDTagList RFID=null;
         rfidList =new ArrayList<RFIDTagList>();

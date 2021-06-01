@@ -2,7 +2,6 @@ package com.example.uhf_bt;
 
 import android.annotation.TargetApi;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,7 +28,7 @@ public class SincronizarActivity extends BaseActivity {
         });
     }
     private void actualizarRoom(int idBuilding, String nombreRoom){
-        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
+        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(this,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
         String[] parametros={idBuilding+"",nombreRoom};
         ContentValues values=new ContentValues();
@@ -40,7 +39,7 @@ public class SincronizarActivity extends BaseActivity {
         db.close();
     }
     private void eliminarRoom(int id){
-        ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
+        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(this,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
         String[] parametros={id+""};
         db.delete(utilidades.TABLA_ROOM,utilidades.CAMPO_ID_ROOM+"=?",parametros);
