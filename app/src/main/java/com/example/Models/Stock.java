@@ -1,4 +1,4 @@
-package com.example.uhf_bt.entidades;
+package com.example.Models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,12 +9,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class stockList {
+public class Stock {
+
     private String id;
-    private String EPC;
-    private String TID;
+    private String epc;
+    private String tid;
     private String userMemory;
     private String description;
     private String lastScanDate;
-    private String fkIdRoom;
+    private String idRoom;
+
+
 }

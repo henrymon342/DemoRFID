@@ -1,4 +1,4 @@
-package com.example.uhf_bt.entidades;
+package com.example.Models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class User {
+public class Lector {
     private String id;
-    private String name;
-    private String password;
+    private String alias;
+    private String marca;
+    private String modelo;
+    private String description;
+    private String macAddress;
 }

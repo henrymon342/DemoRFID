@@ -1,16 +1,20 @@
 package com.example.Models;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class User {
 
     private  int id;
     private String name;
     private String clave;
 
-    public User(int id, String name, String clave) {
-        this.id = id;
-        this.name = name;
-        this.clave = clave;
-    }
 
     @Override
     public String toString() {
@@ -21,15 +25,4 @@ public class User {
                 '}';
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getClave() {
-        return clave;
-    }
 }

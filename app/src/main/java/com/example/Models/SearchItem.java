@@ -1,4 +1,4 @@
-package com.example.uhf_bt.entidades;
+package com.example.Models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Ubicacion {
-    private String edificio;
-    private String room;
+public class SearchItem {
+    private String id;
+    private String description;
+    private String epc;
+    private String estado;
 }
