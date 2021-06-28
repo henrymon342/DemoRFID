@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.text.TextUtils;
 
 import android.util.Log;
@@ -407,22 +406,24 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
 
     }
-
+    /*MODIFICAR CANTIDAD,FECHA ROOM*/
     private int registrarInventarioSQLite(String cantidad, String fecha,String room) {
         ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(mContext,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
         ContentValues values=new ContentValues();
-        values.put(utilidades.CAMPO_CANTIDAD_TAGS,cantidad);
-        values.put(utilidades.CAMPO_FECHA_ESCANEO,fecha);
-        values.put(utilidades.CAMPO_NAME_ROOM,room);
-        Long idResultante = db.insert(utilidades.TABLA_INVENTARIO,utilidades.CAMPO_ID_INVENTARIO,values);
+        values.put(utilidades.CAMPO_LAST_SCAN_STOCK,cantidad);
+        values.put(utilidades.CAMPO_EPC_STOCK,fecha);
+        values.put(utilidades.CAMPO_TID_STOCK,fecha);
+        values.put(utilidades.CAMPO_USER_MEMORY_STOCK,fecha);
+        values.put(utilidades.CAMPO_DESCRIPCION_STOCK,fecha);
+        values.put(utilidades.CAMPO_FK_ROOM_STOCK,room);
+        Long idResultante = db.insert(utilidades.TABLA_STOCK,utilidades.CAMPO_ID_STOCK,values);
         Toast.makeText(mContext,"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
         db.close();
         return Integer.parseInt(String.valueOf(idResultante)) ;
     }
 
     private void init() {
-
 
         isExit = false;
         mContext.addConnectStatusNotice(mConnectStatus);
@@ -946,17 +947,18 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         //Toast.makeText(mContext, aux, Toast.LENGTH_SHORT).show();
     }
 
-
+    /*CORREGIR METODO*/
     private void hacerInventario(String count,String epc,String tid,int fid) {
         ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(mContext,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
         ContentValues values=new ContentValues();
-        values.put(utilidades.CAMPO_EPC,epc);
-        values.put(utilidades.CAMPO_TID,tid);
-        values.put(utilidades.CAMPO_COUNT,count);
-        values.put(utilidades.CAMPO_DESCRIPCION,"detalle");
-        values.put(utilidades.CAMPO_FID_INVENTARIO,fid);
-        Long idResultante = db.insert(utilidades.TABLA_RFID_TAG_LIST,utilidades.CAMPO_ID_RFID,values);
+        values.put(utilidades.CAMPO_EPC_STOCK,"****************epc");
+        values.put(utilidades.CAMPO_TID_STOCK,"****************tid");
+        values.put(utilidades.CAMPO_USER_MEMORY_STOCK,"********memory");
+        values.put(utilidades.CAMPO_DESCRIPCION_STOCK,"********descripcion");
+        values.put(utilidades.CAMPO_LAST_SCAN_STOCK,"**********last scan");
+        values.put(utilidades.CAMPO_FK_ROOM_STOCK,"************llave foranea room");
+        Long idResultante = db.insert(utilidades.TABLA_STOCK,utilidades.CAMPO_FK_ROOM_STOCK,values);
         Toast.makeText(mContext,"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
         db.close();
     }
@@ -964,11 +966,11 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(mContext,"bdUser",null,1);
         SQLiteDatabase db=conn.getReadableDatabase();
         String[] parametros={ "1" };
-        String[] campos={utilidades.CAMPO_TID,utilidades.CAMPO_COUNT};
+        String[] campos={utilidades.CAMPO_TID_STOCK,utilidades.CAMPO_EPC_STOCK};
         String resTid="";
         String resCount="";
         try {
-            Cursor cursor=db.query(utilidades.TABLA_RFID_TAG_LIST,campos,utilidades.CAMPO_ID_RFID+"=?",parametros,null,null,null);
+            Cursor cursor=db.query(utilidades.TABLA_STOCK,campos,utilidades.CAMPO_FK_ROOM_STOCK+"=?",parametros,null,null,null);
             cursor.moveToFirst();
             resTid=cursor.getString(0);
             resCount=cursor.getString(1);
@@ -987,12 +989,13 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(mContext,"bdUser",null,1);
         SQLiteDatabase db=conn.getWritableDatabase();
         ContentValues values=new ContentValues();
-        values.put(utilidades.CAMPO_EPC,"11111113");
-        values.put(utilidades.CAMPO_TID,"34567890");
-        values.put(utilidades.CAMPO_COUNT,"45");
-        values.put(utilidades.CAMPO_DESCRIPCION,"teclado");
-        values.put(utilidades.CAMPO_FID_INVENTARIO,1);
-        Long idResultante = db.insert(utilidades.TABLA_RFID_TAG_LIST,utilidades.CAMPO_ID_RFID,values);
+        values.put(utilidades.CAMPO_EPC_STOCK,"11111113");
+        values.put(utilidades.CAMPO_TID_STOCK,"34567890");
+        values.put(utilidades.CAMPO_USER_MEMORY_STOCK,"45");
+        values.put(utilidades.CAMPO_DESCRIPCION_STOCK,"teclado");
+        values.put(utilidades.CAMPO_LAST_SCAN_STOCK,"19/02/2021");
+        values.put(utilidades.CAMPO_FK_ROOM_STOCK,1);
+        Long idResultante = db.insert(utilidades.TABLA_STOCK,utilidades.CAMPO_FK_ROOM_STOCK,values);
         Toast.makeText(mContext,"Id Rfid: "+idResultante,Toast.LENGTH_SHORT).show();
         db.close();
     }
