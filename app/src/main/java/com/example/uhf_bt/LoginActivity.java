@@ -57,16 +57,14 @@ public class LoginActivity extends BaseActivity {
     @TargetApi(Build.VERSION_CODES.GINGERBREAD_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        btn_login = (Button) findViewById(R.id.btn_login);
         nombre = findViewById(R.id.nombre);
         password = findViewById(R.id.password);
+
+        btn_login = (Button) findViewById(R.id.btn_login);
         btn_registro = (Button) findViewById(R.id.btn_registro);
         btn_sqlite = (Button) findViewById(R.id.btn_sqlite);
-
-        //ConnectionSQLiteHelper conn2=new ConnectionSQLiteHelper(this,"bdUser",null,2);
 
         btn_registro.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,21 +76,20 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 logear();
-                //crearRfid();
             }
         });
         btn_sqlite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registrarUsuarioSQLite();
+                registroUserDEMO();
             }
         });
+
         //codigoHenry
         userService = APIUtils.getUsers();
         buildingInterface = APIUtils.getBuildings();
         roomInterface = APIUtils.getRooms();
         actualizarDatos();
-
     }
 
     public void actualizarDatos() {
@@ -268,16 +265,7 @@ public class LoginActivity extends BaseActivity {
         return swGlobal;
     }
 
-    private void registrarUsuarioSQLite() {
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(utilidades.CAMPO_NOMBRE, nombre.getText().toString());
-        values.put(utilidades.CAMPO_PASSWORD, password.getText().toString());
-        Long idResultante = db.insert(utilidades.TABLA_USUARIO, utilidades.CAMPO_ID_USER, values);
-        Toast.makeText(getApplicationContext(), "Id Registro: " + idResultante, Toast.LENGTH_SHORT).show();
-        db.close();
-    }
+
 
     private boolean estaEnUsuarioSQLite(String name, String pass) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
@@ -304,13 +292,6 @@ public class LoginActivity extends BaseActivity {
         return false;
     }
 
-    private void eliminar() {
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-        String delete = "DROP TABLE " + utilidades.TABLA_USUARIO;
-        db.execSQL(delete);
-        db.close();
-    }
 
     private void actualizarDatosUsuarioDeDotNet() {
 
@@ -372,12 +353,6 @@ public class LoginActivity extends BaseActivity {
         return false;
     }
 
-    private void crearRfid() {
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        db.close();
-    }
 
     private void registroBuilding(String nombreEdificio) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
@@ -389,15 +364,37 @@ public class LoginActivity extends BaseActivity {
         db.close();
     }
 
-    private void registroRoom(int idBuilding, String nombreRoom) {
+    private void registroRoom(int fk_idBuilding, String nombreRoom) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(utilidades.CAMPO_ROOM_NAME, nombreRoom);
-        values.put(utilidades.CAMPO_FID_BUILDING, idBuilding);
+        values.put(utilidades.CAMPO_FID_BUILDING, fk_idBuilding);
         Long idResultante = db.insert(utilidades.TABLA_ROOM, utilidades.CAMPO_ID_ROOM, values);
         Toast.makeText(this, "Id Room: " + idResultante, Toast.LENGTH_SHORT).show();
         db.close();
     }
 
+    // agrega un user a la base de datos SQLite desde el login
+    private void registroUserDEMO() { /*------------------------ ESTE METODO SE ELIMINARA--------------------------- */
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(utilidades.CAMPO_NOMBRE, nombre.getText().toString());
+        values.put(utilidades.CAMPO_PASSWORD, password.getText().toString());
+        Long idResultante = db.insert(utilidades.TABLA_USUARIO, utilidades.CAMPO_ID_USER, values);
+        Toast.makeText(getApplicationContext(), "Id Registro: " + idResultante, Toast.LENGTH_SHORT).show();
+        db.close();
+    }
+
+    private void registroUser(String nombre, String password) {
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(utilidades.CAMPO_NOMBRE, nombre);
+        values.put(utilidades.CAMPO_PASSWORD, password);
+        Long idResultante = db.insert(utilidades.TABLA_USUARIO, utilidades.CAMPO_ID_USER, values);
+        Toast.makeText(getApplicationContext(), "Id Registro: " + idResultante, Toast.LENGTH_SHORT).show();
+        db.close();
+    }
 }
