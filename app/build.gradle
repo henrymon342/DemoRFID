@@ -4,11 +4,11 @@ android {
     compileSdkVersion 29
 
     defaultConfig {
-        applicationId "com.example.uhf_bt"
+        applicationId "com.example.rfidReader"
         minSdkVersion 18
         targetSdkVersion 29
-        versionCode 4
-        versionName "1.4.7"
+        versionCode 1
+        versionName "1.0.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 

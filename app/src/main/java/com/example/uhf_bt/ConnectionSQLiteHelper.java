@@ -22,23 +22,23 @@ public class ConnectionSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(utilidades.CREAR_TABLA_BUILDING);
-        db.execSQL(utilidades.CREAR_TABLA_ROOM);
-        db.execSQL(utilidades.CREAR_TABLA_STOCK);
         db.execSQL(utilidades.CREAR_TABLA_USUARIO);
         db.execSQL(utilidades.CREAR_TABLA_LECTOR);
         db.execSQL(utilidades.CREAR_TABLA_ASIGNACION_LECTOR);
+        db.execSQL(utilidades.CREAR_TABLA_BUILDING);
+        db.execSQL(utilidades.CREAR_TABLA_ROOM);
+        db.execSQL(utilidades.CREAR_TABLA_STOCK);
         db.execSQL(utilidades.CREAR_TABLA_SEARCH_LIST);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS building");
-        db.execSQL("DROP TABLE IF EXISTS room");
-        db.execSQL("DROP TABLE IF EXISTS stock");
         db.execSQL("DROP TABLE IF EXISTS user");
         db.execSQL("DROP TABLE IF EXISTS lector");
         db.execSQL("DROP TABLE IF EXISTS asignacion_lector");
+        db.execSQL("DROP TABLE IF EXISTS building");
+        db.execSQL("DROP TABLE IF EXISTS room");
+        db.execSQL("DROP TABLE IF EXISTS stock");
         db.execSQL("DROP TABLE IF EXISTS searchList");
         onCreate(db);
     }

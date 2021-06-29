@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.Backend.APIUtils;
 import com.example.Interfaces.BuildingInterface;
 import com.example.Interfaces.LogeoInterface;
@@ -25,7 +26,9 @@ import com.example.Models.Building;
 import com.example.Models.Room;
 import com.example.Models.User;
 import com.example.uhf_bt.Utilidades.utilidades;
+
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,26 +45,27 @@ public class LoginActivity extends BaseActivity {
     LogeoInterface userService;
     BuildingInterface buildingInterface;
     RoomInterface roomInterface;
-    List<User> listUs;
+    List<User> listUsers;
     List<Building> listBui;
     List<Room> listRooms;
 
     private Boolean swGlobal = false;
     private Boolean swUpdate = false;
-    private Button btn_login,btn_registro,btn_sqlite;
-    private TextView nombre,password;
+    private Button btn_login, btn_registro, btn_sqlite;
+    private TextView nombre, password;
+
     @TargetApi(Build.VERSION_CODES.GINGERBREAD_MR1)
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        btn_login=(Button)findViewById(R.id.btn_login);
-        nombre=findViewById(R.id.nombre);
-        password=findViewById(R.id.password);
-        btn_registro=(Button)findViewById(R.id.btn_registro);
-        btn_sqlite=(Button)findViewById(R.id.btn_sqlite);
+        btn_login = (Button) findViewById(R.id.btn_login);
+        nombre = findViewById(R.id.nombre);
+        password = findViewById(R.id.password);
+        btn_registro = (Button) findViewById(R.id.btn_registro);
+        btn_sqlite = (Button) findViewById(R.id.btn_sqlite);
 
-        //ConectionSQLiteHelper conn=new ConectionSQLiteHelper(this,"bdUser",null,1);
         //ConnectionSQLiteHelper conn2=new ConnectionSQLiteHelper(this,"bdUser",null,2);
 
         btn_registro.setOnClickListener(new View.OnClickListener() {
@@ -74,14 +78,14 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 logear();
-                crearRfid();
+                //crearRfid();
             }
         });
         btn_sqlite.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              registrarUsuarioSQLite();
-          }
+            @Override
+            public void onClick(View v) {
+                registrarUsuarioSQLite();
+            }
         });
         //codigoHenry
         userService = APIUtils.getUsers();
@@ -91,13 +95,12 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    public void actualizarDatos(){
-        if(verInternet()){
+    public void actualizarDatos() {
+        if (verInternet()) {
             actualizarDatosUuarios();
             actualizarDatosBuildings();
             actualizarDatosRooms();
-
-        }else{
+        } else {
             Toast.makeText(this, "NO HAY CONEXIÓN A INTERNET", Toast.LENGTH_LONG).show();
         }
 
@@ -129,7 +132,7 @@ public class LoginActivity extends BaseActivity {
         call.enqueue(new Callback<List<Room>>() {
             @Override
             public void onResponse(Call<List<Room>> call, Response<List<Room>> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     //Log.d("RESPONSE->   ", String.valueOf(response.body()));
                     listRooms = response.body();
                     for (int i = 0; i < listRooms.size(); i++) {
@@ -138,6 +141,7 @@ public class LoginActivity extends BaseActivity {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<List<Room>> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
@@ -157,11 +161,11 @@ public class LoginActivity extends BaseActivity {
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     //Log.d("RESPONSE->   ", String.valueOf(response.body()));
-                    listUs = response.body();
-                    for (int i = 0; i < listUs.size(); i++) {
-                        User aux = new User(listUs.get(i).getId(), listUs.get(i).getName(), listUs.get(i).getClave());
+                    listUsers = response.body();
+                    for (int i = 0; i < listUsers.size(); i++) {
+                        User aux = new User(listUsers.get(i).getId(), listUsers.get(i).getName(), listUsers.get(i).getClave());
                         Log.d("USUARIO:", aux.toString());
                         /*
                         if(verSiEstaEnSQLite(listUs.get(i).getId())== false){
@@ -171,12 +175,13 @@ public class LoginActivity extends BaseActivity {
                         */
                     }
                 }
-                if(swUpdate == true){
+                if (swUpdate == true) {
                     Toast.makeText(getApplicationContext(), "SE ACTUALIZO LA BD SQLITE", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     Toast.makeText(getApplicationContext(), "SQLITE NADA QUE ACTUALIZAR", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
@@ -194,14 +199,15 @@ public class LoginActivity extends BaseActivity {
         call.enqueue(new Callback<List<Building>>() {
             @Override
             public void onResponse(Call<List<Building>> call, Response<List<Building>> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     listBui = response.body();
                     for (int i = 0; i < listBui.size(); i++) {
-                        Log.d("BUILDING:", listBui.get(i).getId()+ listBui.get(i).getName());
+                        Log.d("BUILDING:", listBui.get(i).getId() + listBui.get(i).getName());
                         registroBuilding(listBui.get(i).getName());
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<List<Building>> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
@@ -210,23 +216,22 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-
-    public void logear(){
-        Intent loginIntend= new Intent(this,PrincipalActivity.class);
-        Boolean estaEnSQLite=false;
-        if (estaEnUsuarioSQLite(nombre.getText().toString(),password.getText().toString()))  {
+    public void logear() {
+        Intent loginIntend = new Intent(this, PrincipalActivity.class);
+        Boolean estaEnSQLite = false;
+        if (estaEnUsuarioSQLite(nombre.getText().toString(), password.getText().toString())) {
             startActivity(loginIntend);
             nombre.setText("");
             password.setText("");
-            estaEnSQLite=true;
+            estaEnSQLite = true;
         }
         nombre.setText("");
         password.setText("");
-        if (!estaEnSQLite){
-            if(buscarBDDotNet(nombre.toString(), password.toString()) == true){
+        if (!estaEnSQLite) {
+            if (buscarBDDotNet(nombre.toString(), password.toString()) == true) {
                 startActivity(loginIntend);
-            }else{
-                Toast.makeText(getApplicationContext(),"el usuario o contraseña son incorrectos",Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "el usuario o contraseña son incorrectos", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -237,15 +242,15 @@ public class LoginActivity extends BaseActivity {
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     Log.d("RESPONSE->   ", String.valueOf(response.body()));
-                    listUs = response.body();
+                    listUsers = response.body();
 
-                    for (int i = 0; i < listUs.size(); i++) {
-                        Log.d("RESPUESTAAPIitem", listUs.get(i).getName());
-                        Log.d("RESPUESTAAPIitem", listUs.get(i).getClave());
-                        Log.d("RESPUESTAAPIitem", String.valueOf(listUs.get(i).getId()));
-                        if(listUs.get(i).getName().equals(correo) && listUs.get(i).getClave().equals(password)){
+                    for (int i = 0; i < listUsers.size(); i++) {
+                        Log.d("RESPUESTAAPIitem", listUsers.get(i).getName());
+                        Log.d("RESPUESTAAPIitem", listUsers.get(i).getClave());
+                        Log.d("RESPUESTAAPIitem", String.valueOf(listUsers.get(i).getId()));
+                        if (listUsers.get(i).getName().equals(correo) && listUsers.get(i).getClave().equals(password)) {
                             //registrarUsuarioSQLite(listUs.get(i));
                             swGlobal = true;
                             break;
@@ -254,6 +259,7 @@ public class LoginActivity extends BaseActivity {
                     swGlobal = false;
                 }
             }
+
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
@@ -263,49 +269,50 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void registrarUsuarioSQLite() {
-        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(this,"bdUser",null,1);
-        SQLiteDatabase db=conn.getWritableDatabase();
-        ContentValues values=new ContentValues();
-        values.put(utilidades.CAMPO_NOMBRE,nombre.getText().toString());
-        values.put(utilidades.CAMPO_PASSWORD,password.getText().toString());
-        Long idResultante = db.insert(utilidades.TABLA_USUARIO,utilidades.CAMPO_ID_USER,values);
-        Toast.makeText(getApplicationContext(),"Id Registro: "+idResultante,Toast.LENGTH_SHORT).show();
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(utilidades.CAMPO_NOMBRE, nombre.getText().toString());
+        values.put(utilidades.CAMPO_PASSWORD, password.getText().toString());
+        Long idResultante = db.insert(utilidades.TABLA_USUARIO, utilidades.CAMPO_ID_USER, values);
+        Toast.makeText(getApplicationContext(), "Id Registro: " + idResultante, Toast.LENGTH_SHORT).show();
         db.close();
     }
 
-    private boolean estaEnUsuarioSQLite(String name,String pass){
-        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(this,"bdUser",null,1);
-        SQLiteDatabase db=conn.getReadableDatabase();
-        String[] parametros={name};
-        String[] campos={utilidades.CAMPO_NOMBRE,utilidades.CAMPO_PASSWORD};
-        String resUser="";
-        String resPass="";
+    private boolean estaEnUsuarioSQLite(String name, String pass) {
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getReadableDatabase();
+        String[] parametros = {name};
+        String[] campos = {utilidades.CAMPO_NOMBRE, utilidades.CAMPO_PASSWORD};
+        String resUser = "";
+        String resPass = "";
         try {
-            Cursor cursor=db.query(utilidades.TABLA_USUARIO,campos,utilidades.CAMPO_NOMBRE+"=?",parametros,null,null,null);
+            Cursor cursor = db.query(utilidades.TABLA_USUARIO, campos, utilidades.CAMPO_NOMBRE + "=?", parametros, null, null, null);
             cursor.moveToFirst();
-            resUser=cursor.getString(0);
-            resPass=cursor.getString(1);
+            resUser = cursor.getString(0);
+            resPass = cursor.getString(1);
             Log.d("LOGEO user", resUser);
             Log.d("LOGEO pass", resPass);
             cursor.close();
             db.close();
-            if (resUser.equals(name)&& resPass.equals(pass) ){
+            if (resUser.equals(name) && resPass.equals(pass)) {
                 return true;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             db.close();
         }
         return false;
     }
-    private void eliminar(){
-        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(this,"bdUser",null,1);
-        SQLiteDatabase db=conn.getWritableDatabase();
-        String delete = "DROP TABLE "+utilidades.TABLA_USUARIO;
+
+    private void eliminar() {
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        String delete = "DROP TABLE " + utilidades.TABLA_USUARIO;
         db.execSQL(delete);
         db.close();
     }
 
-    private void actualizarDatosUsuarioDeDotNet(){
+    private void actualizarDatosUsuarioDeDotNet() {
 
         Log.d("URL", URL);
         Retrofit retrofit = new Retrofit.Builder()
@@ -317,26 +324,27 @@ public class LoginActivity extends BaseActivity {
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     Log.d("RESPONSE->   ", String.valueOf(response.body()));
-                    listUs = response.body();
-                    for (int i = 0; i < listUs.size(); i++) {
-                        Log.d("RESPUESTAAPIitem", listUs.get(i).getName());
-                        Log.d("RESPUESTAAPIitem", listUs.get(i).getClave());
-                        Log.d("RESPUESTAAPIitem", String.valueOf(listUs.get(i).getId()));
-                        User aux = new User(listUs.get(i).getId(), listUs.get(i).getName(), listUs.get(i).getClave());
-                        if(verSiEstaEnSQLite(listUs.get(i).getId())== false){
+                    listUsers = response.body();
+                    for (int i = 0; i < listUsers.size(); i++) {
+                        Log.d("RESPUESTAAPIitem", listUsers.get(i).getName());
+                        Log.d("RESPUESTAAPIitem", listUsers.get(i).getClave());
+                        Log.d("RESPUESTAAPIitem", String.valueOf(listUsers.get(i).getId()));
+                        User aux = new User(listUsers.get(i).getId(), listUsers.get(i).getName(), listUsers.get(i).getClave());
+                        if (verSiEstaEnSQLite(listUsers.get(i).getId()) == false) {
                             //registrarUsuarioSQLite(listUs.get(i));
                             swUpdate = true;
                         }
                     }
                 }
-                if(swUpdate == true){
+                if (swUpdate == true) {
                     Toast.makeText(getApplicationContext(), "SE ACTUALIZO LA BD SQLITE", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     Toast.makeText(getApplicationContext(), "SQLITE NADA QUE ACTUALIZAR", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
@@ -345,48 +353,50 @@ public class LoginActivity extends BaseActivity {
     }
 
     private boolean verSiEstaEnSQLite(int ide) {
-        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(this,"bdUser",null,1);
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
         SQLiteDatabase db = conn.getReadableDatabase();
 
         Cursor c = db.rawQuery("SELECT id FROM user ", null);
-        if (c.moveToFirst()){
+        if (c.moveToFirst()) {
             do {
                 String idd = c.getString(0);
-                if(idd.equals(String.valueOf(ide))){
-                    Log.d("LORA->", "son iguales "+ ide +" == "+ idd);
+                if (idd.equals(String.valueOf(ide))) {
+                    Log.d("LORA->", "son iguales " + ide + " == " + idd);
                     return true;
                 }
 
-            } while(c.moveToNext());
+            } while (c.moveToNext());
         }
         c.close();
         db.close();
         return false;
     }
+
     private void crearRfid() {
-        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(this,"bdUser",null,1);
-        SQLiteDatabase db=conn.getWritableDatabase();
-        ContentValues values=new ContentValues();
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
         db.close();
     }
 
-    private void registroBuilding(String nombreEdificio){
-        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper( this,"bdUser",null,1);
-        SQLiteDatabase db=conn.getWritableDatabase();
-        ContentValues values=new ContentValues();
-        values.put(utilidades.CAMPO_BUILDING_NAME,nombreEdificio);
-        Long idResultante = db.insert(utilidades.TABLA_BUILDING,utilidades.CAMPO_ID_BUILDING,values);
-        Toast.makeText(this,"Id Building: "+idResultante,Toast.LENGTH_SHORT).show();
+    private void registroBuilding(String nombreEdificio) {
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(utilidades.CAMPO_BUILDING_NAME, nombreEdificio);
+        Long idResultante = db.insert(utilidades.TABLA_BUILDING, utilidades.CAMPO_ID_BUILDING, values);
+        Toast.makeText(this, "Id Building: " + idResultante, Toast.LENGTH_SHORT).show();
         db.close();
     }
-    private void registroRoom(int idBuilding, String nombreRoom){
-        ConnectionSQLiteHelper conn=new ConnectionSQLiteHelper(this,"bdUser",null,1);
-        SQLiteDatabase db=conn.getWritableDatabase();
-        ContentValues values=new ContentValues();
+
+    private void registroRoom(int idBuilding, String nombreRoom) {
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
         values.put(utilidades.CAMPO_ROOM_NAME, nombreRoom);
         values.put(utilidades.CAMPO_FID_BUILDING, idBuilding);
-        Long idResultante = db.insert(utilidades.TABLA_ROOM,utilidades.CAMPO_ID_ROOM,values);
-        Toast.makeText(this,"Id Room: "+idResultante,Toast.LENGTH_SHORT).show();
+        Long idResultante = db.insert(utilidades.TABLA_ROOM, utilidades.CAMPO_ID_ROOM, values);
+        Toast.makeText(this, "Id Room: " + idResultante, Toast.LENGTH_SHORT).show();
         db.close();
     }
 
