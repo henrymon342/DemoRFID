@@ -29,6 +29,7 @@ import com.example.uhf_bt.Utilidades.utilidades;
 
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,7 +38,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import com.example.uhf_bt.Utilidades.GLOBAL;
 
-
+@Slf4j
 public class LoginActivity extends BaseActivity {
 
     //final String URL = "http://a2a256f3b766.ngrok.io";
@@ -90,6 +91,9 @@ public class LoginActivity extends BaseActivity {
         buildingInterface = APIUtils.getBuildings();
         roomInterface = APIUtils.getRooms();
         actualizarDatos();
+
+
+
     }
 
     public void actualizarDatos() {
