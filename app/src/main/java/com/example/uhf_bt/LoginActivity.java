@@ -91,6 +91,9 @@ public class LoginActivity extends BaseActivity {
         buildingInterface = APIUtils.getBuildings();
         roomInterface = APIUtils.getRooms();
         actualizarDatos();
+
+
+
     }
 
     public void actualizarDatos() {
