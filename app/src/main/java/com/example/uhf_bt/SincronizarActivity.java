@@ -1,20 +1,16 @@
 package com.example.uhf_bt;
 
 import android.annotation.TargetApi;
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
-
 import com.example.Models.AsignacionLector;
 import com.example.Models.Building;
 import com.example.Models.Room;
 import com.example.Models.Stock;
 import com.example.Models.User;
-import com.example.uhf_bt.Utilidades.utilidades;
+
 
 import java.util.ArrayList;
 
