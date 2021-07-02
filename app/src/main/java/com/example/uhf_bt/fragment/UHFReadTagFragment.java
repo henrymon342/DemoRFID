@@ -307,6 +307,8 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         super.onDestroyView();
         isExit = true;
         mContext.removeConnectStatusNotice(mConnectStatus);
+        this.buildingNames.clear();
+        this.roomNames.clear();
     }
 
     @Override
@@ -549,8 +551,9 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
         //Log.d("CONTEXTO", String.valueOf(mContext));
 
-       // this.getBuildings();
-       // this.getRooms();
+
+       this.getBuildings();
+       this.getRooms();
     }
 
 
