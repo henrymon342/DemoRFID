@@ -1,12 +1,17 @@
 package com.example.Models;
 
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import com.example.uhf_bt.ConnectionSQLiteHelper;
+import com.example.uhf_bt.LoginActivity;
 import com.example.uhf_bt.MainActivity;
+import com.example.uhf_bt.SincronizarActivity;
 import com.example.uhf_bt.Utilidades.utilidades;
 
 import java.util.ArrayList;
@@ -48,4 +53,24 @@ public class Building {
         }
         return buildingList;
     }
+
+    public static void registroBuilding(String nombreEdificio, LoginActivity context) {
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(utilidades.CAMPO_BUILDING_NAME, nombreEdificio);
+        Long idResultante = db.insert(utilidades.TABLA_BUILDING, utilidades.CAMPO_ID_BUILDING, values);
+        Toast.makeText(context, "Id Building: " + idResultante, Toast.LENGTH_SHORT).show();
+        db.close();
+    }
+    public static void registroBuilding(String nombreEdificio, SincronizarActivity context) {
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(utilidades.CAMPO_BUILDING_NAME, nombreEdificio);
+        Long idResultante = db.insert(utilidades.TABLA_BUILDING, utilidades.CAMPO_ID_BUILDING, values);
+        Toast.makeText(context, "Id Building: " + idResultante, Toast.LENGTH_SHORT).show();
+        db.close();
+    }
+
 }

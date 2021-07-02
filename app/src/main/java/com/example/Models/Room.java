@@ -1,11 +1,15 @@
 package com.example.Models;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.uhf_bt.ConnectionSQLiteHelper;
+import com.example.uhf_bt.LoginActivity;
 import com.example.uhf_bt.MainActivity;
+import com.example.uhf_bt.SincronizarActivity;
 import com.example.uhf_bt.Utilidades.utilidades;
 
 import java.util.ArrayList;
@@ -50,5 +54,28 @@ public class Room {
             db.close();
         }
         return roomList;
+    }
+
+    // method for LoginActivity
+    public static void registroRoom(int fk_idBuilding, String nombreRoom, LoginActivity context) {
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(utilidades.CAMPO_ROOM_NAME, nombreRoom);
+        values.put(utilidades.CAMPO_FID_BUILDING, fk_idBuilding);
+        Long idResultante = db.insert(utilidades.TABLA_ROOM, utilidades.CAMPO_ID_ROOM, values);
+        Toast.makeText(context, "Id Room: " + idResultante, Toast.LENGTH_SHORT).show();
+        db.close();
+    }
+    // method for SincronizarActivity
+    public static void registroRoom(int fk_idBuilding, String nombreRoom, SincronizarActivity context) {
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(utilidades.CAMPO_ROOM_NAME, nombreRoom);
+        values.put(utilidades.CAMPO_FID_BUILDING, fk_idBuilding);
+        Long idResultante = db.insert(utilidades.TABLA_ROOM, utilidades.CAMPO_ID_ROOM, values);
+        Toast.makeText(context, "Id Room: " + idResultante, Toast.LENGTH_SHORT).show();
+        db.close();
     }
 }

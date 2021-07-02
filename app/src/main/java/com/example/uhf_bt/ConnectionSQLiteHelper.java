@@ -19,6 +19,37 @@ public class ConnectionSQLiteHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
+    public static void deleteRoomsData(SincronizarActivity context){
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS room;");
+        db.execSQL(utilidades.CREAR_TABLA_ROOM);
+    }
+    public static void deleteBuildingsData(SincronizarActivity context){
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS building;");
+        db.execSQL(utilidades.CREAR_TABLA_BUILDING);
+    }
+    public static void deleteUsersData(SincronizarActivity context) {
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS user;");
+        db.execSQL(utilidades.CREAR_TABLA_USUARIO);
+    }
+    public static void deleteUsersData(LoginActivity context) {
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS user;");
+        db.execSQL(utilidades.CREAR_TABLA_USUARIO);
+    }
+    public static void deleteStocksData(SincronizarActivity context) {
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS stock;");
+        db.execSQL(utilidades.CREAR_TABLA_STOCK);
+    }
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {

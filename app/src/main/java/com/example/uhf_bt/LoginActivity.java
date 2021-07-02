@@ -94,7 +94,6 @@ public class LoginActivity extends BaseActivity {
         actualizarDatos();
 
 
-
     }
 
     public void actualizarDatos() {
@@ -271,7 +270,6 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-
     private boolean estaEnUsuarioSQLite(String name, String pass) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
         SQLiteDatabase db = conn.getReadableDatabase();
@@ -360,24 +358,11 @@ public class LoginActivity extends BaseActivity {
 
 
     private void registroBuilding(String nombreEdificio) {
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(utilidades.CAMPO_BUILDING_NAME, nombreEdificio);
-        Long idResultante = db.insert(utilidades.TABLA_BUILDING, utilidades.CAMPO_ID_BUILDING, values);
-        Toast.makeText(this, "Id Building: " + idResultante, Toast.LENGTH_SHORT).show();
-        db.close();
+        Building.registroBuilding(nombreEdificio, this);
     }
 
     private void registroRoom(int fk_idBuilding, String nombreRoom) {
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(utilidades.CAMPO_ROOM_NAME, nombreRoom);
-        values.put(utilidades.CAMPO_FID_BUILDING, fk_idBuilding);
-        Long idResultante = db.insert(utilidades.TABLA_ROOM, utilidades.CAMPO_ID_ROOM, values);
-        Toast.makeText(this, "Id Room: " + idResultante, Toast.LENGTH_SHORT).show();
-        db.close();
+        Room.registroRoom(fk_idBuilding, nombreRoom, this);
     }
 
     // agrega un user a la base de datos SQLite desde el login
@@ -393,20 +378,10 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void registroUser(String nombre, String password) {
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(utilidades.CAMPO_NOMBRE, nombre);
-        values.put(utilidades.CAMPO_PASSWORD, password);
-        Long idResultante = db.insert(utilidades.TABLA_USUARIO, utilidades.CAMPO_ID_USER, values);
-        Toast.makeText(getApplicationContext(), "Id Registro: " + idResultante, Toast.LENGTH_SHORT).show();
-        db.close();
+        User.registroUser(nombre, password, this);
     }
-    public void deleteUsersData(){
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-        db.execSQL("DROP TABLE IF EXISTS user;");
-        db.execSQL(utilidades.CREAR_TABLA_USUARIO);
 
+    public void deleteUsersData() {
+        ConnectionSQLiteHelper.deleteUsersData(this);
     }
 }
