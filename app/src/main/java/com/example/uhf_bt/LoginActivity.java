@@ -128,7 +128,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void actualizarDatosRooms() {
-
+        Log.d("ROOM", "ENTRO");
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -139,11 +139,10 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onResponse(Call<List<Room>> call, Response<List<Room>> response) {
                 if (response.isSuccessful()) {
-                    //Log.d("RESPONSE->   ", String.valueOf(response.body()));
                     listRooms = response.body();
                     for (int i = 0; i < listRooms.size(); i++) {
                         Log.d("ROOM:", listRooms.get(i).toString());
-                        registroRoom(listRooms.get(i).getIdBuilding(), listRooms.get(i).getName());
+                        registroRoom(listRooms.get(i).getBuildingId(), listRooms.get(i).getName());
                     }
                 }
             }

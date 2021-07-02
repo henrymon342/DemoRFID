@@ -70,7 +70,7 @@ public class SincronizarActivity extends BaseActivity {
                     Building.registroBuilding(building.getName(), SincronizarActivity.this);
                 }
                 for (Room room : roomsArrayList) {
-                    Room.registroRoom(room.getIdBuilding(), room.getName(), SincronizarActivity.this);
+                    Room.registroRoom(room.getBuildingId(), room.getName(), SincronizarActivity.this);
                 }
                 for (User user : usersArrayList) {
                     User.registroUser(user.getName(), user.getClave(), SincronizarActivity.this);

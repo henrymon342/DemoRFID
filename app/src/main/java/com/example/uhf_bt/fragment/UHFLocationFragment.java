@@ -76,6 +76,7 @@ public class UHFLocationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.fragment_uhflocation, container, false);
     }
     @Override
@@ -87,6 +88,7 @@ public class UHFLocationFragment extends Fragment {
         progressBar1 = (ProgressBar) mContext.findViewById(R.id.progressBar1);
 
         progressBar1.setMax(100);
+        progressBar1.setProgress(0);
 
         Log.d(TAG, " ACTIVIDAD BUSCADA: "+ ((Object)mContext).getClass().getSimpleName());
         etEPC=mContext.findViewById(R.id.etEPC);
@@ -132,11 +134,9 @@ public class UHFLocationFragment extends Fragment {
     }
 
     private void startLocation(){
-
         new Thread(new Runnable() {
             @Override
             public void run() {
-
                 for (int i = 0; i < 50; i++) {
 
                     try {
@@ -145,31 +145,20 @@ public class UHFLocationFragment extends Fragment {
                         e.printStackTrace();
                     }
 
-
-
-                        valorX = inventory();
-
-
-
+                    valorX = inventory();
                     getActivity().runOnUiThread(new Runnable(){
                         @Override
                         public void run(){
-
                             Log.d("VALORX", String.valueOf(valorX));
-                            progressBar1.setProgress((int) valorX);
-
+                            int valorProgress = valorEnProgress(valorX);
+                            progressBar1.setProgress(valorProgress);
                         }
                     });
-
-
-
-
-
 
                     Log.d(TAG, "run: "+" contando");
                 }
                 Log.d(TAG, "run: "+" terminado!!!");
-
+                progressBar1.setProgress(0);
                 // PARA CAMBIAR LA INTERFAZ
 
             }
@@ -177,13 +166,45 @@ public class UHFLocationFragment extends Fragment {
 
     }
 
-   public void stopLocation(){
+    private int valorEnProgress(long valorX) {
+
+        int valor = (int) valorX;
+        int asombroso = 100;
+        int muy_bueno = 80;
+        int de_acuerdo = 60;
+        int no_es_bueno = 40;
+        int inutilizable= 0;
+
+        if(valor > 29 && valor < 67){
+            Utils.playSound(1);
+            Utils.playSound(1);
+            Utils.playSound(1);
+            return asombroso;
+        }else if(valor > 66 && valor < 71){
+            Utils.playSound(1);
+            Utils.playSound(1);
+            return muy_bueno;
+        }else if(valor > 70 && valor < 81){
+            Utils.playSound(1);
+            return de_acuerdo;
+        }else if(valor > 80 && valor < 91){
+            Utils.playSound(1);
+            return no_es_bueno;
+        }else if(valor > 90 ){
+            return inutilizable;
+        }
+
+        return -1;
+    }
+
+    public void stopLocation(){
 
 
        stopInventory();
        mContext.uhf.stopLocation();
        btStart.setEnabled(true);
        etEPC.setEnabled(true);
+       progressBar1.setProgress(0);
    }
 
 
@@ -232,13 +253,11 @@ public class UHFLocationFragment extends Fragment {
             Message msg = handler.obtainMessage(FLAG_UHFINFO);
             msg.obj = info;
             //listAux.add(info);
-
             if(info.getEPC().equals(etEPC.getText().toString())){
                 Log.d(TAG, " ENCONTRADO...");
-                Utils.playSound(1);
+
                 rssiValue = Long.parseLong(info.getRssi().substring(0, 3))*(-1);
                 Log.d("VALOR", rssiValue.toString());
-
             }
 
             Log.d("BUSQUEDA", info.getEPC());

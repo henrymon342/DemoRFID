@@ -18,16 +18,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Room {
 
     private int id;
     private String name;
-    private int idBuilding;
+    private int buildingId;
 
     public static ArrayList<Room> getRooms(MainActivity mContext) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(mContext, "bdUser", null, 1);
@@ -40,10 +42,10 @@ public class Room {
                 ROOM = new Room();
                 ROOM.setId(cursor.getInt(0));
                 ROOM.setName(cursor.getString(1));
-                ROOM.setIdBuilding(cursor.getInt(2));
+                ROOM.setBuildingId(cursor.getInt(2));
                 Log.d("Room id", ROOM.getId() + " ");
                 Log.d("Room Name", ROOM.getName());
-                Log.d("Room fkBuildingId ", ROOM.getIdBuilding() + "");
+                Log.d("Room fkBuildingId ", ROOM.getBuildingId() + "");
                 roomList.add(ROOM);
             }
             cursor.close();
