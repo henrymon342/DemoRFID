@@ -2,7 +2,6 @@ package com.example.uhf_bt.fragment;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,47 +17,34 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-
 import android.widget.EditText;
 import android.widget.ListView;
-
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 import com.example.Models.Building;
 import com.example.Models.Room;
+import com.example.Models.Stock;
 import com.example.Models.User;
-
 import com.example.uhf_bt.ConnectionSQLiteHelper;
-
 import com.example.uhf_bt.MainActivity;
 import com.example.uhf_bt.NumberTool;
 import com.example.uhf_bt.R;
 import com.example.uhf_bt.Utilidades.GLOBAL;
 import com.example.uhf_bt.Utilidades.utilidades;
 import com.example.uhf_bt.Utils;
-
 import com.jaredrummler.materialspinner.MaterialSpinner;
-
 import com.rscja.deviceapi.entity.UHFTAGInfo;
 import com.rscja.deviceapi.interfaces.ConnectionStatus;
 import com.rscja.deviceapi.interfaces.KeyEventCallback;
-
 import java.io.File;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
 import java.util.Timer;
 import java.util.TimerTask;
-
 import androidx.fragment.app.Fragment;
-
 import static java.lang.String.valueOf;
 
 
@@ -275,20 +260,35 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         View view = inflater.inflate(R.layout.fragment_uhfread_tag, container, false);
 
 
+
         listUs = new ArrayList<User>();
         //actualizarUsuariosEnSQLite();
 
         initFilter(view);
         return view;
     }
+    public void getBuildings() {
+        buildingList = new ArrayList<>(Building.getBuildings(mContext));
+    }
+    public void getRooms() {
+        roomList = new ArrayList<>(Room.getRooms(mContext));
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         Log.i(TAG, "UHFReadTagFragment.onActivityCreated");
         super.onActivityCreated(savedInstanceState);
-
         lastIndex = -1;
         mContext = (MainActivity) getActivity();
+        getBuildings();
+        getRooms();
+        // Llenado de Names for Building and Room
+        for (Building building:buildingList) {
+            buildingNames.add(building.getName());
+        }
+        for (Room room:roomList) {
+            roomNames.add(room.getName());
+        }
         init();
         selectIndex = -1;
         mContext.selectEPC = null;
@@ -396,8 +396,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             Log.d("INVENTARIO", the_epc);
             Log.d("INVENTARIO", the_tid);
             Log.d("INVENTARIO", tag_count);
-            hacerInventario(tag_count, the_epc, the_tid, id_foranea);
-
+            Stock.registroStock(the_epc,the_tid,"--","--","--","--",mContext);
         }
 
 
@@ -488,7 +487,6 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     private void initFilter(View view) {
         layout_filter = (ViewGroup) view.findViewById(R.id.layout_filter);
 
-
         final EditText etLen = (EditText) view.findViewById(R.id.etLen);
         final EditText etPtr = (EditText) view.findViewById(R.id.etPtr);
         final EditText etData = (EditText) view.findViewById(R.id.etData);
@@ -507,6 +505,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         //spinnerU.setItems("Choose");
 
 
+
         adapterE = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, buildingNames);
         adapterU = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, roomNames);
         adapterE.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -518,7 +517,6 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                 if (position != -1) {
                     String selected = (String) spinnerE.getItems().get(position);
                     Toast.makeText(mContext, selected, Toast.LENGTH_SHORT).show();
-
                     chooseRoom(position);
                 }
             }
@@ -543,15 +541,16 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     }
 
     private void initListasUbicacion() {
-        /*
-        for (int i = 0; i < 10; i++) {
+
+        /*for (int i = 0; i < 10; i++) {
             buildingNames.add(i+"");
             roomNames.add(10-i+"");
-        }
-         */
+        }*/
+
         //Log.d("CONTEXTO", String.valueOf(mContext));
-        getRoomSQLite();
-        getBuildingSQLite();
+
+       // this.getBuildings();
+       // this.getRooms();
     }
 
 
@@ -932,7 +931,6 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
     }
 
-
     private void addToListNombresBuilding(String name) {
         buildingNames.add(name);
         String aux = "";
@@ -942,141 +940,4 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         //Toast.makeText(mContext, aux, Toast.LENGTH_SHORT).show();
     }
 
-    /*CORREGIR METODO*/
-    private void hacerInventario(String count, String epc, String tid, int fid) {
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(mContext, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(utilidades.CAMPO_EPC_STOCK, "****************epc");
-        values.put(utilidades.CAMPO_TID_STOCK, "****************tid");
-        values.put(utilidades.CAMPO_USER_MEMORY_STOCK, "********memory");
-        values.put(utilidades.CAMPO_DESCRIPCION_STOCK, "********descripcion");
-        values.put(utilidades.CAMPO_LAST_SCAN_STOCK, "**********last scan");
-        values.put(utilidades.CAMPO_FK_ROOM_STOCK, "************llave foranea room");
-        Long idResultante = db.insert(utilidades.TABLA_STOCK, utilidades.CAMPO_FK_ROOM_STOCK, values);
-        Toast.makeText(mContext, "Id Registro: " + idResultante, Toast.LENGTH_SHORT).show();
-        db.close();
-    }
-
-    private boolean estaEnUsuarioSQLite() {
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(mContext, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getReadableDatabase();
-        String[] parametros = {"1"};
-        String[] campos = {utilidades.CAMPO_TID_STOCK, utilidades.CAMPO_EPC_STOCK};
-        String resTid = "";
-        String resCount = "";
-        try {
-            Cursor cursor = db.query(utilidades.TABLA_STOCK, campos, utilidades.CAMPO_FK_ROOM_STOCK + "=?", parametros, null, null, null);
-            cursor.moveToFirst();
-            resTid = cursor.getString(0);
-            resCount = cursor.getString(1);
-            Log.d("TID inventario", resTid);
-            Log.d("COUNT inventario", resCount);
-            cursor.close();
-            db.close();
-            return true;
-        } catch (Exception e) {
-            Log.d("INVENTARIO", e.getMessage());
-            db.close();
-        }
-        return false;
-    }
-
-    private void registrarInventarioSQLite() {
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(mContext, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(utilidades.CAMPO_EPC_STOCK, "11111113");
-        values.put(utilidades.CAMPO_TID_STOCK, "34567890");
-        values.put(utilidades.CAMPO_USER_MEMORY_STOCK, "45");
-        values.put(utilidades.CAMPO_DESCRIPCION_STOCK, "teclado");
-        values.put(utilidades.CAMPO_LAST_SCAN_STOCK, "19/02/2021");
-        values.put(utilidades.CAMPO_FK_ROOM_STOCK, 1);
-        Long idResultante = db.insert(utilidades.TABLA_STOCK, utilidades.CAMPO_FK_ROOM_STOCK, values);
-        Toast.makeText(mContext, "Id Rfid: " + idResultante, Toast.LENGTH_SHORT).show();
-        db.close();
-    }
-
-    private void registroBuilding() {
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(mContext, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(utilidades.CAMPO_BUILDING_NAME, "edificio 2");
-        Long idResultante = db.insert(utilidades.TABLA_BUILDING, utilidades.CAMPO_ID_BUILDING, values);
-        Toast.makeText(mContext, "Id Building: " + idResultante, Toast.LENGTH_SHORT).show();
-        db.close();
-    }
-
-    private void registroRoom() {
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(mContext, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(utilidades.CAMPO_ROOM_NAME, "room 3");
-        values.put(utilidades.CAMPO_FID_BUILDING, 2);
-        Long idResultante = db.insert(utilidades.TABLA_ROOM, utilidades.CAMPO_ID_ROOM, values);
-        Toast.makeText(mContext, "Id Room: " + idResultante, Toast.LENGTH_SHORT).show();
-        db.close();
-    }
-
-    private boolean getBuildingSQLite() {
-        buildingList = new ArrayList<Building>();
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(mContext, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getReadableDatabase();
-        Building BUILDING;
-        try {
-            Cursor cursor = db.rawQuery("select * from " + utilidades.TABLA_BUILDING, null);
-            while (cursor.moveToNext()) {
-                BUILDING = new Building();
-                BUILDING.setId(Integer.parseInt(cursor.getString(0)));
-                BUILDING.setName(cursor.getString(1));
-                Log.d("id ", BUILDING.getId() + " ");
-                Log.d("nameRoom ", BUILDING.getName());
-                buildingList.add(BUILDING);
-                buildingNames.add(BUILDING.getName());
-            }
-            cursor.close();
-            db.close();
-            return true;
-        } catch (Exception e) {
-            db.close();
-        }
-        return false;
-    }
-
-    private boolean getRoomSQLite() {
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(mContext, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getReadableDatabase();
-        Room ROOM;
-        roomList = new ArrayList<Room>();
-        try {
-            Cursor cursor = db.rawQuery("select * from " + utilidades.TABLA_ROOM, null);
-            while (cursor.moveToNext()) {
-                ROOM = new Room();
-                ROOM.setId(cursor.getString(0));
-                ROOM.setName(cursor.getString(1));
-                ROOM.setIdBuilding(Integer.parseInt(cursor.getString(2)));
-                Log.d("id ", ROOM.getId() + " ");
-                Log.d("nameBuilding ", ROOM.getName());
-                Log.d("fid ", ROOM.getIdBuilding() + "");
-                roomList.add(ROOM);
-                roomNames.add(ROOM.getName());
-            }
-            cursor.close();
-            db.close();
-            return true;
-        } catch (Exception e) {
-            db.close();
-        }
-        return false;
-    }
-
-    public ArrayList<Building> getBuildings() {
-        buildingList = new ArrayList<>(Building.getBuildings(mContext));
-        return buildingList;
-    }
-
-    public ArrayList<Room> getRooms() {
-        roomList = new ArrayList<>(Room.getRooms(mContext));
-        return roomList;
-    }
 }

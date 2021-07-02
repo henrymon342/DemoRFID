@@ -34,12 +34,12 @@ public class Building {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(mContext, "bdUser", null, 1);
         SQLiteDatabase db = conn.getReadableDatabase();
         Building BUILDING;
-        ArrayList<Building> buildingList = new ArrayList<Building>();
+        ArrayList<Building> buildingList = new ArrayList<>();
         try {
             Cursor cursor = db.rawQuery("select * from " + utilidades.TABLA_BUILDING, null);
             while (cursor.moveToNext()) {
                 BUILDING = new Building();
-                BUILDING.setId(Integer.parseInt(cursor.getString(0)));
+                BUILDING.setId(cursor.getInt(0));
                 BUILDING.setName(cursor.getString(1));
                 Log.d("Building Id", BUILDING.getId() + " ");
                 Log.d("Building Name", BUILDING.getName());

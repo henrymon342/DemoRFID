@@ -41,7 +41,7 @@ public class SincronizarActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 // Preparamos el array para enviarlo a la BD .NET
-                asignacionLectorsArrayList = new ArrayList<>(AsignacionLector.getAsignacionLector(SincronizarActivity.this));
+                // PARA BORRAR asignacionLectorsArrayList = new ArrayList<>(AsignacionLector.getAsignacionLector(SincronizarActivity.this));
                 /*
                 Enviamos el array
                  */
@@ -56,7 +56,7 @@ public class SincronizarActivity extends BaseActivity {
                 buildingsArrayList =
                 roomsArrayList =
                 usersArrayList =
-                asignacionLectorArrayList =
+                stocksArrayList =
             */
 
                 // Vaciamos la base de datos SQLite

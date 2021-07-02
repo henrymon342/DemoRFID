@@ -25,7 +25,7 @@ import lombok.Setter;
 @Setter
 public class Room {
 
-    private String id;
+    private int id;
     private String name;
     private int idBuilding;
 
@@ -33,14 +33,14 @@ public class Room {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(mContext, "bdUser", null, 1);
         SQLiteDatabase db = conn.getReadableDatabase();
         Room ROOM;
-        ArrayList<Room> roomList = new ArrayList<Room>();
+        ArrayList<Room> roomList = new ArrayList<>();
         try {
             Cursor cursor = db.rawQuery("select * from " + utilidades.TABLA_ROOM, null);
             while (cursor.moveToNext()) {
                 ROOM = new Room();
-                ROOM.setId(cursor.getString(0));
+                ROOM.setId(cursor.getInt(0));
                 ROOM.setName(cursor.getString(1));
-                ROOM.setIdBuilding(Integer.parseInt(cursor.getString(2)));
+                ROOM.setIdBuilding(cursor.getInt(2));
                 Log.d("Room id", ROOM.getId() + " ");
                 Log.d("Room Name", ROOM.getName());
                 Log.d("Room fkBuildingId ", ROOM.getIdBuilding() + "");
@@ -67,6 +67,7 @@ public class Room {
         Toast.makeText(context, "Id Room: " + idResultante, Toast.LENGTH_SHORT).show();
         db.close();
     }
+
     // method for SincronizarActivity
     public static void registroRoom(int fk_idBuilding, String nombreRoom, SincronizarActivity context) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);

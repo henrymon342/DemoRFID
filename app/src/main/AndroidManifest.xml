@@ -46,12 +46,6 @@
             android:name=".PrincipalActivity">
         </activity>
         <activity
-            android:name=".CheckIn">
-        </activity>
-        <activity
-            android:name=".CheckOut">
-        </activity>
-        <activity
             android:name=".StartActivity" />
         <activity
             android:name=".DeviceListActivity"

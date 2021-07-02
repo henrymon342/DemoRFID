@@ -66,7 +66,6 @@ public class LoginActivity extends BaseActivity {
         btn_login = (Button) findViewById(R.id.btn_login);
         btn_registro = (Button) findViewById(R.id.btn_registro);
         btn_sqlite = (Button) findViewById(R.id.btn_sqlite);
-
         btn_registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,8 +91,14 @@ public class LoginActivity extends BaseActivity {
         buildingInterface = APIUtils.getBuildings();
         roomInterface = APIUtils.getRooms();
         actualizarDatos();
+        /*
+        Building.registroBuilding("las torres",this);
+        Building.registroBuilding("las gemelas",this);
 
-
+        Room.registroRoom(1,"room descanso",this);
+        Room.registroRoom(1,"room patio",this);
+        Room.registroRoom(2,"room juegos",this);
+        */
     }
 
     public void actualizarDatos() {

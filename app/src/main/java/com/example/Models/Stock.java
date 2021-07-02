@@ -73,4 +73,17 @@ public class Stock {
         db.insert(utilidades.TABLA_STOCK, utilidades.CAMPO_ID_STOCK, values);
         db.close();
     }
+    public static void registroStock(String epc, String tid, String userMemory, String description, String lastScan, String idRoom, MainActivity context) {
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(utilidades.CAMPO_EPC_STOCK, epc);
+        values.put(utilidades.CAMPO_TID_STOCK, tid);
+        values.put(utilidades.CAMPO_USER_MEMORY_STOCK, userMemory);
+        values.put(utilidades.CAMPO_DESCRIPCION_STOCK, description);
+        values.put(utilidades.CAMPO_LAST_SCAN_STOCK, lastScan);
+        values.put(utilidades.CAMPO_FK_ROOM_STOCK, idRoom);
+        db.insert(utilidades.TABLA_STOCK, utilidades.CAMPO_ID_STOCK, values);
+        db.close();
+    }
 }
