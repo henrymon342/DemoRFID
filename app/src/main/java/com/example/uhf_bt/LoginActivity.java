@@ -70,6 +70,7 @@ public class LoginActivity extends BaseActivity {
         btn_registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //deleteUsersData();
                 actualizarDatosUsuarioDeDotNet();
             }
         });
@@ -400,5 +401,12 @@ public class LoginActivity extends BaseActivity {
         Long idResultante = db.insert(utilidades.TABLA_USUARIO, utilidades.CAMPO_ID_USER, values);
         Toast.makeText(getApplicationContext(), "Id Registro: " + idResultante, Toast.LENGTH_SHORT).show();
         db.close();
+    }
+    public void deleteUsersData(){
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS user;");
+        db.execSQL(utilidades.CREAR_TABLA_USUARIO);
+
     }
 }

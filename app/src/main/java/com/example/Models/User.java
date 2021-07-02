@@ -1,5 +1,8 @@
 package com.example.Models;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +14,7 @@ import lombok.Setter;
 @Setter
 public class User {
 
-    private  int id;
+    private int id;
     private String name;
     private String clave;
 
@@ -24,5 +27,14 @@ public class User {
                 ", clave='" + clave + '\'' +
                 '}';
     }
+
+    public static boolean contains(ArrayList<User> users, int id) {
+        for (User user : users) {
+            if (user.id==id)
+                return true;
+        }
+        return false;
+    }
+
 
 }
