@@ -53,7 +53,6 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
     boolean swbusqueda = false;
 
-    //private final String URL = "http://f2923df27d8e.ngrok.io/";
     private final String URL = GLOBAL.URL;
 
 
@@ -68,6 +67,8 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     MaterialSpinner spinnerU;
     ArrayAdapter<String> adapterE;
     ArrayAdapter<String> adapterU;
+
+    String currentRoomName = "";
 
 
     private String TAG = "UHFReadTagFragment";
@@ -519,7 +520,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                 if (position != -1) {
                     String selected = (String) spinnerE.getItems().get(position);
                     Toast.makeText(mContext, selected, Toast.LENGTH_SHORT).show();
-                    chooseRoom(position);
+                    chooseRoom(selected);
                 }
             }
         });
@@ -537,9 +538,10 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         });
     }
 
-    private void chooseRoom(int item) {
-        Log.d("OBB", buildingNames.get(item));
-        Log.d("OBB", buildingNames.get(item));
+    private void chooseRoom(String item) {
+        //Log.d("OBB", buildingNames.get(item));
+        //Log.d("OBB", buildingNames.get(item));
+        currentRoomName = item;
     }
 
     private void initListasUbicacion() {
