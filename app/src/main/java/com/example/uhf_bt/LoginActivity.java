@@ -41,7 +41,6 @@ import com.example.uhf_bt.Utilidades.GLOBAL;
 @Slf4j
 public class LoginActivity extends BaseActivity {
 
-    //final String URL = "http://a2a256f3b766.ngrok.io";
     final String URL = GLOBAL.URL;
     LogeoInterface userService;
     BuildingInterface buildingInterface;
@@ -54,6 +53,8 @@ public class LoginActivity extends BaseActivity {
     private Boolean swUpdate = false;
     private Button btn_login, btn_registro, btn_sqlite;
     private TextView nombre, password;
+
+    private Retrofit retrofit;
 
     @TargetApi(Build.VERSION_CODES.GINGERBREAD_MR1)
     @Override
@@ -129,10 +130,7 @@ public class LoginActivity extends BaseActivity {
 
     private void actualizarDatosRooms() {
         Log.d("ROOM", "ENTRO");
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        retrofit = this.construirRetrofit();
         RoomInterface roomInterface = retrofit.create(RoomInterface.class);
         Call<List<Room>> call = roomInterface.getRooms();
         call.enqueue(new Callback<List<Room>>() {
@@ -157,10 +155,7 @@ public class LoginActivity extends BaseActivity {
 
 
     private void actualizarDatosUuarios() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        retrofit = this.construirRetrofit();
         LogeoInterface userService = retrofit.create(LogeoInterface.class);
         Call<List<User>> call = userService.getUsers();
         call.enqueue(new Callback<List<User>>() {
@@ -195,10 +190,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void actualizarDatosBuildings() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        retrofit = this.construirRetrofit();
         BuildingInterface buildingService = retrofit.create(BuildingInterface.class);
         Call<List<Building>> call = buildingService.getBuildings();
         call.enqueue(new Callback<List<Building>>() {
@@ -303,10 +295,7 @@ public class LoginActivity extends BaseActivity {
     private void actualizarDatosUsuarioDeDotNet() {
 
         Log.d("URL", URL);
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        retrofit = this.construirRetrofit();
         LogeoInterface userService = retrofit.create(LogeoInterface.class);
         Call<List<User>> call = userService.getUsers();
         call.enqueue(new Callback<List<User>>() {
@@ -387,5 +376,12 @@ public class LoginActivity extends BaseActivity {
 
     public void deleteUsersData() {
         ConnectionSQLiteHelper.deleteUsersData(this);
+    }
+
+    public Retrofit construirRetrofit(){
+        return new Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
     }
 }

@@ -11,7 +11,7 @@ import retrofit2.http.GET;
 
 public interface BuildingInterface {
 
-    @GET("/api/Building")
+    @GET("/api/building")
     Call<List<Building>> getBuildings();
 
 }
