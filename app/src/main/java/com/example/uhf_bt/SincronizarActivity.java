@@ -34,7 +34,7 @@ public class SincronizarActivity extends BaseActivity {
     private ArrayList<Building> buildingsArrayList = new ArrayList<>();
     private ArrayList<Room> roomsArrayList = new ArrayList<>();
     private ArrayList<User> usersArrayList = new ArrayList<>();
-    private ArrayList<Stock> stocksArrayList;
+    private ArrayList<Stock> stocksArrayList=new ArrayList<>();
     private ArrayList<AsignacionLector> asignacionLectorsArrayList;
 
     private Retrofit retrofit;
@@ -73,15 +73,7 @@ public class SincronizarActivity extends BaseActivity {
                 getUsersDotNet();
                 getStocksDotNet();
                 getLectorsDotNet();
-
-            /*
-                llenar los arrays con info de la BD .NET
-
-                buildingsArrayList =
-                roomsArrayList =
-                usersArrayList =
-                stocksArrayList =
-            */
+                Log.d("contenido:", buildingsArrayList.size()+"");
 
                 // Vaciamos la base de datos SQLite
                 ConnectionSQLiteHelper.deleteBuildingsData(SincronizarActivity.this);
@@ -90,7 +82,7 @@ public class SincronizarActivity extends BaseActivity {
                 ConnectionSQLiteHelper.deleteUsersData(SincronizarActivity.this);
 
                 // Llenamos los datos en la base de datos SQLite
-                /*
+
                 for (Building building : buildingsArrayList) {
                     Building.registroBuilding(building.getName(), SincronizarActivity.this);
                 }
@@ -98,13 +90,13 @@ public class SincronizarActivity extends BaseActivity {
                     Room.registroRoom(room.getBuildingId(), room.getName(), SincronizarActivity.this);
                 }
                 for (User user : usersArrayList) {
+                    Log.d("usuario", "info "+ user.getName());
                     User.registroUser(user.getName(), user.getClave(), SincronizarActivity.this);
                 }
                 for (Stock stock : stocksArrayList) {
                     Stock.registroStock(stock.getEpc(), stock.getTid(), stock.getUserMemory(), stock.getDescription(), stock.getLastScanDate(), stock.getIdRoom(), SincronizarActivity.this);
                 }
 
-                 */
             }
         });
     }
@@ -179,6 +171,7 @@ public class SincronizarActivity extends BaseActivity {
                 if (response.isSuccessful()) {
                     Log.d("RESPONSE->   ", String.valueOf(response.body()));
                     roomsArrayList = new ArrayList<>(response.body());
+                    Log.d("USUARIO NUEVO",String.valueOf(roomsArrayList.get(0)));
                 }
             }
 
