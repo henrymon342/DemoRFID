@@ -14,7 +14,7 @@ import retrofit2.http.Path;
 
 public interface LogeoInterface {
 
-    @GET("/api/logueo")
+    @GET("/api/usuario")
     Call<List<User>> getUsers();
 
     @POST("/api/logueo")
