@@ -90,8 +90,8 @@ public class SincronizarActivity extends BaseActivity {
                     Room.registroRoom(room.getBuildingId(), room.getName(), SincronizarActivity.this);
                 }
                 for (User user : usersArrayList) {
-                    Log.d("usuario", "info "+ user.getName());
-                    User.registroUser(user.getName(), user.getClave(), SincronizarActivity.this);
+                    Log.d("usuario", "info "+ user.getNombre());
+                    User.registroUser(user.getNombre(), user.getClave(), SincronizarActivity.this);
                 }
                 for (Stock stock : stocksArrayList) {
                     Stock.registroStock(stock.getEpc(), stock.getTid(), stock.getUserMemory(), stock.getDescription(), stock.getLastScanDate(), stock.getIdRoom(), SincronizarActivity.this);

@@ -21,6 +21,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.Backend.APIUtils;
 import com.example.Models.Building;
 import com.example.Models.Room;
 import com.example.Models.Stock;
@@ -174,7 +176,8 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     private void addEPCToList(UHFTAGInfo uhftagInfo, boolean isRepeat) {
         if (!TextUtils.isEmpty(uhftagInfo.getEPC())) {
 
-            int index = checkIsExist(uhftagInfo.getEPC());
+            int index = APIUtils.checkIsExist(uhftagInfo.getEPC(), this.tempData);
+            //int index = checkIsExist(uhftagInfo.getEPC(), this.tempData);
 
             stringBuilder.setLength(0);
             stringBuilder.append("EPC:");
@@ -210,49 +213,6 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                 adapter.notifyDataSetChanged();
                 Utils.playSound(1);
             }
-        }
-    }
-
-    public int checkIsExist(String epc) {
-        if (TextUtils.isEmpty(epc)) {
-            return -1;
-        }
-        return binarySearch(tempData, epc);
-    }
-
-
-    static int binarySearch(List<String> array, String src) {
-        int left = 0;
-        int right = array.size() - 1;
-        // 这里必须是 <=
-        while (left <= right) {
-            if (compareString(array.get(left), src)) {
-                return left;
-            } else if (left != right) {
-                if (compareString(array.get(right), src))
-                    return right;
-            }
-            left++;
-            right--;
-        }
-        return -1;
-    }
-
-    static boolean compareString(String str1, String str2) {
-        if (str1.length() != str2.length()) {
-            return false;
-        } else if (str1.hashCode() != str2.hashCode()) {
-            return false;
-        } else {
-            char[] value1 = str1.toCharArray();
-            char[] value2 = str2.toCharArray();
-            int size = value1.length;
-            for (int k = 0; k < size; k++) {
-                if (value1[k] != value2[k]) {
-                    return false;
-                }
-            }
-            return true;
         }
     }
 

@@ -25,7 +25,7 @@ import lombok.Setter;
 public class User {
 
     private int id;
-    private String name;
+    private String nombre;
     private String clave;
 
 
@@ -33,7 +33,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + nombre + '\'' +
                 ", clave='" + clave + '\'' +
                 '}';
     }

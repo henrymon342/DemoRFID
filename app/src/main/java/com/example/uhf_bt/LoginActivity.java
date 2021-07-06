@@ -72,6 +72,7 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View v) {
                 //deleteUsersData();
                 actualizarDatosUsuarioDeDotNet();
+                //actualizarDatos();
             }
         });
         btn_login.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +92,7 @@ public class LoginActivity extends BaseActivity {
         userService = APIUtils.getUsers();
         buildingInterface = APIUtils.getBuildings();
         roomInterface = APIUtils.getRooms();
-        actualizarDatos();
+
         /*
         Building.registroBuilding("las torres",this);
         Building.registroBuilding("las gemelas",this);
@@ -162,10 +163,10 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if (response.isSuccessful()) {
-                    //Log.d("RESPONSE->   ", String.valueOf(response.body()));
+                    Log.d("RESPONSE->   ", String.valueOf(response.body()));
                     listUsers = response.body();
                     for (int i = 0; i < listUsers.size(); i++) {
-                        User aux = new User(listUsers.get(i).getId(), listUsers.get(i).getName(), listUsers.get(i).getClave());
+                        User aux = new User(listUsers.get(i).getId(), listUsers.get(i).getNombre(), listUsers.get(i).getClave());
                         Log.d("USUARIO:", aux.toString());
                         /*
                         if(verSiEstaEnSQLite(listUs.get(i).getId())== false){
@@ -244,10 +245,10 @@ public class LoginActivity extends BaseActivity {
                     listUsers = response.body();
 
                     for (int i = 0; i < listUsers.size(); i++) {
-                        Log.d("RESPUESTAAPIitem", listUsers.get(i).getName());
+                        Log.d("RESPUESTAAPIitem", listUsers.get(i).getNombre());
                         Log.d("RESPUESTAAPIitem", listUsers.get(i).getClave());
                         Log.d("RESPUESTAAPIitem", String.valueOf(listUsers.get(i).getId()));
-                        if (listUsers.get(i).getName().equals(correo) && listUsers.get(i).getClave().equals(password)) {
+                        if (listUsers.get(i).getNombre().equals(correo) && listUsers.get(i).getClave().equals(password)) {
                             //registrarUsuarioSQLite(listUs.get(i));
                             swGlobal = true;
                             break;
@@ -294,7 +295,10 @@ public class LoginActivity extends BaseActivity {
 
     private void actualizarDatosUsuarioDeDotNet() {
 
-        Log.d("URL", URL);
+        // aqui, vaciar tabla usuarios en BD Sqlite
+
+        deleteUsersData();
+
         retrofit = this.construirRetrofit();
         LogeoInterface userService = retrofit.create(LogeoInterface.class);
         Call<List<User>> call = userService.getUsers();
@@ -302,23 +306,13 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if (response.isSuccessful()) {
-                    Log.d("RESPONSE->   ", String.valueOf(response.body()));
+
                     listUsers = response.body();
                     for (int i = 0; i < listUsers.size(); i++) {
-                        Log.d("RESPUESTAAPIitem", listUsers.get(i).getName());
-                        Log.d("RESPUESTAAPIitem", listUsers.get(i).getClave());
-                        Log.d("RESPUESTAAPIitem", String.valueOf(listUsers.get(i).getId()));
-                        User aux = new User(listUsers.get(i).getId(), listUsers.get(i).getName(), listUsers.get(i).getClave());
-                        if (verSiEstaEnSQLite(listUsers.get(i).getId()) == false) {
-                            //registrarUsuarioSQLite(listUs.get(i));
-                            swUpdate = true;
-                        }
+                        Log.d("USUARIOS", listUsers.get(i).toString());
+
+                        registroUser(listUsers.get(i).getNombre(), listUsers.get(i).getClave());
                     }
-                }
-                if (swUpdate == true) {
-                    Toast.makeText(getApplicationContext(), "SE ACTUALIZO LA BD SQLITE", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "SQLITE NADA QUE ACTUALIZAR", Toast.LENGTH_SHORT).show();
                 }
             }
 
