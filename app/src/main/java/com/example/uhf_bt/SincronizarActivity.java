@@ -117,13 +117,19 @@ public class SincronizarActivity extends BaseActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void sendBDDotNet(ArrayList<Stock> stocksArrayList) {
-        Date myDate = new Date();
+
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String fecha = dtf.format(LocalDateTime.now());
         fecha = fecha.replace(" ","T");
         Log.d("FECHA", fecha);
-        com.example.uhf_bt.entidades.Stock s = new com.example.uhf_bt.entidades.Stock("epcPRUEBA", "tidPRUEBA", "descriptionPRUEBA", 1, " ", fecha);
-        enviarStock(s);
+        for (Stock var : stocksArrayList)
+        {
+            com.example.uhf_bt.entidades.Stock s = new com.example.uhf_bt.entidades.Stock( var.getEpc(), var.getTid(), var.getDescription(), Integer.parseInt(var.getIdRoom()), var.getUserMemory(), fecha);
+            enviarStock(s);
+        }
+
+        //com.example.uhf_bt.entidades.Stock s = new com.example.uhf_bt.entidades.Stock("epcPRUEBA", "tidPRUEBA", "descriptionPRUEBA", 1, " ", fecha);
+
         //2021-07-09 11:23:22
         //2021-07-02T18:22:07
     }

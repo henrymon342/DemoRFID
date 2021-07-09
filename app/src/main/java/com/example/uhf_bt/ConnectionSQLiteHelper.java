@@ -31,6 +31,18 @@ public class ConnectionSQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS building;");
         db.execSQL(utilidades.CREAR_TABLA_BUILDING);
     }
+    public static void deleteRoomsData(LoginActivity context){
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS room;");
+        db.execSQL(utilidades.CREAR_TABLA_ROOM);
+    }
+    public static void deleteBuildingsData(LoginActivity context){
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS building;");
+        db.execSQL(utilidades.CREAR_TABLA_BUILDING);
+    }
     public static void deleteUsersData(SincronizarActivity context) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();

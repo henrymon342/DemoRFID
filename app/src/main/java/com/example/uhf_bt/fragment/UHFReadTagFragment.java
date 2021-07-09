@@ -160,6 +160,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                     break;
                 case FLAG_UHFINFO:
                     UHFTAGInfo info = (UHFTAGInfo) msg.obj;
+                    Log.d("FLAGINFO", ((UHFTAGInfo) msg.obj).getEPC());
                     addEPCToList(info);
                     break;
             }
@@ -318,10 +319,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
             case R.id.btnGenerar:
                 guardarInventario();
-                mContext.seenvio = true;
-                mContext.btnseenvio.setVisibility(View.VISIBLE);
-                btnGenerar.setBackgroundColor(Color.DKGRAY);
-                btnGenerar.setTextColor(Color.WHITE);
+
                 //estaEnUsuarioSQLite();
                 break;
 
@@ -332,6 +330,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     private void guardarInventario() {
 
         if(validacionesPrevias()){
+            btnGenerar.setEnabled(true);
             return;
         }
 
@@ -367,6 +366,10 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             Stock.registroStock(the_epc,the_tid,"--","--",fechaScaneo,currentRoomId+"",mContext);
         }
 
+        mContext.seenvio = true;
+        mContext.btnseenvio.setVisibility(View.VISIBLE);
+        btnGenerar.setBackgroundColor(Color.DKGRAY);
+        btnGenerar.setTextColor(Color.WHITE);
 
     }
 
@@ -376,6 +379,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             return true;
         }
         if( tagList.size() == 0 ){
+            Toast.makeText(mContext, "debe tener almenos un registro", Toast.LENGTH_SHORT).show();
             return true;
         }
         return false;

@@ -106,6 +106,9 @@ public class LoginActivity extends BaseActivity {
     public void actualizarDatos() {
         if (verInternet()) {
             //actualizarDatosUuarios();
+            ConnectionSQLiteHelper.deleteRoomsData(this);
+            ConnectionSQLiteHelper.deleteBuildingsData(this);
+
             actualizarDatosBuildings();
             actualizarDatosRooms();
         } else {
