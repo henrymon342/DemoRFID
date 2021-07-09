@@ -105,7 +105,7 @@ public class LoginActivity extends BaseActivity {
 
     public void actualizarDatos() {
         if (verInternet()) {
-            actualizarDatosUuarios();
+            //actualizarDatosUuarios();
             actualizarDatosBuildings();
             actualizarDatosRooms();
         } else {
@@ -222,6 +222,8 @@ public class LoginActivity extends BaseActivity {
             nombre.setText("");
             password.setText("");
             estaEnSQLite = true;
+            // Actualizar los datos al momento de ingresar
+            actualizarDatos();
         }
         nombre.setText("");
         password.setText("");

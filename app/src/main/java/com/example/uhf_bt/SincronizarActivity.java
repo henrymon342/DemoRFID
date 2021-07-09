@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.example.Backend.APIUtils;
 import com.example.Interfaces.BuildingInterface;
 import com.example.Interfaces.LogeoInterface;
 import com.example.Interfaces.RoomInterface;
@@ -19,9 +21,14 @@ import com.example.Models.User;
 import com.example.uhf_bt.Utilidades.GLOBAL;
 
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.RequiresApi;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,6 +46,8 @@ public class SincronizarActivity extends BaseActivity {
 
     private Retrofit retrofit;
     BuildingInterface buildingInterface;
+    StockInterface stockInterface;
+    StockInterface userService;
 
     @TargetApi(Build.VERSION_CODES.GINGERBREAD_MR1)
     @Override
@@ -55,6 +64,7 @@ public class SincronizarActivity extends BaseActivity {
             }
         });
         btn_syncToDB.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 // Preparamos el array para enviarlo a la BD .NET
@@ -62,6 +72,8 @@ public class SincronizarActivity extends BaseActivity {
                 /*
                 Enviamos el array
                  */
+                stocksArrayList = Stock.getStocks(SincronizarActivity.this);
+                sendBDDotNet(stocksArrayList);
             }
         });
         btn_syncFromDB.setOnClickListener(new View.OnClickListener() {
@@ -97,6 +109,39 @@ public class SincronizarActivity extends BaseActivity {
                     Stock.registroStock(stock.getEpc(), stock.getTid(), stock.getUserMemory(), stock.getDescription(), stock.getLastScanDate(), stock.getIdRoom(), SincronizarActivity.this);
                 }
 
+            }
+        });
+
+        userService = APIUtils.getUserService();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void sendBDDotNet(ArrayList<Stock> stocksArrayList) {
+        Date myDate = new Date();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String fecha = dtf.format(LocalDateTime.now());
+        fecha = fecha.replace(" ","T");
+        Log.d("FECHA", fecha);
+        com.example.uhf_bt.entidades.Stock s = new com.example.uhf_bt.entidades.Stock("epcPRUEBA", "tidPRUEBA", "descriptionPRUEBA", 1, " ", fecha);
+        enviarStock(s);
+        //2021-07-09 11:23:22
+        //2021-07-02T18:22:07
+    }
+
+    public void enviarStock(com.example.uhf_bt.entidades.Stock u){
+        Call<com.example.uhf_bt.entidades.Stock> call = userService.createStock(u);
+        call.enqueue(new Callback<com.example.uhf_bt.entidades.Stock>() {
+            @Override
+            public void onResponse(Call<com.example.uhf_bt.entidades.Stock> call, Response<com.example.uhf_bt.entidades.Stock> response) {
+                if(response.isSuccessful()){
+                    Log.d("COSA", String.valueOf(response.body()));
+                    Toast.makeText(getApplicationContext(), "User created successfully!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<com.example.uhf_bt.entidades.Stock> call, Throwable t) {
+                Log.e("ERROR: ", t.getMessage());
             }
         });
     }

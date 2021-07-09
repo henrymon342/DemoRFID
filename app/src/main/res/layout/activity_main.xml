@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:text="sincronizar" />
+                android:text="no olvide sincronizar" />
 
             <LinearLayout
                 android:layout_width="match_parent"

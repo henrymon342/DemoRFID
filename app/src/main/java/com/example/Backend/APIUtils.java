@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.example.Interfaces.BuildingInterface;
 import com.example.Interfaces.LogeoInterface;
 import com.example.Interfaces.RoomInterface;
+import com.example.Interfaces.StockInterface;
 import com.example.uhf_bt.Utilidades.GLOBAL;
 
 import java.util.List;
@@ -18,9 +19,13 @@ public class APIUtils {
     public static final String API_URL = GLOBAL.URL;
 
 
-    public APIUtils(){
-
+    private APIUtils(){
     };
+
+
+    public static StockInterface getUserService(){
+        return RESTApiClient.getClient(API_URL).create(StockInterface.class);
+    }
 
     public static String getApiUrl() {
         return API_URL;

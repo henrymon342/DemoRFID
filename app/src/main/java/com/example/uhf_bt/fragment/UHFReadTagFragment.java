@@ -1,4 +1,4 @@
-package com.example.uhf_bt.fragment;
+    package com.example.uhf_bt.fragment;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -70,7 +70,8 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     ArrayAdapter<String> adapterE;
     ArrayAdapter<String> adapterU;
 
-    String currentRoomName = "";
+    int currentRoomId = -1;
+    int currentBuildingId = -1;
 
 
     private String TAG = "UHFReadTagFragment";
@@ -330,8 +331,11 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
     private void guardarInventario() {
 
+        if(validacionesPrevias()){
+            return;
+        }
 
-        // PEDIR DATOS A JORGE PARA ID BUILDING Y EL ID ROOM
+                // PEDIR DATOS A JORGE PARA ID BUILDING Y EL ID ROOM
 
 
         //DATOS PARA LA TABLA INVENTARIO
@@ -359,10 +363,22 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             Log.d("INVENTARIO", the_epc);
             Log.d("INVENTARIO", the_tid);
             Log.d("INVENTARIO", tag_count);
-            Stock.registroStock(the_epc,the_tid,"--","--","--","--",mContext);
+            Log.d("INVENTARIO", currentRoomId+"");
+            Stock.registroStock(the_epc,the_tid,"--","--",fechaScaneo,currentRoomId+"",mContext);
         }
 
 
+    }
+
+    private boolean validacionesPrevias() {
+        if(currentRoomId == -1 || currentBuildingId == -1){
+            Toast.makeText(mContext, "debe seleccionar una ubicación", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        if( tagList.size() == 0 ){
+            return true;
+        }
+        return false;
     }
 
     /*MODIFICAR CANTIDAD,FECHA ROOM*/
@@ -464,44 +480,58 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
         spinnerE = view.findViewById(R.id.spinnerE);
         spinnerU = view.findViewById(R.id.spinnerU);
-        //spinnerE.setItems("Choose");
-        //spinnerU.setItems("Choose");
 
 
+
+        //ArrayAdapter<Building> adapterEE =
+               // new ArrayAdapter<Building>(this.getContext(),  android.R.layout.simple_spinner_dropdown_item, buildingList);
+        //ArrayAdapter<Room> adapterU =
+               // new ArrayAdapter<Room>(this.getContext(),  android.R.layout.simple_spinner_dropdown_item, roomList);
 
         adapterE = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, buildingNames);
         adapterU = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, roomNames);
         adapterE.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerE.setAdapter(adapterE);
 
-        spinnerE.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+        /*spinnerE.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
                 if (position != -1) {
-                    String selected = (String) spinnerE.getItems().get(position);
-                    Toast.makeText(mContext, selected, Toast.LENGTH_SHORT).show();
-                    chooseRoom(selected);
+                    Building selected = (Building) spinnerE.getItems().get(position);
+                    Toast.makeText(mContext, selected.getId() + selected.getName() , Toast.LENGTH_SHORT).show();
+                    //chooseRoom(selected);
                 }
+            }
+        });
+         */
+        spinnerE.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+
+            @Override public void onItemSelected(MaterialSpinner view, int i, long id, String item) {
+                chooseBuilding(buildingList.get(i).getId());
+                Toast.makeText(mContext,  buildingList.get(i).getName() , Toast.LENGTH_SHORT).show();
             }
         });
         adapterU.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerU.setAdapter(adapterU);
 
-        spinnerU.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
-                if (position != -1) {
-                    String selected = (String) spinnerU.getItems().get(position);
-                    Toast.makeText(mContext, selected, Toast.LENGTH_SHORT).show();
-                }
+        spinnerU.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+
+            @Override public void onItemSelected(MaterialSpinner view, int i, long id, String item) {
+                Toast.makeText(mContext,  roomList.get(i).getName() , Toast.LENGTH_SHORT).show();
+                chooseRoom(roomList.get(i).getId());
             }
         });
     }
 
-    private void chooseRoom(String item) {
+    private void chooseBuilding(int id) {
+        currentBuildingId = id;
+    }
+
+    private void chooseRoom(int item) {
         //Log.d("OBB", buildingNames.get(item));
         //Log.d("OBB", buildingNames.get(item));
-        currentRoomName = item;
+        currentRoomId = item;
+        Log.d("SELECCIONADO ID ROOM  ", currentRoomId+"");
     }
 
     private void initListasUbicacion() {

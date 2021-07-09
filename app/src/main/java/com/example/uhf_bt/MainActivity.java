@@ -189,7 +189,7 @@ public class MainActivity extends BaseActivity{
     public void seEnvio() {
         if(this.seenvio){
             btnseenvio.setVisibility(View.INVISIBLE);
-            Toast.makeText(this, "SE ENVIO A LA BD .NET", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "SE ENVIO A LA BD .NET", Toast.LENGTH_SHORT).show();
             this.seenvio = false;
         }
     }

@@ -26,11 +26,18 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
+
 public class Building {
 
     private  int id;
     private String name;
+
+    @Override
+    public String toString() {
+        return "Building{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 
     public static ArrayList<Building> getBuildings(MainActivity mContext) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(mContext, "bdUser", null, 1);
