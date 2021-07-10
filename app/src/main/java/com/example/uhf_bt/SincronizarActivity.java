@@ -13,7 +13,7 @@ import com.example.Interfaces.BuildingInterface;
 import com.example.Interfaces.LogeoInterface;
 import com.example.Interfaces.RoomInterface;
 import com.example.Interfaces.StockInterface;
-import com.example.Models.AsignacionLector;
+import com.example.Models.AssignationLector;
 import com.example.Models.Building;
 import com.example.Models.Room;
 import com.example.Models.Stock;
@@ -21,11 +21,9 @@ import com.example.Models.User;
 import com.example.uhf_bt.Utilidades.GLOBAL;
 
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.RequiresApi;
@@ -42,7 +40,7 @@ public class SincronizarActivity extends BaseActivity {
     private ArrayList<Room> roomsArrayList = new ArrayList<>();
     private ArrayList<User> usersArrayList = new ArrayList<>();
     private ArrayList<Stock> stocksArrayList=new ArrayList<>();
-    private ArrayList<AsignacionLector> asignacionLectorsArrayList;
+    private ArrayList<AssignationLector> assignationLectorsArrayList;
 
     private Retrofit retrofit;
     BuildingInterface buildingInterface;

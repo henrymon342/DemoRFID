@@ -1,6 +1,7 @@
 package com.example.Models;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -31,7 +32,7 @@ public class Room {
     private String name;
     private int buildingId;
 
-    public static ArrayList<Room> getRooms(MainActivity mContext) {
+    public static ArrayList<Room> getRooms(Context mContext) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(mContext, "bdUser", null, 1);
         SQLiteDatabase db = conn.getReadableDatabase();
         Room ROOM;
@@ -58,20 +59,7 @@ public class Room {
         return roomList;
     }
 
-    // method for LoginActivity
-    public static void registroRoom(int fk_idBuilding, String nombreRoom, LoginActivity context) {
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(utilidades.ROOM_NAME, nombreRoom);
-        values.put(utilidades.ROOM_FK_BUILDING, fk_idBuilding);
-        Long idResultante = db.insert(utilidades.TABLA_ROOM, utilidades.ROOM_ID, values);
-        Toast.makeText(context, "Id Room: " + idResultante, Toast.LENGTH_SHORT).show();
-        db.close();
-    }
-
-    // method for SincronizarActivity
-    public static void registroRoom(int fk_idBuilding, String nombreRoom, SincronizarActivity context) {
+    public static void registroRoom(int fk_idBuilding, String nombreRoom, Context context) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();

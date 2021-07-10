@@ -1,12 +1,12 @@
 package com.example.Models;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.uhf_bt.ConnectionSQLiteHelper;
-import com.example.uhf_bt.MainActivity;
 import com.example.uhf_bt.SincronizarActivity;
 import com.example.uhf_bt.Utilidades.utilidades;
 
@@ -21,29 +21,29 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class AsignacionLector {
+public class AssignationLector {
 
-    private String id;
+    private int id;
     private String fechaInicio;
     private String fechaFin;
     private String idUsuario;
     private String idLector;
 
-    public static ArrayList<AsignacionLector> getAsignacionLector(SincronizarActivity mContext) {
+    public static ArrayList<AssignationLector> getAssignationLector(Context mContext) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(mContext, "bdUser", null, 1);
         SQLiteDatabase db = conn.getReadableDatabase();
-        AsignacionLector asignacionLector;
-        ArrayList<AsignacionLector> asignacionList = new ArrayList<AsignacionLector>();
+        AssignationLector assignationLector;
+        ArrayList<AssignationLector> asignacionList = new ArrayList<AssignationLector>();
         try {
             Cursor cursor = db.rawQuery("select * from " + utilidades.TABLA_ASSIGNATION_LECTOR, null);
             while (cursor.moveToNext()) {
-                asignacionLector = new AsignacionLector();
-                asignacionLector.setId(cursor.getString(0));
-                asignacionLector.setFechaInicio(cursor.getString(1));
-                asignacionLector.setFechaFin(cursor.getString(2));
-                asignacionLector.setIdUsuario(cursor.getString(3));
-                asignacionLector.setIdLector(cursor.getString(4));
-                asignacionList.add(asignacionLector);
+                assignationLector = new AssignationLector();
+                assignationLector.setId(Integer.parseInt(cursor.getString(0)));
+                assignationLector.setFechaInicio(cursor.getString(1));
+                assignationLector.setFechaFin(cursor.getString(2));
+                assignationLector.setIdUsuario(cursor.getString(3));
+                assignationLector.setIdLector(cursor.getString(4));
+                asignacionList.add(assignationLector);
             }
             cursor.close();
             db.close();
@@ -54,8 +54,7 @@ public class AsignacionLector {
         return asignacionList;
     }
 
-    // method for MainActivity
-    public static void registroAsignacionLector(String fechaInicio, String fechaFin,String fk_idUsuario,String fk_idLector,  MainActivity context) {
+    public static void registroAssignationLector(String fechaInicio, String fechaFin, String fk_idUsuario, String fk_idLector, Context context) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();

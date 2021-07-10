@@ -1,6 +1,8 @@
 package com.example.Models;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
@@ -36,19 +38,7 @@ public class User {
                 '}';
     }
 
-    // method for LoginActivity
-    public static void registroUser(String nombre, String password, LoginActivity context) {
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(utilidades.USER_NOMBRE, nombre);
-        values.put(utilidades.USER_PASSWORD, password);
-        Long idResultante = db.insert(utilidades.TABLA_USER, utilidades.USER_ID, values);
-        Toast.makeText(context, "Id Registro: " + idResultante, Toast.LENGTH_SHORT).show();
-        db.close();
-    }
-    // method for SincronizarActivity
-    public static void registroUser(String nombre, String password, SincronizarActivity context) {
+    public static void registroUser(String nombre, String password, Context context) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -61,11 +51,33 @@ public class User {
 
     public static boolean contains(ArrayList<User> users, int id) {
         for (User user : users) {
-            if (user.id==id)
+            if (user.id == id)
                 return true;
         }
         return false;
     }
 
+    public static boolean existeUser(String name, String pass, Context context) {
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getReadableDatabase();
+        String[] parametros = {name};
+        String[] campos = {utilidades.USER_NOMBRE, utilidades.USER_PASSWORD};
+        String resUser = "";
+        String resPass = "";
+        try {
+            Cursor cursor = db.query(utilidades.TABLA_USER, campos, utilidades.USER_NOMBRE + "=?", parametros, null, null, null);
+            cursor.moveToFirst();
+            resUser = cursor.getString(0);
+            resPass = cursor.getString(1);
+            cursor.close();
+            db.close();
+            if (resUser.equals(name) && resPass.equals(pass)) {
+                return true;
+            }
+        } catch (Exception e) {
+            db.close();
+        }
+        return false;
+    }
 
 }

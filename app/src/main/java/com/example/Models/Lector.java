@@ -1,6 +1,7 @@
 package com.example.Models;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.uhf_bt.ConnectionSQLiteHelper;
@@ -17,16 +18,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Lector {
-    private String id;
+    private int id;
     private String alias;
     private String marca;
     private String modelo;
     private String description;
     private String macAddress;
 
-
-    // method for MainActivity
-    public static void registroLector(String alias, String marca,String modelo,String description,String macAddress, MainActivity context) {
+    public static void registroLector(String alias, String marca,String modelo,String description,String macAddress, Context context) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();

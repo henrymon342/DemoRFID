@@ -2,6 +2,7 @@ package com.example.Models;
 
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -38,7 +39,7 @@ public class Building {
                 '}';
     }
 
-    public static ArrayList<Building> getBuildings(MainActivity mContext) {
+    public static ArrayList<Building> getBuildings(Context mContext) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(mContext, "bdUser", null, 1);
         SQLiteDatabase db = conn.getReadableDatabase();
         Building BUILDING;
@@ -62,16 +63,7 @@ public class Building {
         return buildingList;
     }
 
-    public static void registroBuilding(String nombreEdificio, LoginActivity context) {
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(utilidades.BUILDING_NAME, nombreEdificio);
-        Long idResultante = db.insert(utilidades.TABLA_BUILDING, utilidades.BUILDING_ID, values);
-        Toast.makeText(context, "Id Building: " + idResultante, Toast.LENGTH_SHORT).show();
-        db.close();
-    }
-    public static void registroBuilding(String nombreEdificio, SincronizarActivity context) {
+    public static void registroBuilding(String nombreEdificio, Context context) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();

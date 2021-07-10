@@ -63,10 +63,10 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.login);
         nombre = findViewById(R.id.nombre);
         password = findViewById(R.id.password);
-
         btn_login = (Button) findViewById(R.id.btn_login);
         btn_registro = (Button) findViewById(R.id.btn_registro);
         btn_sqlite = (Button) findViewById(R.id.btn_sqlite);
+
         btn_registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,38 +92,24 @@ public class LoginActivity extends BaseActivity {
         userService = APIUtils.getUsers();
         buildingInterface = APIUtils.getBuildings();
         roomInterface = APIUtils.getRooms();
-
-        /*
-        Building.registroBuilding("las torres",this);
-        Building.registroBuilding("las gemelas",this);
-
-        Room.registroRoom(1,"room descanso",this);
-        Room.registroRoom(1,"room patio",this);
-        Room.registroRoom(2,"room juegos",this);
-        */
     }
 
     public void actualizarDatos() {
         if (verInternet()) {
-            //actualizarDatosUuarios();
             ConnectionSQLiteHelper.deleteRoomsData(this);
             ConnectionSQLiteHelper.deleteBuildingsData(this);
-
             actualizarDatosBuildings();
             actualizarDatosRooms();
         } else {
             Toast.makeText(this, "NO HAY CONEXIÓN A INTERNET", Toast.LENGTH_LONG).show();
         }
-
     }
 
     private Boolean verInternet() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-
         if (networkInfo != null && networkInfo.isConnected()) {
             Log.d("MIAPP", "Estás online");
-
             Log.d("MIAPP", " Estado actual: " + networkInfo.getState());
             return true;
         } else {
@@ -133,7 +119,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void actualizarDatosRooms() {
-        Log.d("ROOM", "ENTRO");
         retrofit = this.construirRetrofit();
         RoomInterface roomInterface = retrofit.create(RoomInterface.class);
         Call<List<Room>> call = roomInterface.getRooms();
@@ -151,43 +136,6 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<List<Room>> call, Throwable t) {
-                Log.e("ERROR: ", t.getMessage());
-            }
-        });
-
-    }
-
-
-    private void actualizarDatosUuarios() {
-        retrofit = this.construirRetrofit();
-        LogeoInterface userService = retrofit.create(LogeoInterface.class);
-        Call<List<User>> call = userService.getUsers();
-        call.enqueue(new Callback<List<User>>() {
-            @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                if (response.isSuccessful()) {
-                    Log.d("RESPONSE->   ", String.valueOf(response.body()));
-                    listUsers = response.body();
-                    for (int i = 0; i < listUsers.size(); i++) {
-                        User aux = new User(listUsers.get(i).getId(), listUsers.get(i).getNombre(), listUsers.get(i).getClave());
-                        Log.d("USUARIO:", aux.toString());
-                        /*
-                        if(verSiEstaEnSQLite(listUs.get(i).getId())== false){
-                            registrarUsuarioSQLite(listUs.get(i));
-                            swUpdate = true;
-                        }
-                        */
-                    }
-                }
-                if (swUpdate == true) {
-                    Toast.makeText(getApplicationContext(), "SE ACTUALIZO LA BD SQLITE", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "SQLITE NADA QUE ACTUALIZAR", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
             }
         });
@@ -216,11 +164,10 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-
     public void logear() {
         Intent loginIntend = new Intent(this, PrincipalActivity.class);
         Boolean estaEnSQLite = false;
-        if (estaEnUsuarioSQLite(nombre.getText().toString(), password.getText().toString())) {
+        if (existeUserSQLite(nombre.getText().toString(), password.getText().toString())) {
             startActivity(loginIntend);
             nombre.setText("");
             password.setText("");
@@ -240,7 +187,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     private Boolean buscarBDDotNet(final String correo, final String password) {
-        Boolean sw = false;
         Call<List<User>> call = userService.getUsers();
         call.enqueue(new Callback<List<User>>() {
             @Override
@@ -248,7 +194,6 @@ public class LoginActivity extends BaseActivity {
                 if (response.isSuccessful()) {
                     Log.d("RESPONSE->   ", String.valueOf(response.body()));
                     listUsers = response.body();
-
                     for (int i = 0; i < listUsers.size(); i++) {
                         Log.d("RESPUESTAAPIitem", listUsers.get(i).getNombre());
                         Log.d("RESPUESTAAPIitem", listUsers.get(i).getClave());
@@ -271,39 +216,12 @@ public class LoginActivity extends BaseActivity {
         return swGlobal;
     }
 
-
-    private boolean estaEnUsuarioSQLite(String name, String pass) {
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getReadableDatabase();
-        String[] parametros = {name};
-        String[] campos = {utilidades.USER_NOMBRE, utilidades.USER_PASSWORD};
-        String resUser = "";
-        String resPass = "";
-        try {
-            Cursor cursor = db.query(utilidades.TABLA_USER, campos, utilidades.USER_NOMBRE + "=?", parametros, null, null, null);
-            cursor.moveToFirst();
-            resUser = cursor.getString(0);
-            resPass = cursor.getString(1);
-            Log.d("LOGEO user", resUser);
-            Log.d("LOGEO pass", resPass);
-            cursor.close();
-            db.close();
-            if (resUser.equals(name) && resPass.equals(pass)) {
-                return true;
-            }
-        } catch (Exception e) {
-            db.close();
-        }
-        return false;
+    private boolean existeUserSQLite(String name, String pass) {
+        return User.existeUser(name, pass, this);
     }
 
-
     private void actualizarDatosUsuarioDeDotNet() {
-
-        // aqui, vaciar tabla usuarios en BD Sqlite
-
         deleteUsersData();
-
         retrofit = this.construirRetrofit();
         LogeoInterface userService = retrofit.create(LogeoInterface.class);
         Call<List<User>> call = userService.getUsers();
@@ -311,7 +229,6 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if (response.isSuccessful()) {
-
                     listUsers = response.body();
                     for (int i = 0; i < listUsers.size(); i++) {
                         Log.d("USUARIOS", listUsers.get(i).toString());
@@ -327,27 +244,6 @@ public class LoginActivity extends BaseActivity {
             }
         });
     }
-
-    private boolean verSiEstaEnSQLite(int ide) {
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getReadableDatabase();
-
-        Cursor c = db.rawQuery("SELECT id FROM user ", null);
-        if (c.moveToFirst()) {
-            do {
-                String idd = c.getString(0);
-                if (idd.equals(String.valueOf(ide))) {
-                    Log.d("LORA->", "son iguales " + ide + " == " + idd);
-                    return true;
-                }
-
-            } while (c.moveToNext());
-        }
-        c.close();
-        db.close();
-        return false;
-    }
-
 
     private void registroBuilding(String nombreEdificio) {
         Building.registroBuilding(nombreEdificio, this);
@@ -377,7 +273,7 @@ public class LoginActivity extends BaseActivity {
         ConnectionSQLiteHelper.deleteUsersData(this);
     }
 
-    public Retrofit construirRetrofit(){
+    public Retrofit construirRetrofit() {
         return new Retrofit.Builder()
                 .baseUrl(URL)
                 .addConverterFactory(GsonConverterFactory.create())
