@@ -32,7 +32,7 @@ public class utilidades {
     public static final String LECTOR_DESCRIPTION = "description";
     public static final String LECTOR_MAC = "mac";
 
-    // ASIGNACION LECTOR
+    // ASSIGNATION LECTOR
     public static final String TABLA_ASSIGNATION_LECTOR = "assignation_lector";
     public static final String ASSIGNATION_ID = "id";
     public static final String ASSIGNATION_FECHA_INI = "fecha_ini";
@@ -87,8 +87,8 @@ public class utilidades {
             + LECTOR_DESCRIPTION + " TEXT, "
             + LECTOR_MAC + " TEXT)";
 
-    // CREAR ASIGNACION_LECTOR
-    public static final String CREAR_TABLA_ASIGNACION_LECTOR = "CREATE TABLE " + TABLA_ASSIGNATION_LECTOR + "("
+    // CREAR ASSIGNATION_LECTOR
+    public static final String CREAR_TABLA_ASSIGNATION_LECTOR = "CREATE TABLE " + TABLA_ASSIGNATION_LECTOR + "("
             + ASSIGNATION_ID + " INTEGER PRIMARY KEY, "
             + ASSIGNATION_FECHA_INI + " TEXT, "
             + ASSIGNATION_FECHA_FIN + " TEXT, "
@@ -98,7 +98,7 @@ public class utilidades {
             + "FOREIGN KEY (" + ASSIGNATION_FK_LECTOR + ") REFERENCES " + TABLA_LECTOR + " (" + LECTOR_ID + "))";
 
     // CREAR USUARIO
-    public static final String CREAR_TABLA_USUARIO = "CREATE TABLE " + TABLA_USER + "("
+    public static final String CREAR_TABLA_USER = "CREATE TABLE " + TABLA_USER + "("
             + USER_ID + " INTEGER PRIMARY KEY, "
             + USER_NOMBRE + " TEXT, "
             + USER_PASSWORD + " TEXT)";
