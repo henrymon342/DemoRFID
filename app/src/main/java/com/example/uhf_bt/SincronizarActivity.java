@@ -124,7 +124,8 @@ public class SincronizarActivity extends BaseActivity {
         Log.d("FECHA", fecha);
         for (Stock var : stocksArrayList)
         {
-            com.example.uhf_bt.entidades.Stock s = new com.example.uhf_bt.entidades.Stock( var.getEpc(), var.getTid(), var.getDescription(), Integer.parseInt(var.getIdRoom()), var.getUserMemory(), fecha);
+            Log.d("STOCKVAR", var.toString());
+            com.example.uhf_bt.entidades.Stock s = new com.example.uhf_bt.entidades.Stock( var.getEpc(),var.getTid(), var.getDescription(),Integer.parseInt(var.getIdRoom()),var.getUserMemory(), fecha);
             enviarStock(s);
         }
 

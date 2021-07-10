@@ -4,6 +4,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Stock {
+    @SerializedName("id")
+    @Expose
+    private int id;
     @SerializedName("epc")
     @Expose
     private String epc;

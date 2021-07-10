@@ -348,7 +348,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         String fechaScaneo = new SimpleDateFormat("dd-MM-yyyy").format(myDate);
         Log.d("FECHA", fechaScaneo);
 
-        int id_foranea = registrarInventarioSQLite(tag_total, fechaScaneo, "r");
+        //int id_foranea = registrarInventarioSQLite(tag_total, fechaScaneo, "r");
 
         //DATOS PARA LA TABLA TAG
         for (int i = 0; i < tagList.size(); i++) {
