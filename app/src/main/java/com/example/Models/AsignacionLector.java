@@ -35,7 +35,7 @@ public class AsignacionLector {
         AsignacionLector asignacionLector;
         ArrayList<AsignacionLector> asignacionList = new ArrayList<AsignacionLector>();
         try {
-            Cursor cursor = db.rawQuery("select * from " + utilidades.TABLA_ASIGNACION, null);
+            Cursor cursor = db.rawQuery("select * from " + utilidades.TABLA_ASSIGNATION_LECTOR, null);
             while (cursor.moveToNext()) {
                 asignacionLector = new AsignacionLector();
                 asignacionLector.setId(cursor.getString(0));
@@ -59,11 +59,11 @@ public class AsignacionLector {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(utilidades.CAMPO_FECHA_INI_ASIGNACION, fechaInicio);
-        values.put(utilidades.CAMPO_FECHA_FIN_ASIGNACION, fechaFin);
-        values.put(utilidades.CAMPO_FK_USUARIO_ASIGNACION, fk_idUsuario);
-        values.put(utilidades.CAMPO_FK_LECTOR_ASIGNACION, fk_idLector);
-        db.insert(utilidades.TABLA_ASIGNACION, utilidades.CAMPO_ID_ASIGNACION, values);
+        values.put(utilidades.ASSIGNATION_FECHA_INI, fechaInicio);
+        values.put(utilidades.ASSIGNATION_FECHA_FIN, fechaFin);
+        values.put(utilidades.ASSIGNATION_FK_USUARIO, fk_idUsuario);
+        values.put(utilidades.ASSIGNATION_FK_LECTOR, fk_idLector);
+        db.insert(utilidades.TABLA_ASSIGNATION_LECTOR, utilidades.ASSIGNATION_ID, values);
         db.close();
     }
 }

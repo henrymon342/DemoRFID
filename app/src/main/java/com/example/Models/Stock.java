@@ -4,15 +4,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.uhf_bt.ConnectionSQLiteHelper;
-import com.example.uhf_bt.LoginActivity;
 import com.example.uhf_bt.MainActivity;
 import com.example.uhf_bt.SincronizarActivity;
 import com.example.uhf_bt.Utilidades.utilidades;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
@@ -66,26 +62,26 @@ public class Stock {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(utilidades.CAMPO_EPC_STOCK, epc);
-        values.put(utilidades.CAMPO_TID_STOCK, tid);
-        values.put(utilidades.CAMPO_USER_MEMORY_STOCK, userMemory);
-        values.put(utilidades.CAMPO_DESCRIPCION_STOCK, description);
-        values.put(utilidades.CAMPO_LAST_SCAN_STOCK, lastScan);
-        values.put(utilidades.CAMPO_FK_ROOM_STOCK, idRoom);
-        db.insert(utilidades.TABLA_STOCK, utilidades.CAMPO_ID_STOCK, values);
+        values.put(utilidades.STOCK_EPC, epc);
+        values.put(utilidades.STOCK_TID, tid);
+        values.put(utilidades.STOCK_USER_MEMORY, userMemory);
+        values.put(utilidades.STOCK_DESCRIPTION, description);
+        values.put(utilidades.STOCK_LAST_SCAN, lastScan);
+        values.put(utilidades.STOCK_FK_ROOM, idRoom);
+        db.insert(utilidades.TABLA_STOCK, utilidades.STOCK_ID, values);
         db.close();
     }
     public static void registroStock(String epc, String tid, String userMemory, String description, String lastScan, String idRoom, MainActivity context) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(utilidades.CAMPO_EPC_STOCK, epc);
-        values.put(utilidades.CAMPO_TID_STOCK, tid);
-        values.put(utilidades.CAMPO_USER_MEMORY_STOCK, userMemory);
-        values.put(utilidades.CAMPO_DESCRIPCION_STOCK, description);
-        values.put(utilidades.CAMPO_LAST_SCAN_STOCK, lastScan);
-        values.put(utilidades.CAMPO_FK_ROOM_STOCK, idRoom);
-        db.insert(utilidades.TABLA_STOCK, utilidades.CAMPO_ID_STOCK, values);
+        values.put(utilidades.STOCK_EPC, epc);
+        values.put(utilidades.STOCK_TID, tid);
+        values.put(utilidades.STOCK_USER_MEMORY, userMemory);
+        values.put(utilidades.STOCK_DESCRIPTION, description);
+        values.put(utilidades.STOCK_LAST_SCAN, lastScan);
+        values.put(utilidades.STOCK_FK_ROOM, idRoom);
+        db.insert(utilidades.TABLA_STOCK, utilidades.STOCK_ID, values);
         db.close();
     }
 }

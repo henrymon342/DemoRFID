@@ -2,10 +2,8 @@ package com.example.Models;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.Toast;
 
 import com.example.uhf_bt.ConnectionSQLiteHelper;
-import com.example.uhf_bt.LoginActivity;
 import com.example.uhf_bt.MainActivity;
 import com.example.uhf_bt.Utilidades.utilidades;
 
@@ -32,12 +30,12 @@ public class Lector {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(utilidades.CAMPO_ALIAS_lECTOR, alias);
-        values.put(utilidades.CAMPO_MARCA_lECTOR, marca);
-        values.put(utilidades.CAMPO_MODELO_lECTOR, modelo);
-        values.put(utilidades.CAMPO_DESCRIPCION_lECTOR, description);
-        values.put(utilidades.CAMPO_MAC_lECTOR, macAddress);
-        db.insert(utilidades.TABLA_LECTOR, utilidades.CAMPO_ID_lECTOR, values);
+        values.put(utilidades.LECTOR_ALIAS, alias);
+        values.put(utilidades.LECTOR_MARCA, marca);
+        values.put(utilidades.LECTOR_MODELO, modelo);
+        values.put(utilidades.LECTOR_DESCRIPTION, description);
+        values.put(utilidades.LECTOR_MAC, macAddress);
+        db.insert(utilidades.TABLA_LECTOR, utilidades.LECTOR_ID, values);
         db.close();
     }
 }

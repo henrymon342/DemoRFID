@@ -1,7 +1,6 @@
 package com.example.Models;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
@@ -11,7 +10,6 @@ import com.example.uhf_bt.SincronizarActivity;
 import com.example.uhf_bt.Utilidades.utilidades;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,9 +41,9 @@ public class User {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(utilidades.CAMPO_NOMBRE, nombre);
-        values.put(utilidades.CAMPO_PASSWORD, password);
-        Long idResultante = db.insert(utilidades.TABLA_USUARIO, utilidades.CAMPO_ID_USER, values);
+        values.put(utilidades.USER_NOMBRE, nombre);
+        values.put(utilidades.USER_PASSWORD, password);
+        Long idResultante = db.insert(utilidades.TABLA_USER, utilidades.USER_ID, values);
         Toast.makeText(context, "Id Registro: " + idResultante, Toast.LENGTH_SHORT).show();
         db.close();
     }
@@ -54,9 +52,9 @@ public class User {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(utilidades.CAMPO_NOMBRE, nombre);
-        values.put(utilidades.CAMPO_PASSWORD, password);
-        Long idResultante = db.insert(utilidades.TABLA_USUARIO, utilidades.CAMPO_ID_USER, values);
+        values.put(utilidades.USER_NOMBRE, nombre);
+        values.put(utilidades.USER_PASSWORD, password);
+        Long idResultante = db.insert(utilidades.TABLA_USER, utilidades.USER_ID, values);
         Toast.makeText(context, "Id Registro: " + idResultante, Toast.LENGTH_SHORT).show();
         db.close();
     }

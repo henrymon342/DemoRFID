@@ -276,11 +276,11 @@ public class LoginActivity extends BaseActivity {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
         SQLiteDatabase db = conn.getReadableDatabase();
         String[] parametros = {name};
-        String[] campos = {utilidades.CAMPO_NOMBRE, utilidades.CAMPO_PASSWORD};
+        String[] campos = {utilidades.USER_NOMBRE, utilidades.USER_PASSWORD};
         String resUser = "";
         String resPass = "";
         try {
-            Cursor cursor = db.query(utilidades.TABLA_USUARIO, campos, utilidades.CAMPO_NOMBRE + "=?", parametros, null, null, null);
+            Cursor cursor = db.query(utilidades.TABLA_USER, campos, utilidades.USER_NOMBRE + "=?", parametros, null, null, null);
             cursor.moveToFirst();
             resUser = cursor.getString(0);
             resPass = cursor.getString(1);
@@ -362,9 +362,9 @@ public class LoginActivity extends BaseActivity {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(utilidades.CAMPO_NOMBRE, nombre.getText().toString());
-        values.put(utilidades.CAMPO_PASSWORD, password.getText().toString());
-        Long idResultante = db.insert(utilidades.TABLA_USUARIO, utilidades.CAMPO_ID_USER, values);
+        values.put(utilidades.USER_NOMBRE, nombre.getText().toString());
+        values.put(utilidades.USER_PASSWORD, password.getText().toString());
+        Long idResultante = db.insert(utilidades.TABLA_USER, utilidades.USER_ID, values);
         Toast.makeText(getApplicationContext(), "Id Registro: " + idResultante, Toast.LENGTH_SHORT).show();
         db.close();
     }

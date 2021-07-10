@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.uhf_bt.ConnectionSQLiteHelper;
@@ -20,7 +19,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -67,8 +65,8 @@ public class Building {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(utilidades.CAMPO_BUILDING_NAME, nombreEdificio);
-        Long idResultante = db.insert(utilidades.TABLA_BUILDING, utilidades.CAMPO_ID_BUILDING, values);
+        values.put(utilidades.BUILDING_NAME, nombreEdificio);
+        Long idResultante = db.insert(utilidades.TABLA_BUILDING, utilidades.BUILDING_ID, values);
         Toast.makeText(context, "Id Building: " + idResultante, Toast.LENGTH_SHORT).show();
         db.close();
     }
@@ -76,8 +74,8 @@ public class Building {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(utilidades.CAMPO_BUILDING_NAME, nombreEdificio);
-        Long idResultante = db.insert(utilidades.TABLA_BUILDING, utilidades.CAMPO_ID_BUILDING, values);
+        values.put(utilidades.BUILDING_NAME, nombreEdificio);
+        Long idResultante = db.insert(utilidades.TABLA_BUILDING, utilidades.BUILDING_ID, values);
         Toast.makeText(context, "Id Building: " + idResultante, Toast.LENGTH_SHORT).show();
         db.close();
     }

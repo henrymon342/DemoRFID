@@ -63,9 +63,9 @@ public class Room {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(utilidades.CAMPO_ROOM_NAME, nombreRoom);
-        values.put(utilidades.CAMPO_FID_BUILDING, fk_idBuilding);
-        Long idResultante = db.insert(utilidades.TABLA_ROOM, utilidades.CAMPO_ID_ROOM, values);
+        values.put(utilidades.ROOM_NAME, nombreRoom);
+        values.put(utilidades.ROOM_FK_BUILDING, fk_idBuilding);
+        Long idResultante = db.insert(utilidades.TABLA_ROOM, utilidades.ROOM_ID, values);
         Toast.makeText(context, "Id Room: " + idResultante, Toast.LENGTH_SHORT).show();
         db.close();
     }
@@ -75,9 +75,9 @@ public class Room {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(utilidades.CAMPO_ROOM_NAME, nombreRoom);
-        values.put(utilidades.CAMPO_FID_BUILDING, fk_idBuilding);
-        Long idResultante = db.insert(utilidades.TABLA_ROOM, utilidades.CAMPO_ID_ROOM, values);
+        values.put(utilidades.ROOM_NAME, nombreRoom);
+        values.put(utilidades.ROOM_FK_BUILDING, fk_idBuilding);
+        Long idResultante = db.insert(utilidades.TABLA_ROOM, utilidades.ROOM_ID, values);
         Toast.makeText(context, "Id Room: " + idResultante, Toast.LENGTH_SHORT).show();
         db.close();
     }

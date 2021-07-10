@@ -3,110 +3,110 @@ package com.example.uhf_bt.Utilidades;
 public class utilidades {
 
     // STOCK
-    public static final String TABLA_STOCK ="stock";
-    public static final String CAMPO_ID_STOCK ="id";
-    public static final String CAMPO_EPC_STOCK ="epc";
-    public static final String CAMPO_TID_STOCK ="tid";
-    public static final String CAMPO_USER_MEMORY_STOCK ="userMemory";
-    public static final String CAMPO_DESCRIPCION_STOCK ="descripcion";
-    public static final String CAMPO_LAST_SCAN_STOCK ="lastScanDate";
-    public static final String CAMPO_FK_ROOM_STOCK ="room_id";
+    public static final String TABLA_STOCK = "stock";
+    public static final String STOCK_ID = "id";
+    public static final String STOCK_EPC = "epc";
+    public static final String STOCK_TID = "tid";
+    public static final String STOCK_USER_MEMORY = "userMemory";
+    public static final String STOCK_DESCRIPTION = "description";
+    public static final String STOCK_LAST_SCAN = "lastScanDate";
+    public static final String STOCK_FK_ROOM = "room_id";
 
     // ROOM
-    public static final String TABLA_ROOM= "room";
-    public static final String CAMPO_ID_ROOM = "id";
-    public static final String CAMPO_ROOM_NAME = "name";
-    public static final String CAMPO_FID_BUILDING = "fid";
+    public static final String TABLA_ROOM = "room";
+    public static final String ROOM_ID = "id";
+    public static final String ROOM_NAME = "name";
+    public static final String ROOM_FK_BUILDING = "building_id";
 
     // BUILDING
-    public static final String TABLA_BUILDING= "building";
-    public static final String CAMPO_ID_BUILDING = "id";
-    public static final String CAMPO_BUILDING_NAME = "name";
+    public static final String TABLA_BUILDING = "building";
+    public static final String BUILDING_ID = "id";
+    public static final String BUILDING_NAME = "name";
 
     // LECTOR
-    public static final String TABLA_LECTOR="lector";
-    public static final String CAMPO_ID_lECTOR = "id";
-    public static final String CAMPO_ALIAS_lECTOR = "alias";
-    public static final String CAMPO_MARCA_lECTOR = "marca";
-    public static final String CAMPO_MODELO_lECTOR = "modelo";
-    public static final String CAMPO_DESCRIPCION_lECTOR = "descripcion";
-    public static final String CAMPO_MAC_lECTOR = "mac_addr";
+    public static final String TABLA_LECTOR = "lector";
+    public static final String LECTOR_ID = "id";
+    public static final String LECTOR_ALIAS = "alias";
+    public static final String LECTOR_MARCA = "marca";
+    public static final String LECTOR_MODELO = "modelo";
+    public static final String LECTOR_DESCRIPTION = "description";
+    public static final String LECTOR_MAC = "mac";
 
     // ASIGNACION LECTOR
-    public static final String TABLA_ASIGNACION="asignacion_lector";
-    public static final String CAMPO_ID_ASIGNACION = "id";
-    public static final String CAMPO_FECHA_INI_ASIGNACION = "fecha_ini";
-    public static final String CAMPO_FECHA_FIN_ASIGNACION = "fecha_fin";
-    public static final String CAMPO_FK_USUARIO_ASIGNACION = "id_usuario";
-    public static final String CAMPO_FK_LECTOR_ASIGNACION = "id_lector";
+    public static final String TABLA_ASSIGNATION_LECTOR = "assignation_lector";
+    public static final String ASSIGNATION_ID = "id";
+    public static final String ASSIGNATION_FECHA_INI = "fecha_ini";
+    public static final String ASSIGNATION_FECHA_FIN = "fecha_fin";
+    public static final String ASSIGNATION_FK_USUARIO = "usuario_id";
+    public static final String ASSIGNATION_FK_LECTOR = "lector_id";
 
     // USUARIO
-    public static final String TABLA_USUARIO = "user";
-    public static final String CAMPO_ID_USER = "id";
-    public static final String CAMPO_NOMBRE = "name";
-    public static final String CAMPO_PASSWORD = "password";
+    public static final String TABLA_USER = "user";
+    public static final String USER_ID = "id";
+    public static final String USER_NOMBRE = "name";
+    public static final String USER_PASSWORD = "password";
 
     // SEARCH_LIST
-    public static final String TABLA_SEARCH_LIST = "searchList";
-    public static final String CAMPO_SEARCH_ID = "id";
-    public static final String CAMPO_SEARCH_DESCRIPCION = "descripcion";
-    public static final String CAMPO_SEARCH_EPC = "epc";
-    public static final String CAMPO_SEARCH_ESTADO = "estado";
+    public static final String TABLA_SEARCH_LIST = "search_list";
+    public static final String SEARCH_LIST_ID = "id";
+    public static final String SEARCH_LIST_DESCRIPTION = "description";
+    public static final String SEARCH_LIST_EPC = "epc";
+    public static final String SEARCH_LIST_ESTADO = "estado";
 
     /* ---CREAR TABLAS---- */
 
     // CREAR RFID
-    public static final String CREAR_TABLA_STOCK= "CREATE TABLE " + TABLA_STOCK + "("
-            + CAMPO_ID_STOCK + " INTEGER PRIMARY KEY, "
-            + CAMPO_EPC_STOCK + " TEXT, "
-            + CAMPO_TID_STOCK + " TEXT, "
-            + CAMPO_USER_MEMORY_STOCK + " TEXT, "
-            + CAMPO_DESCRIPCION_STOCK + " TEXT, "
-            + CAMPO_LAST_SCAN_STOCK + " TEXT, "
-            + CAMPO_FK_ROOM_STOCK + " INTEGER, "
-            + "FOREIGN KEY ("+CAMPO_FK_ROOM_STOCK+") REFERENCES "+ TABLA_ROOM +" ("+CAMPO_ID_ROOM+"))" ;
+    public static final String CREAR_TABLA_STOCK = "CREATE TABLE " + TABLA_STOCK + "("
+            + STOCK_ID + " INTEGER PRIMARY KEY, "
+            + STOCK_EPC + " TEXT, "
+            + STOCK_TID + " TEXT, "
+            + STOCK_USER_MEMORY + " TEXT, "
+            + STOCK_DESCRIPTION + " TEXT, "
+            + STOCK_LAST_SCAN + " TEXT, "
+            + STOCK_FK_ROOM + " INTEGER, "
+            + "FOREIGN KEY (" + STOCK_FK_ROOM + ") REFERENCES " + TABLA_ROOM + " (" + ROOM_ID + "))";
 
     // CREAR ROOM
     public static final String CREAR_TABLA_ROOM = "CREATE TABLE " + TABLA_ROOM + "("
-            + CAMPO_ID_ROOM +" INTEGER PRIMARY KEY, "
-            + CAMPO_ROOM_NAME + " TEXT, "
-            + CAMPO_FID_BUILDING + " INTEGER, "
-            + "FOREIGN KEY ("+CAMPO_FID_BUILDING+") REFERENCES "+TABLA_BUILDING+" ("+CAMPO_ID_BUILDING+"))" ;
+            + ROOM_ID + " INTEGER PRIMARY KEY, "
+            + ROOM_NAME + " TEXT, "
+            + ROOM_FK_BUILDING + " INTEGER, "
+            + "FOREIGN KEY (" + ROOM_FK_BUILDING + ") REFERENCES " + TABLA_BUILDING + " (" + BUILDING_ID + "))";
 
     // CREAR BUILDING
     public static final String CREAR_TABLA_BUILDING = "CREATE TABLE " + TABLA_BUILDING + "("
-            + CAMPO_ID_BUILDING +" INTEGER PRIMARY KEY, "
-            + CAMPO_BUILDING_NAME + " TEXT)" ;
+            + BUILDING_ID + " INTEGER PRIMARY KEY, "
+            + BUILDING_NAME + " TEXT)";
 
     // CREAR LECTOR
-    public static final String CREAR_TABLA_LECTOR="CREATE TABLE " + TABLA_LECTOR + "("
-            + CAMPO_ID_lECTOR +" INTEGER PRIMARY KEY, "
-            + CAMPO_ALIAS_lECTOR + " TEXT, "
-            + CAMPO_MARCA_lECTOR + " TEXT, "
-            + CAMPO_MODELO_lECTOR + " TEXT, "
-            + CAMPO_DESCRIPCION_lECTOR + " TEXT, "
-            + CAMPO_MAC_lECTOR+ " TEXT)" ;
+    public static final String CREAR_TABLA_LECTOR = "CREATE TABLE " + TABLA_LECTOR + "("
+            + LECTOR_ID + " INTEGER PRIMARY KEY, "
+            + LECTOR_ALIAS + " TEXT, "
+            + LECTOR_MARCA + " TEXT, "
+            + LECTOR_MODELO + " TEXT, "
+            + LECTOR_DESCRIPTION + " TEXT, "
+            + LECTOR_MAC + " TEXT)";
 
     // CREAR ASIGNACION_LECTOR
-    public static final String CREAR_TABLA_ASIGNACION_LECTOR="CREATE TABLE " + TABLA_ASIGNACION + "("
-            + CAMPO_ID_ASIGNACION +" INTEGER PRIMARY KEY, "
-            + CAMPO_FECHA_INI_ASIGNACION + " TEXT, "
-            + CAMPO_FECHA_FIN_ASIGNACION + " TEXT, "
-            + CAMPO_FK_USUARIO_ASIGNACION + " INTEGER, "
-            + CAMPO_FK_LECTOR_ASIGNACION + " INTEGER, "
-            + "FOREIGN KEY ("+CAMPO_FK_USUARIO_ASIGNACION+") REFERENCES "+TABLA_USUARIO+" ("+CAMPO_ID_USER+"),"
-            + "FOREIGN KEY ("+CAMPO_FK_LECTOR_ASIGNACION+") REFERENCES "+TABLA_LECTOR+" ("+CAMPO_ID_lECTOR+"))" ;
+    public static final String CREAR_TABLA_ASIGNACION_LECTOR = "CREATE TABLE " + TABLA_ASSIGNATION_LECTOR + "("
+            + ASSIGNATION_ID + " INTEGER PRIMARY KEY, "
+            + ASSIGNATION_FECHA_INI + " TEXT, "
+            + ASSIGNATION_FECHA_FIN + " TEXT, "
+            + ASSIGNATION_FK_USUARIO + " INTEGER, "
+            + ASSIGNATION_FK_LECTOR + " INTEGER, "
+            + "FOREIGN KEY (" + ASSIGNATION_FK_USUARIO + ") REFERENCES " + TABLA_USER + " (" + USER_ID + "),"
+            + "FOREIGN KEY (" + ASSIGNATION_FK_LECTOR + ") REFERENCES " + TABLA_LECTOR + " (" + LECTOR_ID + "))";
 
     // CREAR USUARIO
-    public static final String CREAR_TABLA_USUARIO = "CREATE TABLE " + TABLA_USUARIO + "("
-            + CAMPO_ID_USER + " INTEGER PRIMARY KEY, "
-            + CAMPO_NOMBRE + " TEXT, "
-            + CAMPO_PASSWORD + " TEXT)";
+    public static final String CREAR_TABLA_USUARIO = "CREATE TABLE " + TABLA_USER + "("
+            + USER_ID + " INTEGER PRIMARY KEY, "
+            + USER_NOMBRE + " TEXT, "
+            + USER_PASSWORD + " TEXT)";
 
     // CREAR SEARCH
     public static final String CREAR_TABLA_SEARCH_LIST = "CREATE TABLE " + TABLA_SEARCH_LIST + "("
-            + CAMPO_SEARCH_ID+ " INTEGER PRIMARY KEY, "
-            + CAMPO_SEARCH_DESCRIPCION + " TEXT, "
-            + CAMPO_SEARCH_EPC + " TEXT, "
-            + CAMPO_SEARCH_ESTADO + " TEXT)";
+            + SEARCH_LIST_ID + " INTEGER PRIMARY KEY, "
+            + SEARCH_LIST_DESCRIPTION + " TEXT, "
+            + SEARCH_LIST_EPC + " TEXT, "
+            + SEARCH_LIST_ESTADO + " TEXT)";
 }
