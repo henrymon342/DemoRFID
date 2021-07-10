@@ -54,11 +54,11 @@ public class ConnectionSQLiteHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS user");
         db.execSQL("DROP TABLE IF EXISTS lector");
-        db.execSQL("DROP TABLE IF EXISTS asignacion_lector");
+        db.execSQL("DROP TABLE IF EXISTS assignation_lector");
         db.execSQL("DROP TABLE IF EXISTS building");
         db.execSQL("DROP TABLE IF EXISTS room");
         db.execSQL("DROP TABLE IF EXISTS stock");
-        db.execSQL("DROP TABLE IF EXISTS searchList");
+        db.execSQL("DROP TABLE IF EXISTS search_list");
         onCreate(db);
     }
 }
