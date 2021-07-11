@@ -1,4 +1,4 @@
-    package com.example.uhf_bt;
+package com.example.uhf_bt;
 
 import android.annotation.TargetApi;
 import android.os.Build;
@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.RequiresApi;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,7 +40,7 @@ public class SincronizarActivity extends BaseActivity {
     private ArrayList<Building> buildingsArrayList = new ArrayList<>();
     private ArrayList<Room> roomsArrayList = new ArrayList<>();
     private ArrayList<User> usersArrayList = new ArrayList<>();
-    private ArrayList<Stock> stocksArrayList=new ArrayList<>();
+    private ArrayList<Stock> stocksArrayList = new ArrayList<>();
     private ArrayList<AssignationLector> assignationLectorsArrayList;
 
     private Retrofit retrofit;
@@ -61,6 +62,7 @@ public class SincronizarActivity extends BaseActivity {
                 finish();
             }
         });
+
         btn_syncToDB.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -74,6 +76,7 @@ public class SincronizarActivity extends BaseActivity {
                 sendBDDotNet(stocksArrayList);
             }
         });
+
         btn_syncFromDB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +86,6 @@ public class SincronizarActivity extends BaseActivity {
                 getUsersDotNet();
                 getStocksDotNet();
                 getLectorsDotNet();
-                Log.d("contenido:", buildingsArrayList.size()+"");
 
                 // Vaciamos la base de datos SQLite
                 ConnectionSQLiteHelper.deleteBuildingsData(SincronizarActivity.this);
@@ -92,7 +94,6 @@ public class SincronizarActivity extends BaseActivity {
                 ConnectionSQLiteHelper.deleteUsersData(SincronizarActivity.this);
 
                 // Llenamos los datos en la base de datos SQLite
-
                 for (Building building : buildingsArrayList) {
                     Building.registroBuilding(building.getName(), SincronizarActivity.this);
                 }
@@ -100,7 +101,7 @@ public class SincronizarActivity extends BaseActivity {
                     Room.registroRoom(room.getBuildingId(), room.getName(), SincronizarActivity.this);
                 }
                 for (User user : usersArrayList) {
-                    Log.d("usuario", "info "+ user.getNombre());
+                    Log.d("usuario", "info " + user.getNombre());
                     User.registroUser(user.getNombre(), user.getClave(), SincronizarActivity.this);
                 }
                 for (Stock stock : stocksArrayList) {
@@ -118,12 +119,11 @@ public class SincronizarActivity extends BaseActivity {
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String fecha = dtf.format(LocalDateTime.now());
-        fecha = fecha.replace(" ","T");
+        fecha = fecha.replace(" ", "T");
         Log.d("FECHA", fecha);
-        for (Stock var : stocksArrayList)
-        {
+        for (Stock var : stocksArrayList) {
             Log.d("STOCKVAR", var.toString());
-            com.example.uhf_bt.entidades.Stock s = new com.example.uhf_bt.entidades.Stock( var.getEpc(),var.getTid(), var.getDescription(),Integer.parseInt(var.getIdRoom()),var.getUserMemory(), fecha);
+            com.example.uhf_bt.entidades.Stock s = new com.example.uhf_bt.entidades.Stock(var.getEpc(), var.getTid(), var.getDescription(), Integer.parseInt(var.getIdRoom()), var.getUserMemory(), fecha);
             enviarStock(s);
         }
 
@@ -133,12 +133,12 @@ public class SincronizarActivity extends BaseActivity {
         //2021-07-02T18:22:07
     }
 
-    public void enviarStock(com.example.uhf_bt.entidades.Stock u){
+    public void enviarStock(com.example.uhf_bt.entidades.Stock u) {
         Call<com.example.uhf_bt.entidades.Stock> call = userService.createStock(u);
         call.enqueue(new Callback<com.example.uhf_bt.entidades.Stock>() {
             @Override
             public void onResponse(Call<com.example.uhf_bt.entidades.Stock> call, Response<com.example.uhf_bt.entidades.Stock> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     Log.d("COSA", String.valueOf(response.body()));
                     Toast.makeText(getApplicationContext(), "User created successfully!", Toast.LENGTH_SHORT).show();
                 }
@@ -221,7 +221,7 @@ public class SincronizarActivity extends BaseActivity {
                 if (response.isSuccessful()) {
                     Log.d("RESPONSE->   ", String.valueOf(response.body()));
                     roomsArrayList = new ArrayList<>(response.body());
-                    Log.d("USUARIO NUEVO",String.valueOf(roomsArrayList.get(0)));
+                    Log.d("USUARIO NUEVO", String.valueOf(roomsArrayList.get(0)));
                 }
             }
 
@@ -232,18 +232,7 @@ public class SincronizarActivity extends BaseActivity {
         });
     }
 
-    /*
-    private void eliminarRoom(int id) {
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(this, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-        String[] parametros = {id + ""};
-        db.delete(utilidades.TABLA_ROOM, utilidades.CAMPO_ID_ROOM + "=?", parametros);
-        Toast.makeText(getApplicationContext(), "room eliminado", Toast.LENGTH_LONG).show();
-        db.close();
-    }
-    */
-
-    private void getBuildingsDotNet(){
+    private void getBuildingsDotNet() {
         retrofit = this.construirRetrofit();
         BuildingInterface buildingInterface = retrofit.create(BuildingInterface.class);
         Call<List<Building>> call = buildingInterface.getBuildings();
@@ -263,7 +252,7 @@ public class SincronizarActivity extends BaseActivity {
         });
     }
 
-    public Retrofit construirRetrofit(){
+    public Retrofit construirRetrofit() {
         return new Retrofit.Builder()
                 .baseUrl(GLOBAL.URL)
                 .addConverterFactory(GsonConverterFactory.create())

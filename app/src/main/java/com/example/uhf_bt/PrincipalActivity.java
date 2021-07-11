@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class PrincipalActivity extends BaseActivity implements View.OnClickListener{
+public class PrincipalActivity extends BaseActivity implements View.OnClickListener {
 
     public String remoteBTName = "";
     public String remoteBTAdd = "";
@@ -44,11 +44,11 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
     private long timeCountCur;
     public BluetoothAdapter mBtAdapter = null;
     private boolean mIsActiveDisconnect = true;
-    private Button btn_inventario,btn_busqueda,btn_missing,btn_sincronizar;
+    private Button btn_inventario, btn_busqueda, btn_missing, btn_sincronizar;
     private TextView tvAddress;
     private Button btn_connect, btn_search;
     private static final int WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST = 101;
-    private static final int READ_EXTERNAL_STORAGE_PERMISSION_REQUEST=102;
+    private static final int READ_EXTERNAL_STORAGE_PERMISSION_REQUEST = 102;
     private static final int REQUEST_ENABLE_BT = 2;
     private static final int REQUEST_SELECT_DEVICE = 1;
     private static final int RUNNING_DISCONNECT_TIMER = 10;
@@ -79,11 +79,11 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
 
     @TargetApi(Build.VERSION_CODES.GINGERBREAD_MR1)
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         checkReadWritePermission();
-        btn_inventario=(Button)findViewById(R.id.btn_inventario);
+        btn_inventario = (Button) findViewById(R.id.btn_inventario);
         btn_inventario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,21 +91,21 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
                 inventario();
             }
         });
-        btn_missing=(Button)findViewById(R.id.btn_missing);
+        btn_missing = (Button) findViewById(R.id.btn_missing);
         btn_missing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 missing();
             }
         });
-        btn_sincronizar=(Button)findViewById(R.id.btn_sincronizar);
+        btn_sincronizar = (Button) findViewById(R.id.btn_sincronizar);
         btn_sincronizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sincronizar();
             }
         });
-        btn_busqueda=(Button)findViewById(R.id.btn_busqueda);
+        btn_busqueda = (Button) findViewById(R.id.btn_busqueda);
         btn_busqueda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +116,6 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
         uhf.init(getApplicationContext());
         Utils.initSound(getApplicationContext());
     }
-
 
 
     @Override
@@ -146,18 +145,22 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
                 break;
         }
     }
-    public void inventario(){
-        Intent mainIntend= new Intent(this,MainActivity.class);
+
+    public void inventario() {
+        Intent mainIntend = new Intent(this, MainActivity.class);
         startActivity(mainIntend);
     }
-    public void missing(){
-        Intent mainIntend= new Intent(this,MissingActivity.class);
+
+    public void missing() {
+        Intent mainIntend = new Intent(this, MissingActivity.class);
         startActivity(mainIntend);
     }
-    public void sincronizar(){
-        Intent mainIntend= new Intent(this,SincronizarActivity.class);
+
+    public void sincronizar() {
+        Intent mainIntend = new Intent(this, SincronizarActivity.class);
         startActivity(mainIntend);
     }
+
     public void busqueda() {
         Intent mainIntend = new Intent(this, BusquedaActivity.class);
         startActivity(mainIntend);
@@ -171,7 +174,8 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
         btn_search = (Button) findViewById(R.id.btn_search);
         btn_search.setOnClickListener(this);
     }
-    private void checkReadWritePermission(){
+
+    private void checkReadWritePermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST);
@@ -202,13 +206,14 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
                 } else if (uhf.getConnectStatus() == ConnectionStatus.CONNECTING) {
                     showToast(R.string.connecting);
                 } else {
-                    if(checkLocationEnable()) {
+                    if (checkLocationEnable()) {
                         showBluetoothDevice(false);
                     }
                 }
                 break;
         }
     }
+
     @Override
     protected void onDestroy() {
         uhf.free();
@@ -216,6 +221,7 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
         super.onDestroy();
         //android.os.Process.killProcess(Process.myPid());
     }
+
     public void cancelDisconnectTimer() {
         timeCountCur = 0;
         if (timerTask != null) {
@@ -223,6 +229,7 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
             timerTask = null;
         }
     }
+
     public void connect(String deviceAddress) {
         if (uhf.getConnectStatus() == ConnectionStatus.CONNECTING) {
             showToast(R.string.connecting);
@@ -230,11 +237,13 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
             uhf.connect(deviceAddress, btStatus);
         }
     }
+
     public void disconnect(boolean isActiveDisconnect) {
         cancelDisconnectTimer();
         mIsActiveDisconnect = isActiveDisconnect; // 主动断开为true
         uhf.disconnect();
     }
+
     private void showBluetoothDevice(boolean isHistory) {
         if (mBtAdapter == null) {
             showToast("Bluetooth is not available");
@@ -251,31 +260,34 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
             cancelDisconnectTimer();
         }
     }
+
     private class DisconnectTimerTask extends TimerTask {
         @Override
         public void run() {
             Log.e(TAG, "timeCountCur = " + timeCountCur);
             Message msg = mHandler.obtainMessage(RUNNING_DISCONNECT_TIMER, timeCountCur);
             mHandler.sendMessage(msg);
-            if(isScanning) {
+            if (isScanning) {
                 resetDisconnectTime();
-            } else if (timeCountCur <= 0){
+            } else if (timeCountCur <= 0) {
                 disconnect(true);
             }
             timeCountCur -= period;
         }
     }
+
     public void resetDisconnectTime() {
         timeCountCur = SPUtils.getInstance(getApplicationContext()).getSPLong(SPUtils.DISCONNECT_TIME, 0);
         if (timeCountCur > 0) {
             formatConnectButton(timeCountCur);
         }
     }
+
     private void formatConnectButton(long disconnectTime) {
         if (uhf.getConnectStatus() == ConnectionStatus.CONNECTED) {
             if (!isScanning && System.currentTimeMillis() - lastTouchTime > 1000 * 30 && timerTask != null) {
                 long minute = disconnectTime / 1000 / 60;
-                if(minute > 0) {
+                if (minute > 0) {
                     btn_connect.setText(getString(R.string.disConnectForMinute, minute)); //倒计时分
                 } else {
                     btn_connect.setText(getString(R.string.disConnectForSecond, disconnectTime / 1000)); // 倒计时秒
@@ -287,6 +299,7 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
             btn_connect.setText(R.string.Connect);
         }
     }
+
     private boolean isLocationEnabled() {
         int locationMode = 0;
         String locationProviders;
@@ -303,12 +316,13 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
             return !TextUtils.isEmpty(locationProviders);
         }
     }
+
     private boolean checkLocationEnable() {
-        boolean result=true;
+        boolean result = true;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_FINE_LOCATION_PERMISSION_REQUEST);
-                result=false;
+                result = false;
             }
         }
         if (!isLocationEnabled()) {
@@ -383,14 +397,17 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
             });
         }
     }
+
     private boolean shouldShowDisconnected() {
         return mIsActiveDisconnect || mReConnectCount == 0;
     }
+
     private void startDisconnectTimer(long time) {
         timeCountCur = time;
         timerTask = new DisconnectTimerTask();
         mDisconnectTimer.schedule(timerTask, 0, period);
     }
+
     public void saveConnectedDevice(String address, String name) {
         List<String[]> list = FileUtils.readXmlList();
         for (int k = 0; k < list.size(); k++) {
@@ -403,14 +420,13 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
         list.add(0, strArr);
         FileUtils.saveXmlList(list);
     }
+
     private void reConnect(String deviceAddress) {
         if (!mIsActiveDisconnect && mReConnectCount > 0) {
             connect(deviceAddress);
             mReConnectCount--;
         }
     }
-
-
 
 
 }

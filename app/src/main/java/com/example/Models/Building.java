@@ -8,19 +8,27 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.Interfaces.BuildingInterface;
 import com.example.uhf_bt.ConnectionSQLiteHelper;
 import com.example.uhf_bt.LoginActivity;
 import com.example.uhf_bt.MainActivity;
 import com.example.uhf_bt.SincronizarActivity;
+import com.example.uhf_bt.Utilidades.GLOBAL;
 import com.example.uhf_bt.Utilidades.utilidades;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 @NoArgsConstructor
 @AllArgsConstructor

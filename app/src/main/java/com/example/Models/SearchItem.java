@@ -1,5 +1,15 @@
 package com.example.Models;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import com.example.uhf_bt.ConnectionSQLiteHelper;
+import com.example.uhf_bt.Utilidades.utilidades;
+
+import java.util.ArrayList;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,8 +20,32 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SearchItem {
-    private String id;
+    private int id;
     private String description;
     private String epc;
     private String estado;
+
+    public static ArrayList<SearchItem> getItems(Context mContext) {
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(mContext, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getReadableDatabase();
+        SearchItem items;
+        ArrayList<SearchItem> itemsList = new ArrayList<>();
+        try {
+            Cursor cursor = db.rawQuery("select * from " + utilidades.TABLA_ROOM, null);
+            while (cursor.moveToNext()) {
+                items = new SearchItem();
+                items.setId(cursor.getInt(0));
+                items.setDescription(cursor.getString(1));
+                items.setEpc(cursor.getString(2));
+                items.setEstado(cursor.getString(3));
+                itemsList.add(items);
+            }
+            cursor.close();
+            db.close();
+        } catch (Exception e) {
+            Log.d("getItems()", "ERROR");
+            db.close();
+        }
+        return itemsList;
+    }
 }

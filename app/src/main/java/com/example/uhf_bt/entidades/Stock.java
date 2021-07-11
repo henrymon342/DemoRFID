@@ -26,7 +26,7 @@ public class Stock {
     @Expose
     private String lastScanDate;
 
-    public Stock( String epc, String tid, String description, int room_id, String userMemory, String lastScanDate) {
+    public Stock(String epc, String tid, String description, int room_id, String userMemory, String lastScanDate) {
         this.epc = epc;
         this.tid = tid;
         this.description = description;

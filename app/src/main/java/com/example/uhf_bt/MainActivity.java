@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 
 
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,16 +36,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTabHost;
 
 
-
-public class MainActivity extends BaseActivity{
+public class MainActivity extends BaseActivity {
 
 
     public boolean seenvio = false;
     public Button btnseenvio;
 
     public boolean isScanning = false;
-    public String selectEPC=null;
-    public boolean isSupportRssi=false;
+    public String selectEPC = null;
+    public boolean isSupportRssi = false;
     private FragmentTabHost mTabHost;
     private FragmentManager fm;
     public RFIDWithUHFBLE uhf = RFIDWithUHFBLE.getInstance();
@@ -166,7 +164,7 @@ public class MainActivity extends BaseActivity{
         mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         mTabHost.setup(this, fm, R.id.realtabcontent);
         mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.title_inventory)).setIndicator(getString(R.string.title_inventory)), UHFReadTagFragment.class, null);
-       // mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.title_inventory2)).setIndicator(getString(R.string.title_inventory2)), UHFNewReadTagFragment.class, null);
+        // mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.title_inventory2)).setIndicator(getString(R.string.title_inventory2)), UHFNewReadTagFragment.class, null);
         mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.uhf_msg_tab_set)).setIndicator(getString(R.string.uhf_msg_tab_set)), UHFSetFragment.class, null);
         mTabHost.addTab(mTabHost.newTabSpec(getString(R.string.location)).setIndicator(getString(R.string.location)), UHFLocationFragment.class, null);
     }
@@ -187,7 +185,7 @@ public class MainActivity extends BaseActivity{
     }
 
     public void seEnvio() {
-        if(this.seenvio){
+        if (this.seenvio) {
             btnseenvio.setVisibility(View.INVISIBLE);
             //Toast.makeText(this, "SE ENVIO A LA BD .NET", Toast.LENGTH_SHORT).show();
             this.seenvio = false;

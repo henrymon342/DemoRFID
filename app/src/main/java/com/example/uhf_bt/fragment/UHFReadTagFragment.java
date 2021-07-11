@@ -1,4 +1,4 @@
-    package com.example.uhf_bt.fragment;
+package com.example.uhf_bt.fragment;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -38,6 +38,7 @@ import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.rscja.deviceapi.entity.UHFTAGInfo;
 import com.rscja.deviceapi.interfaces.ConnectionStatus;
 import com.rscja.deviceapi.interfaces.KeyEventCallback;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,7 +47,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import androidx.fragment.app.Fragment;
+
 import static java.lang.String.valueOf;
 
 
@@ -223,16 +226,17 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         View view = inflater.inflate(R.layout.fragment_uhfread_tag, container, false);
 
 
-
         listUs = new ArrayList<User>();
         //actualizarUsuariosEnSQLite();
 
         initFilter(view);
         return view;
     }
+
     public void getBuildings() {
         buildingList = new ArrayList<>(Building.getBuildings(mContext));
     }
+
     public void getRooms() {
         roomList = new ArrayList<>(Room.getRooms(mContext));
     }
@@ -246,10 +250,10 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         getBuildings();
         getRooms();
         // Llenado de Names for Building and Room
-        for (Building building:buildingList) {
+        for (Building building : buildingList) {
             buildingNames.add(building.getName());
         }
-        for (Room room:roomList) {
+        for (Room room : roomList) {
             roomNames.add(room.getName());
         }
         init();
@@ -329,12 +333,12 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
     private void guardarInventario() {
 
-        if(validacionesPrevias()){
+        if (validacionesPrevias()) {
             btnGenerar.setEnabled(true);
             return;
         }
 
-                // PEDIR DATOS A JORGE PARA ID BUILDING Y EL ID ROOM
+        // PEDIR DATOS A JORGE PARA ID BUILDING Y EL ID ROOM
 
 
         //DATOS PARA LA TABLA INVENTARIO
@@ -362,8 +366,8 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             Log.d("INVENTARIO", the_epc);
             Log.d("INVENTARIO", the_tid);
             Log.d("INVENTARIO", tag_count);
-            Log.d("INVENTARIO", currentRoomId+"");
-            Stock.registroStock(the_epc,the_tid,"--","--",fechaScaneo,currentRoomId+"",mContext);
+            Log.d("INVENTARIO", currentRoomId + "");
+            Stock.registroStock(the_epc, the_tid, "--", "--", fechaScaneo, currentRoomId + "", mContext);
         }
 
         mContext.seenvio = true;
@@ -374,11 +378,11 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     }
 
     private boolean validacionesPrevias() {
-        if(currentRoomId == -1 || currentBuildingId == -1){
+        if (currentRoomId == -1 || currentBuildingId == -1) {
             Toast.makeText(mContext, "debe seleccionar una ubicación", Toast.LENGTH_SHORT).show();
             return true;
         }
-        if( tagList.size() == 0 ){
+        if (tagList.size() == 0) {
             Toast.makeText(mContext, "debe tener almenos un registro", Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -486,11 +490,10 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         spinnerU = view.findViewById(R.id.spinnerU);
 
 
-
         //ArrayAdapter<Building> adapterEE =
-               // new ArrayAdapter<Building>(this.getContext(),  android.R.layout.simple_spinner_dropdown_item, buildingList);
+        // new ArrayAdapter<Building>(this.getContext(),  android.R.layout.simple_spinner_dropdown_item, buildingList);
         //ArrayAdapter<Room> adapterU =
-               // new ArrayAdapter<Room>(this.getContext(),  android.R.layout.simple_spinner_dropdown_item, roomList);
+        // new ArrayAdapter<Room>(this.getContext(),  android.R.layout.simple_spinner_dropdown_item, roomList);
 
         adapterE = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, buildingNames);
         adapterU = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, roomNames);
@@ -510,9 +513,10 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
          */
         spinnerE.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
 
-            @Override public void onItemSelected(MaterialSpinner view, int i, long id, String item) {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int i, long id, String item) {
                 chooseBuilding(buildingList.get(i).getId());
-                Toast.makeText(mContext,  buildingList.get(i).getName() , Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, buildingList.get(i).getName(), Toast.LENGTH_SHORT).show();
             }
         });
         adapterU.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -520,8 +524,9 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
         spinnerU.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
 
-            @Override public void onItemSelected(MaterialSpinner view, int i, long id, String item) {
-                Toast.makeText(mContext,  roomList.get(i).getName() , Toast.LENGTH_SHORT).show();
+            @Override
+            public void onItemSelected(MaterialSpinner view, int i, long id, String item) {
+                Toast.makeText(mContext, roomList.get(i).getName(), Toast.LENGTH_SHORT).show();
                 chooseRoom(roomList.get(i).getId());
             }
         });
@@ -535,7 +540,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         //Log.d("OBB", buildingNames.get(item));
         //Log.d("OBB", buildingNames.get(item));
         currentRoomId = item;
-        Log.d("SELECCIONADO ID ROOM  ", currentRoomId+"");
+        Log.d("SELECCIONADO ID ROOM  ", currentRoomId + "");
     }
 
     private void initListasUbicacion() {
@@ -548,8 +553,8 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         //Log.d("CONTEXTO", String.valueOf(mContext));
 
 
-       this.getBuildings();
-       this.getRooms();
+        this.getBuildings();
+        this.getRooms();
     }
 
 
