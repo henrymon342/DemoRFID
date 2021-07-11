@@ -32,7 +32,7 @@ public class Stock {
     private String userMemory;
     private String description;
     private String lastScanDate;
-    private String idRoom;
+    private int idRoom;
 
     public static ArrayList<Stock> getStocks(Context mContext) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(mContext, "bdUser", null, 1);
@@ -49,7 +49,7 @@ public class Stock {
                 stock.setUserMemory(cursor.getString(3));
                 stock.setDescription(cursor.getString(4));
                 stock.setLastScanDate(cursor.getString(5));
-                stock.setIdRoom(cursor.getString(6));
+                stock.setIdRoom(cursor.getInt(6));
                 stockList.add(stock);
             }
             cursor.close();
@@ -61,7 +61,7 @@ public class Stock {
         return stockList;
     }
 
-    public static void registroStock(String epc, String tid, String userMemory, String description, String lastScan, String idRoom, Context context) {
+    public static void registroStock(String epc, String tid, String userMemory, String description, String lastScan, int idRoom, Context context) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -74,4 +74,5 @@ public class Stock {
         db.insert(utilidades.TABLA_STOCK, utilidades.STOCK_ID, values);
         db.close();
     }
+
 }

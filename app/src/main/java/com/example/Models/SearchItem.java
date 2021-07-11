@@ -1,9 +1,11 @@
 package com.example.Models;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.uhf_bt.ConnectionSQLiteHelper;
 import com.example.uhf_bt.Utilidades.utilidades;
@@ -48,4 +50,17 @@ public class SearchItem {
         }
         return itemsList;
     }
+
+    public static void registroSearchItem(String description, String epc, String estado, Context context) {
+        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(utilidades.SEARCH_LIST_DESCRIPTION, description);
+        values.put(utilidades.SEARCH_LIST_EPC, epc);
+        values.put(utilidades.SEARCH_LIST_ESTADO, estado);
+        Long idResultante = db.insert(utilidades.TABLA_SEARCH_LIST, utilidades.SEARCH_LIST_ID, values);
+        Toast.makeText(context, "Id Room: " + idResultante, Toast.LENGTH_SHORT).show();
+        db.close();
+    }
+
 }

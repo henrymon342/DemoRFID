@@ -1,8 +1,6 @@
 package com.example.uhf_bt.fragment;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,6 +23,7 @@ import android.widget.Toast;
 import com.example.Backend.APIUtils;
 import com.example.Models.Building;
 import com.example.Models.Room;
+import com.example.Models.SearchItem;
 import com.example.Models.Stock;
 import com.example.Models.User;
 import com.example.uhf_bt.ConnectionSQLiteHelper;
@@ -32,7 +31,6 @@ import com.example.uhf_bt.MainActivity;
 import com.example.uhf_bt.NumberTool;
 import com.example.uhf_bt.R;
 import com.example.uhf_bt.Utilidades.GLOBAL;
-import com.example.uhf_bt.Utilidades.utilidades;
 import com.example.uhf_bt.Utils;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.rscja.deviceapi.entity.UHFTAGInfo;
@@ -93,6 +91,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     private List<byte[]> tempDatas = new ArrayList<>();
     private List<String> tempData = new ArrayList<>();
     private ArrayList<HashMap<String, String>> tagList;
+    ArrayList<SearchItem> scannedItems = new ArrayList<>();
 
     private ConnectStatus mConnectStatus = new ConnectStatus();
 
@@ -367,7 +366,9 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             Log.d("INVENTARIO", the_tid);
             Log.d("INVENTARIO", tag_count);
             Log.d("INVENTARIO", currentRoomId + "");
-            Stock.registroStock(the_epc, the_tid, "--", "--", fechaScaneo, currentRoomId + "", mContext);
+
+            scannedItems.add(new SearchItem(i+1,"",the_epc,""));
+            //Stock.registroStock(the_epc, the_tid, "--", "--", fechaScaneo, currentRoomId, mContext);
         }
 
         mContext.seenvio = true;
@@ -387,23 +388,6 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             return true;
         }
         return false;
-    }
-
-    /*MODIFICAR CANTIDAD,FECHA ROOM*/
-    private int registrarInventarioSQLite(String cantidad, String fecha, String room) {
-        ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(mContext, "bdUser", null, 1);
-        SQLiteDatabase db = conn.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(utilidades.STOCK_LAST_SCAN, cantidad);
-        values.put(utilidades.STOCK_EPC, fecha);
-        values.put(utilidades.STOCK_TID, fecha);
-        values.put(utilidades.STOCK_USER_MEMORY, fecha);
-        values.put(utilidades.STOCK_DESCRIPTION, fecha);
-        values.put(utilidades.STOCK_FK_ROOM, room);
-        Long idResultante = db.insert(utilidades.TABLA_STOCK, utilidades.STOCK_ID, values);
-        Toast.makeText(mContext, "Id Registro: " + idResultante, Toast.LENGTH_SHORT).show();
-        db.close();
-        return Integer.parseInt(String.valueOf(idResultante));
     }
 
     private void init() {
@@ -942,6 +926,27 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             aux = aux + "\n " + buildingNames.get(i);
         }
         //Toast.makeText(mContext, aux, Toast.LENGTH_SHORT).show();
+    }
+
+
+    public void generateMissingItems(Room room) {
+        ArrayList<Stock> stockList = new ArrayList<>(Stock.getStocks(mContext));
+        ConnectionSQLiteHelper.deleteSearchListData(mContext);
+        for (Stock stock : stockList) {
+            if (stock.getIdRoom() == room.getId()) {
+                SearchItem item = containsItem(scannedItems, stock);
+                if (null != item) {
+                    SearchItem.registroSearchItem(item.getDescription(), item.getEpc(), item.getEstado(), mContext);
+                }
+            }
+        }
+    }
+
+    private SearchItem containsItem(ArrayList<SearchItem> missingItems, Stock stock) {
+        for (SearchItem item : missingItems) {
+            return item.getEpc() == stock.getEpc() ? item : null;
+        }
+        return null;
     }
 
 }

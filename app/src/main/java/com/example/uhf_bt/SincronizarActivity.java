@@ -10,11 +10,13 @@ import android.widget.Toast;
 
 import com.example.Backend.APIUtils;
 import com.example.Interfaces.BuildingInterface;
+import com.example.Interfaces.LectorInterface;
 import com.example.Interfaces.LogeoInterface;
 import com.example.Interfaces.RoomInterface;
 import com.example.Interfaces.StockInterface;
 import com.example.Models.AssignationLector;
 import com.example.Models.Building;
+import com.example.Models.Lector;
 import com.example.Models.Room;
 import com.example.Models.Stock;
 import com.example.Models.User;
@@ -41,6 +43,7 @@ public class SincronizarActivity extends BaseActivity {
     private ArrayList<Room> roomsArrayList = new ArrayList<>();
     private ArrayList<User> usersArrayList = new ArrayList<>();
     private ArrayList<Stock> stocksArrayList = new ArrayList<>();
+    private ArrayList<Lector> lectorsArrayList = new ArrayList<>();
     private ArrayList<AssignationLector> assignationLectorsArrayList;
 
     private Retrofit retrofit;
@@ -123,7 +126,7 @@ public class SincronizarActivity extends BaseActivity {
         Log.d("FECHA", fecha);
         for (Stock var : stocksArrayList) {
             Log.d("STOCKVAR", var.toString());
-            com.example.uhf_bt.entidades.Stock s = new com.example.uhf_bt.entidades.Stock(var.getEpc(), var.getTid(), var.getDescription(), Integer.parseInt(var.getIdRoom()), var.getUserMemory(), fecha);
+            com.example.uhf_bt.entidades.Stock s = new com.example.uhf_bt.entidades.Stock(var.getEpc(), var.getTid(), var.getDescription(), var.getIdRoom(), var.getUserMemory(), fecha);
             enviarStock(s);
         }
 
@@ -153,19 +156,19 @@ public class SincronizarActivity extends BaseActivity {
 
     private void getLectorsDotNet() {
         retrofit = this.construirRetrofit();
-        StockInterface stockInterface = retrofit.create(StockInterface.class);
-        Call<List<Stock>> call = stockInterface.getStocks();
-        call.enqueue(new Callback<List<Stock>>() {
+        LectorInterface lectorInterface = retrofit.create(LectorInterface.class);
+        Call<List<Lector>> call = lectorInterface.getLectors();
+        call.enqueue(new Callback<List<Lector>>() {
             @Override
-            public void onResponse(Call<List<Stock>> call, Response<List<Stock>> response) {
+            public void onResponse(Call<List<Lector>> call, Response<List<Lector>> response) {
                 if (response.isSuccessful()) {
                     Log.d("RESPONSE->   ", String.valueOf(response.body()));
-                    stocksArrayList = new ArrayList<>(response.body());
+                    lectorsArrayList = new ArrayList<>(response.body());
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Stock>> call, Throwable t) {
+            public void onFailure(Call<List<Lector>> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
             }
         });

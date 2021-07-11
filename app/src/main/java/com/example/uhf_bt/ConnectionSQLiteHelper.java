@@ -43,6 +43,10 @@ public class ConnectionSQLiteHelper extends SQLiteOpenHelper {
         deleteTableData(context, "assignation_lector", utilidades.CREAR_TABLA_ASSIGNATION_LECTOR);
     }
 
+    public static void deleteSearchListData(Context context) {
+        deleteTableData(context, "search_list", utilidades.CREAR_TABLA_SEARCH_LIST);
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(utilidades.CREAR_TABLA_USER);
