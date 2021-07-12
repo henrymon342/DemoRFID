@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.uhf_bt.ConnectionSQLiteHelper;
-import com.example.uhf_bt.SincronizarActivity;
 import com.example.uhf_bt.Utilidades.utilidades;
 
 import java.util.ArrayList;
@@ -26,8 +25,8 @@ public class AssignationLector {
     private int id;
     private String fechaInicio;
     private String fechaFin;
-    private String idUsuario;
-    private String idLector;
+    private int idUsuario;
+    private int idLector;
 
     public static ArrayList<AssignationLector> getAssignationLector(Context mContext) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(mContext, "bdUser", null, 1);
@@ -41,8 +40,8 @@ public class AssignationLector {
                 assignationLector.setId(Integer.parseInt(cursor.getString(0)));
                 assignationLector.setFechaInicio(cursor.getString(1));
                 assignationLector.setFechaFin(cursor.getString(2));
-                assignationLector.setIdUsuario(cursor.getString(3));
-                assignationLector.setIdLector(cursor.getString(4));
+                assignationLector.setIdUsuario(cursor.getInt(3));
+                assignationLector.setIdLector(cursor.getInt(4));
                 asignacionList.add(assignationLector);
             }
             cursor.close();
@@ -54,7 +53,7 @@ public class AssignationLector {
         return asignacionList;
     }
 
-    public static void registroAssignationLector(String fechaInicio, String fechaFin, String fk_idUsuario, String fk_idLector, Context context) {
+    public static void registroAssignationLector(String fechaInicio, String fechaFin, int fk_idUsuario, int fk_idLector, Context context) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();

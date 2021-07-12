@@ -27,6 +27,8 @@ import com.example.Models.Room;
 import com.example.Models.User;
 import com.example.uhf_bt.Utilidades.utilidades;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +55,7 @@ public class LoginActivity extends BaseActivity {
     private Boolean swUpdate = false;
     private Button btn_login, btn_registro, btn_sqlite;
     private TextView nombre, password;
+    public static String loginDate="";
 
     private Retrofit retrofit;
 
@@ -157,7 +160,7 @@ public class LoginActivity extends BaseActivity {
             nombre.setText("");
             password.setText("");
             estaEnSQLite = true;
-            // Actualizar los datos al momento de ingresar
+            loginDate=new SimpleDateFormat().format(new Date());
 
         }
         nombre.setText("");
@@ -165,6 +168,7 @@ public class LoginActivity extends BaseActivity {
         if (!estaEnSQLite) {
             if (buscarBDDotNet(nombre.toString(), password.toString()) == true) {
                 startActivity(loginIntend);
+                loginDate=new SimpleDateFormat().format(new Date());
             } else {
                 Toast.makeText(getApplicationContext(), "el usuario o contraseña son incorrectos", Toast.LENGTH_LONG).show();
             }
