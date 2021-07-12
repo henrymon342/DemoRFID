@@ -322,7 +322,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
             case R.id.btnGenerar:
                 guardarInventario();
-
+                generateMissingItems(currentRoomId);
                 //estaEnUsuarioSQLite();
                 break;
 
@@ -367,7 +367,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             Log.d("INVENTARIO", tag_count);
             Log.d("INVENTARIO", currentRoomId + "");
 
-            scannedItems.add(new SearchItem(i+1,"",the_epc,""));
+            scannedItems.add(new SearchItem(i + 1, "", the_epc, ""));
             //Stock.registroStock(the_epc, the_tid, "--", "--", fechaScaneo, currentRoomId, mContext);
         }
 
@@ -928,12 +928,11 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         //Toast.makeText(mContext, aux, Toast.LENGTH_SHORT).show();
     }
 
-
-    public void generateMissingItems(Room room) {
+    public void generateMissingItems(int roomId) {
         ArrayList<Stock> stockList = new ArrayList<>(Stock.getStocks(mContext));
         ConnectionSQLiteHelper.deleteSearchListData(mContext);
         for (Stock stock : stockList) {
-            if (stock.getIdRoom() == room.getId()) {
+            if (stock.getIdRoom() == roomId) {
                 SearchItem item = containsItem(scannedItems, stock);
                 if (null != item) {
                     SearchItem.registroSearchItem(item.getDescription(), item.getEpc(), item.getEstado(), mContext);

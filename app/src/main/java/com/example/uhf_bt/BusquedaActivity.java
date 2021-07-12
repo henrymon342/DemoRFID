@@ -43,6 +43,9 @@ public class BusquedaActivity extends BaseActivity {
             public void onClick(View v) {
                 pedirUbicacion();
                 getSearchList();
+
+                // MOSTRAR EL ARRAY "searchList" en el LIST-VIEW
+
                 //getRfidSQLite();
             }
         });
