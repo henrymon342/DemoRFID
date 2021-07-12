@@ -899,21 +899,22 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         ConnectionSQLiteHelper.deleteSearchListData(mContext);
         for (Stock stock : stockList) {
             if (stock.getIdRoom() == roomId) {
-                SearchItem item = containsItem(scannedItems, stock);
                 Log.d("CONDICION", "primer if");
-                if (null != item) {
-                    SearchItem.registroSearchItem(item.getDescription(), item.getEpc(), item.getEstado(), mContext);
+                if (!containsItem(scannedItems, stock)) {
                     Log.d("CONDICION", "segundo if");
+                    SearchItem.registroSearchItem(stock.getDescription(), stock.getEpc(), "perdido", mContext);
                 }
             }
         }
     }
 
-    private SearchItem containsItem(ArrayList<SearchItem> missingItems, Stock stock) {
+    private boolean containsItem(ArrayList<SearchItem> missingItems, Stock stock) {
         for (SearchItem item : missingItems) {
-            return item.getEpc() == stock.getEpc() ? item : null;
+            if (item.getEpc()==stock.getEpc()){
+                return true;
+            }
         }
-        return null;
+        return false;
     }
 
 }
