@@ -44,7 +44,7 @@ public class SincronizarActivity extends BaseActivity {
     private ArrayList<User> usersArrayList = new ArrayList<>();
     private ArrayList<Stock> stocksArrayList = new ArrayList<>();
     private ArrayList<Lector> lectorsArrayList = new ArrayList<>();
-    private ArrayList<AssignationLector> assignationLectorsArrayList;
+    private ArrayList<AssignationLector> assignationLectorsArrayList=new ArrayList<>();
 
     private Retrofit retrofit;
     BuildingInterface buildingInterface;
@@ -71,49 +71,35 @@ public class SincronizarActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 // Preparamos el array para enviarlo a la BD .NET
-                // PARA BORRAR asignacionLectorsArrayList = new ArrayList<>(AsignacionLector.getAsignacionLector(SincronizarActivity.this));
                 /*
-                Enviamos el array
+                    stocksArrayList = Stock.getStocks(SincronizarActivity.this);
+                    sendBDDotNet(stocksArrayList);
+                */
+
+                assignationLectorsArrayList= new ArrayList<>(AssignationLector.getAssignationLector(SincronizarActivity.this));
+                /*
+                    completar
                  */
-                stocksArrayList = Stock.getStocks(SincronizarActivity.this);
-                sendBDDotNet(stocksArrayList);
             }
         });
 
         btn_syncFromDB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // metodos que llenan los arrayList correspondientes
-                getBuildingsDotNet();
-                getRoomsDotNet();
-                getUsersDotNet();
-                getStocksDotNet();
-                getLectorsDotNet();
-
                 // Vaciamos la base de datos SQLite
                 ConnectionSQLiteHelper.deleteBuildingsData(SincronizarActivity.this);
                 ConnectionSQLiteHelper.deleteRoomsData(SincronizarActivity.this);
                 ConnectionSQLiteHelper.deleteStocksData(SincronizarActivity.this);
                 ConnectionSQLiteHelper.deleteUsersData(SincronizarActivity.this);
 
-                // Llenamos los datos en la base de datos SQLite
-                for (Building building : buildingsArrayList) {
-                    Building.registroBuilding(building.getName(), SincronizarActivity.this);
-                }
-                for (Room room : roomsArrayList) {
-                    Room.registroRoom(room.getBuildingId(), room.getName(), SincronizarActivity.this);
-                }
-                for (User user : usersArrayList) {
-                    Log.d("usuario", "info " + user.getNombre());
-                    User.registroUser(user.getNombre(), user.getClave(), SincronizarActivity.this);
-                }
-                for (Stock stock : stocksArrayList) {
-                    Stock.registroStock(stock.getEpc(), stock.getTid(), stock.getUserMemory(), stock.getDescription(), stock.getLastScanDate(), stock.getIdRoom(), SincronizarActivity.this);
-                }
-
+                // metodos que llenan los arrayList correspondientes
+                getBuildingsDotNet();
+                getRoomsDotNet();
+                getUsersDotNet();
+                getStocksDotNet();
+                getLectorsDotNet();
             }
         });
-
         userService = APIUtils.getUserService();
     }
 
@@ -164,6 +150,9 @@ public class SincronizarActivity extends BaseActivity {
                 if (response.isSuccessful()) {
                     Log.d("RESPONSE->   ", String.valueOf(response.body()));
                     lectorsArrayList = new ArrayList<>(response.body());
+                    for (Lector lector : lectorsArrayList) {
+                        Lector.registroLector(lector.getAlias(),lector.getMarca(),lector.getModelo(),lector.getDescription(),lector.getMacAddress(),SincronizarActivity.this);
+                    }
                 }
             }
 
@@ -184,6 +173,9 @@ public class SincronizarActivity extends BaseActivity {
                 if (response.isSuccessful()) {
                     Log.d("RESPONSE->   ", String.valueOf(response.body()));
                     stocksArrayList = new ArrayList<>(response.body());
+                    for (Stock stock : stocksArrayList) {
+                        Stock.registroStock(stock.getEpc(), stock.getTid(), stock.getUserMemory(), stock.getDescription(), stock.getLastScanDate(), stock.getIdRoom(), SincronizarActivity.this);
+                    }
                 }
             }
 
@@ -204,6 +196,9 @@ public class SincronizarActivity extends BaseActivity {
                 if (response.isSuccessful()) {
                     Log.d("RESPONSE->   ", String.valueOf(response.body()));
                     usersArrayList = new ArrayList<>(response.body());
+                    for (User user : usersArrayList) {
+                        User.registroUser(user.getNombre(), user.getClave(), SincronizarActivity.this);
+                    }
                 }
             }
 
@@ -224,7 +219,9 @@ public class SincronizarActivity extends BaseActivity {
                 if (response.isSuccessful()) {
                     Log.d("RESPONSE->   ", String.valueOf(response.body()));
                     roomsArrayList = new ArrayList<>(response.body());
-                    Log.d("USUARIO NUEVO", String.valueOf(roomsArrayList.get(0)));
+                    for (Room room : roomsArrayList) {
+                        Room.registroRoom(room.getBuildingId(), room.getName(), SincronizarActivity.this);
+                    }
                 }
             }
 
@@ -245,6 +242,9 @@ public class SincronizarActivity extends BaseActivity {
                 if (response.isSuccessful()) {
                     Log.d("RESPONSE->   ", String.valueOf(response.body()));
                     buildingsArrayList = new ArrayList<>(response.body());
+                    for (Building building : buildingsArrayList) {
+                        Building.registroBuilding(building.getName(), SincronizarActivity.this);
+                    }
                 }
             }
 

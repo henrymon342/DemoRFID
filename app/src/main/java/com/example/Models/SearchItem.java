@@ -59,7 +59,7 @@ public class SearchItem {
         values.put(utilidades.SEARCH_LIST_EPC, epc);
         values.put(utilidades.SEARCH_LIST_ESTADO, estado);
         Long idResultante = db.insert(utilidades.TABLA_SEARCH_LIST, utilidades.SEARCH_LIST_ID, values);
-        Toast.makeText(context, "Id Room: " + idResultante, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Id SEARCH ITEM: " + idResultante, Toast.LENGTH_SHORT).show();
         db.close();
     }
 

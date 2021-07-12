@@ -258,8 +258,6 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         init();
         selectIndex = -1;
         mContext.selectEPC = null;
-
-
     }
 
     @Override
@@ -284,21 +282,6 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
                 // limpiar
                 clearData();
-
-                // crea una tabla rfid de forma manual
-                // registrarInventarioSQLite();
-
-                // crea una tabla building de forma manual
-                // registroBuilding();
-
-                // crea una tabla room de forma manual
-                // registroRoom();
-
-                // trae todos los valores de la tabla building
-                //getBuildingSQLite();
-
-                // trae todos los valores de la tabla room
-                //getRoomSQLite();
                 break;
 
             case R.id.InventoryLoop: // auto
@@ -308,11 +291,6 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             case R.id.btInventory: // single
 
                 inventory();
-
-
-                //cargarBDSQLite();
-                //guardarInventario();
-
                 break;
             case R.id.btStop: //stop
                 if (mContext.uhf.getConnectStatus() == ConnectionStatus.CONNECTED) {
@@ -323,7 +301,6 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             case R.id.btnGenerar:
                 guardarInventario();
                 generateMissingItems(currentRoomId);
-                //estaEnUsuarioSQLite();
                 break;
 
         }
@@ -337,9 +314,6 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             return;
         }
 
-        // PEDIR DATOS A JORGE PARA ID BUILDING Y EL ID ROOM
-
-
         //DATOS PARA LA TABLA INVENTARIO
         String duracion = tv_time.getText().toString();
         String tag_total = tv_total.getText().toString();
@@ -350,8 +324,6 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         //Aquí obtienes el formato que deseas
         String fechaScaneo = new SimpleDateFormat("dd-MM-yyyy").format(myDate);
         Log.d("FECHA", fechaScaneo);
-
-        //int id_foranea = registrarInventarioSQLite(tag_total, fechaScaneo, "r");
 
         //DATOS PARA LA TABLA TAG
         for (int i = 0; i < tagList.size(); i++) {
@@ -366,16 +338,12 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             Log.d("INVENTARIO", the_tid);
             Log.d("INVENTARIO", tag_count);
             Log.d("INVENTARIO", currentRoomId + "");
-
             scannedItems.add(new SearchItem(i + 1, "", the_epc, ""));
-            //Stock.registroStock(the_epc, the_tid, "--", "--", fechaScaneo, currentRoomId, mContext);
         }
-
         mContext.seenvio = true;
         mContext.btnseenvio.setVisibility(View.VISIBLE);
         btnGenerar.setBackgroundColor(Color.DKGRAY);
         btnGenerar.setTextColor(Color.WHITE);
-
     }
 
     private boolean validacionesPrevias() {
@@ -391,7 +359,6 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     }
 
     private void init() {
-
         isExit = false;
         mContext.addConnectStatusNotice(mConnectStatus);
         LvTags = (ListView) mContext.findViewById(R.id.LvTags);
@@ -410,7 +377,6 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         btClear.setOnClickListener(this);
         btStop.setOnClickListener(this);
         btnGenerar.setOnClickListener(this);
-
 
         listaCsv = new ArrayList<>();
 

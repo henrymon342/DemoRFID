@@ -76,8 +76,7 @@ public class Building {
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(utilidades.BUILDING_NAME, nombreEdificio);
-        Long idResultante = db.insert(utilidades.TABLA_BUILDING, utilidades.BUILDING_ID, values);
-        Toast.makeText(context, "Id Building: " + idResultante, Toast.LENGTH_SHORT).show();
+        db.insert(utilidades.TABLA_BUILDING, utilidades.BUILDING_ID, values);
         db.close();
     }
 

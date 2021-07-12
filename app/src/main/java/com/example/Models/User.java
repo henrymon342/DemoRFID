@@ -44,8 +44,7 @@ public class User {
         ContentValues values = new ContentValues();
         values.put(utilidades.USER_NOMBRE, nombre);
         values.put(utilidades.USER_PASSWORD, password);
-        Long idResultante = db.insert(utilidades.TABLA_USER, utilidades.USER_ID, values);
-        Toast.makeText(context, "Id Registro: " + idResultante, Toast.LENGTH_SHORT).show();
+        db.insert(utilidades.TABLA_USER, utilidades.USER_ID, values);
         db.close();
     }
 

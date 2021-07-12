@@ -65,8 +65,7 @@ public class Room {
         ContentValues values = new ContentValues();
         values.put(utilidades.ROOM_NAME, nombreRoom);
         values.put(utilidades.ROOM_FK_BUILDING, fk_idBuilding);
-        Long idResultante = db.insert(utilidades.TABLA_ROOM, utilidades.ROOM_ID, values);
-        Toast.makeText(context, "Id Room: " + idResultante, Toast.LENGTH_SHORT).show();
+        db.insert(utilidades.TABLA_ROOM, utilidades.ROOM_ID, values);
         db.close();
     }
 }

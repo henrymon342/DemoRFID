@@ -64,30 +64,14 @@ public class LoginActivity extends BaseActivity {
         nombre = findViewById(R.id.nombre);
         password = findViewById(R.id.password);
         btn_login = (Button) findViewById(R.id.btn_login);
-        btn_registro = (Button) findViewById(R.id.btn_registro);
-        btn_sqlite = (Button) findViewById(R.id.btn_sqlite);
-
-        btn_registro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //deleteUsersData();
-                actualizarDatosUsuarioDeDotNet();
-                //actualizarDatos();
-            }
-        });
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logear();
             }
         });
-        btn_sqlite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                registroUserDEMO();
-            }
-        });
 
+        actualizarDatos();
         //codigoHenry
         userService = APIUtils.getUsers();
         buildingInterface = APIUtils.getBuildings();
@@ -96,6 +80,7 @@ public class LoginActivity extends BaseActivity {
 
     public void actualizarDatos() {
         if (verInternet()) {
+            actualizarDatosUsuarioDeDotNet();
             ConnectionSQLiteHelper.deleteRoomsData(this);
             ConnectionSQLiteHelper.deleteBuildingsData(this);
             actualizarDatosBuildings();
@@ -173,7 +158,7 @@ public class LoginActivity extends BaseActivity {
             password.setText("");
             estaEnSQLite = true;
             // Actualizar los datos al momento de ingresar
-            actualizarDatos();
+
         }
         nombre.setText("");
         password.setText("");
