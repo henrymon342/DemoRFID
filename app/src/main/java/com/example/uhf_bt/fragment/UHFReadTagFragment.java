@@ -300,7 +300,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
             case R.id.btnGenerar:
                 guardarInventario();
-                generateMissingItems(currentRoomId);
+                generateMissingItems(0);
                 break;
 
         }
@@ -900,8 +900,10 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         for (Stock stock : stockList) {
             if (stock.getIdRoom() == roomId) {
                 SearchItem item = containsItem(scannedItems, stock);
+                Log.d("CONDICION", "primer if");
                 if (null != item) {
                     SearchItem.registroSearchItem(item.getDescription(), item.getEpc(), item.getEstado(), mContext);
+                    Log.d("CONDICION", "segundo if");
                 }
             }
         }
