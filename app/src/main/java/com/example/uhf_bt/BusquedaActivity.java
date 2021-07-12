@@ -42,6 +42,7 @@ public class BusquedaActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 pedirUbicacion();
+                getSearchList();
                 //getRfidSQLite();
             }
         });
