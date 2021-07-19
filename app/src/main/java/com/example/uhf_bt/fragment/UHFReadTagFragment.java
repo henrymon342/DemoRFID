@@ -21,12 +21,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.Backend.APIUtils;
+import com.example.Models.AssignationLector;
 import com.example.Models.Building;
 import com.example.Models.Room;
 import com.example.Models.SearchItem;
 import com.example.Models.Stock;
 import com.example.Models.User;
 import com.example.uhf_bt.ConnectionSQLiteHelper;
+import com.example.uhf_bt.LoginActivity;
 import com.example.uhf_bt.MainActivity;
 import com.example.uhf_bt.NumberTool;
 import com.example.uhf_bt.R;
@@ -301,8 +303,10 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             case R.id.btnGenerar:
                 guardarInventario();
                 generateMissingItems(0);
-                break;
 
+                // corregir el id Foraneo del lector
+                AssignationLector.registroAssignationLector(LoginActivity.loginDate,new SimpleDateFormat().format(new Date()),User.actualUser,1,mContext);
+                break;
         }
     }
 

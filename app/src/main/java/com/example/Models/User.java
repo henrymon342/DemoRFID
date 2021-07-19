@@ -28,6 +28,7 @@ public class User {
     private String nombre;
     private String clave;
 
+    public static int actualUser = 0;
 
     @Override
     public String toString() {
@@ -60,7 +61,7 @@ public class User {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getReadableDatabase();
         String[] parametros = {name};
-        String[] campos = {utilidades.USER_NOMBRE, utilidades.USER_PASSWORD};
+        String[] campos = {utilidades.USER_NOMBRE, utilidades.USER_PASSWORD, utilidades.USER_ID};
         String resUser = "";
         String resPass = "";
         try {
@@ -68,6 +69,7 @@ public class User {
             cursor.moveToFirst();
             resUser = cursor.getString(0);
             resPass = cursor.getString(1);
+            actualUser = cursor.getInt(1);
             cursor.close();
             db.close();
             if (resUser.equals(name) && resPass.equals(pass)) {
