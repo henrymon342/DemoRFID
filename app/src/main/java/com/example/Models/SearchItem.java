@@ -16,11 +16,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+
 public class SearchItem {
     private int id;
     private String description;
@@ -33,7 +35,7 @@ public class SearchItem {
         SearchItem items;
         ArrayList<SearchItem> itemsList = new ArrayList<>();
         try {
-            Cursor cursor = db.rawQuery("select * from " + utilidades.TABLA_ROOM, null);
+            Cursor cursor = db.rawQuery("select * from " + utilidades.TABLA_SEARCH_LIST, null);
             while (cursor.moveToNext()) {
                 items = new SearchItem();
                 items.setId(cursor.getInt(0));
@@ -61,6 +63,11 @@ public class SearchItem {
         Long idResultante = db.insert(utilidades.TABLA_SEARCH_LIST, utilidades.SEARCH_LIST_ID, values);
         Toast.makeText(context, "Id SEARCH ITEM: " + idResultante, Toast.LENGTH_SHORT).show();
         db.close();
+    }
+
+    @Override
+    public String toString(){
+        return this.epc+ "   "+this.estado;
     }
 
 }

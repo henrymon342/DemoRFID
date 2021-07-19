@@ -85,7 +85,7 @@ public class UHFLocationFragment extends Fragment {
 
         mContext = (MainActivity) getActivity();
 
-        progressBar1 = (ProgressBar) mContext.findViewById(R.id.progressBar1);
+        progressBar1 =  mContext.findViewById(R.id.progressBar1);
 
         progressBar1.setMax(100);
         progressBar1.setProgress(0);
@@ -253,7 +253,8 @@ public class UHFLocationFragment extends Fragment {
             Message msg = handler.obtainMessage(FLAG_UHFINFO);
             msg.obj = info;
             //listAux.add(info);
-            if(info.getEPC().equals(etEPC.getText().toString())){
+            String the_tid = etEPC.getText().toString().substring(0, 24);
+            if(info.getEPC().equals(the_tid)){
                 Log.d(TAG, " ENCONTRADO...");
 
                 rssiValue = Long.parseLong(info.getRssi().substring(0, 3))*(-1);

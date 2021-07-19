@@ -1,13 +1,18 @@
 package com.example.Backend;
 
 //import com.example.Backend.Interfaces.UserService;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.Interfaces.BuildingInterface;
 import com.example.Interfaces.LogeoInterface;
 import com.example.Interfaces.RoomInterface;
 import com.example.Interfaces.StockInterface;
+import com.example.uhf_bt.MainActivity;
 import com.example.uhf_bt.Utilidades.GLOBAL;
+import com.rscja.deviceapi.entity.UHFTAGInfo;
 
 import java.util.List;
 
@@ -19,7 +24,9 @@ public class APIUtils {
     public static final String API_URL = GLOBAL.URL;
 
 
+
     private APIUtils(){
+
     };
 
 
@@ -85,5 +92,6 @@ public class APIUtils {
             return true;
         }
     }
+
 
 }

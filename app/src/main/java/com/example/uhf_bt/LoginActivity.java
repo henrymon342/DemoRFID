@@ -72,6 +72,7 @@ public class LoginActivity extends BaseActivity {
         });
 
         actualizarDatos();
+        registroUserDEMO();
         //codigoHenry
         userService = APIUtils.getUsers();
         buildingInterface = APIUtils.getBuildings();

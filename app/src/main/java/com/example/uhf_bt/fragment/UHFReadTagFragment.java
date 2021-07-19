@@ -338,7 +338,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             Log.d("INVENTARIO", the_tid);
             Log.d("INVENTARIO", tag_count);
             Log.d("INVENTARIO", currentRoomId + "");
-            scannedItems.add(new SearchItem(i + 1, "", the_epc, ""));
+            scannedItems.add(new SearchItem(i + 1, "", the_tid, ""));
         }
         mContext.seenvio = true;
         mContext.btnseenvio.setVisibility(View.VISIBLE);
@@ -440,27 +440,14 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         spinnerU = view.findViewById(R.id.spinnerU);
 
 
-        //ArrayAdapter<Building> adapterEE =
-        // new ArrayAdapter<Building>(this.getContext(),  android.R.layout.simple_spinner_dropdown_item, buildingList);
-        //ArrayAdapter<Room> adapterU =
-        // new ArrayAdapter<Room>(this.getContext(),  android.R.layout.simple_spinner_dropdown_item, roomList);
+
 
         adapterE = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, buildingNames);
         adapterU = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, roomNames);
         adapterE.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerE.setAdapter(adapterE);
 
-        /*spinnerE.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
-                if (position != -1) {
-                    Building selected = (Building) spinnerE.getItems().get(position);
-                    Toast.makeText(mContext, selected.getId() + selected.getName() , Toast.LENGTH_SHORT).show();
-                    //chooseRoom(selected);
-                }
-            }
-        });
-         */
+
         spinnerE.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
 
             @Override
@@ -487,20 +474,13 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
     }
 
     private void chooseRoom(int item) {
-        //Log.d("OBB", buildingNames.get(item));
-        //Log.d("OBB", buildingNames.get(item));
+
         currentRoomId = item;
         Log.d("SELECCIONADO ID ROOM  ", currentRoomId + "");
     }
 
     private void initListasUbicacion() {
 
-        /*for (int i = 0; i < 10; i++) {
-            buildingNames.add(i+"");
-            roomNames.add(10-i+"");
-        }*/
-
-        //Log.d("CONTEXTO", String.valueOf(mContext));
 
 
         this.getBuildings();
@@ -618,21 +598,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                 handler.sendEmptyMessage(FLAG_UPDATE_TIME);
             }
             stopInventory();
-            // while (loopFlag) {
-            //     List<UHFTAGInfo> list = getUHFInfo();
-            //     if(list==null || list.size()==0){
-            //         SystemClock.sleep(1);
-            //     }else{
-            //         Utils.playSound(1);
-            //         handler.sendMessage(handler.obtainMessage(FLAG_UHFINFO_LIST, list));
-            //     }
-            //     if(System.currentTimeMillis()-startTime>100){
-            //         startTime=System.currentTimeMillis();
-            //         handler.sendEmptyMessage(FLAG_UPDATE_TIME);
-            //     }
 
-            // }
-            // stopInventory();
         }
     }
 
