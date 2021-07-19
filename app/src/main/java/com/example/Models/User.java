@@ -69,7 +69,7 @@ public class User {
             cursor.moveToFirst();
             resUser = cursor.getString(0);
             resPass = cursor.getString(1);
-            actualUser = cursor.getInt(1);
+            actualUser = cursor.getInt(2);
             cursor.close();
             db.close();
             if (resUser.equals(name) && resPass.equals(pass)) {

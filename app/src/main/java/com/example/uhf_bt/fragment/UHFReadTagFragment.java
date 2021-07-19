@@ -31,6 +31,7 @@ import com.example.uhf_bt.ConnectionSQLiteHelper;
 import com.example.uhf_bt.LoginActivity;
 import com.example.uhf_bt.MainActivity;
 import com.example.uhf_bt.NumberTool;
+import com.example.uhf_bt.PrincipalActivity;
 import com.example.uhf_bt.R;
 import com.example.uhf_bt.Utilidades.GLOBAL;
 import com.example.uhf_bt.Utils;
@@ -305,7 +306,7 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
                 generateMissingItems(0);
 
                 // corregir el id Foraneo del lector
-                AssignationLector.registroAssignationLector(LoginActivity.loginDate,new SimpleDateFormat().format(new Date()),User.actualUser,1,mContext);
+                AssignationLector.registroAssignationLector(LoginActivity.loginDate,new SimpleDateFormat().format(new Date()),User.actualUser, PrincipalActivity.lectorId,mContext);
                 break;
         }
     }

@@ -36,6 +36,7 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
     public String remoteBTAdd = "";
 
     public boolean seenvio = false;
+    public static int lectorId= 0;
 
 
     public boolean isScanning = false;
