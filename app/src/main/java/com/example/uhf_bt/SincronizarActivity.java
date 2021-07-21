@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
 import com.example.Backend.APIUtils;
 import com.example.Interfaces.BuildingInterface;
 import com.example.Interfaces.LectorInterface;
@@ -22,13 +24,10 @@ import com.example.Models.Stock;
 import com.example.Models.User;
 import com.example.uhf_bt.Utilidades.GLOBAL;
 
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.RequiresApi;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,7 +43,7 @@ public class SincronizarActivity extends BaseActivity {
     private ArrayList<User> usersArrayList = new ArrayList<>();
     private ArrayList<Stock> stocksArrayList = new ArrayList<>();
     private ArrayList<Lector> lectorsArrayList = new ArrayList<>();
-    private ArrayList<AssignationLector> assignationLectorsArrayList=new ArrayList<>();
+    private ArrayList<AssignationLector> assignationLectorsArrayList = new ArrayList<>();
 
     private Retrofit retrofit;
     BuildingInterface buildingInterface;
@@ -76,7 +75,7 @@ public class SincronizarActivity extends BaseActivity {
                     sendBDDotNet(stocksArrayList);
                 */
 
-                assignationLectorsArrayList= new ArrayList<>(AssignationLector.getAssignationLector(SincronizarActivity.this));
+                assignationLectorsArrayList = new ArrayList<>(AssignationLector.getAssignationLector(SincronizarActivity.this));
                 /*
                     completar
                  */
@@ -151,7 +150,7 @@ public class SincronizarActivity extends BaseActivity {
                     Log.d("RESPONSE->   ", String.valueOf(response.body()));
                     lectorsArrayList = new ArrayList<>(response.body());
                     for (Lector lector : lectorsArrayList) {
-                        Lector.registroLector(lector.getAlias(),lector.getMarca(),lector.getModelo(),lector.getDescription(),lector.getMacAddress(),SincronizarActivity.this);
+                        Lector.registroLector(lector.getAlias(), lector.getMarca(), lector.getModelo(), lector.getDescription(), lector.getMacAddress(), lector.getId(), SincronizarActivity.this);
                     }
                 }
             }
@@ -197,7 +196,7 @@ public class SincronizarActivity extends BaseActivity {
                     Log.d("RESPONSE->   ", String.valueOf(response.body()));
                     usersArrayList = new ArrayList<>(response.body());
                     for (User user : usersArrayList) {
-                        User.registroUser(user.getNombre(), user.getClave(), SincronizarActivity.this);
+                        User.registroUser(user.getNombre(), user.getClave(), user.getId(), SincronizarActivity.this);
                     }
                 }
             }

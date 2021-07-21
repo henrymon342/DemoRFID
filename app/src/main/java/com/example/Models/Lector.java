@@ -24,8 +24,9 @@ public class Lector {
     private String modelo;
     private String description;
     private String macAddress;
+    private int id_net;
 
-    public static void registroLector(String alias, String marca,String modelo,String description,String macAddress, Context context) {
+    public static void registroLector(String alias, String marca,String modelo,String description,String macAddress,int id_net, Context context) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -34,6 +35,7 @@ public class Lector {
         values.put(utilidades.LECTOR_MODELO, modelo);
         values.put(utilidades.LECTOR_DESCRIPTION, description);
         values.put(utilidades.LECTOR_MAC, macAddress);
+        values.put(utilidades.LECTOR_NET_ID, id_net);
         db.insert(utilidades.TABLA_LECTOR, utilidades.LECTOR_ID, values);
         db.close();
     }

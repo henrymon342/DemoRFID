@@ -4,15 +4,12 @@ import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -25,6 +22,7 @@ import com.example.Interfaces.RoomInterface;
 import com.example.Models.Building;
 import com.example.Models.Room;
 import com.example.Models.User;
+import com.example.uhf_bt.Utilidades.GLOBAL;
 import com.example.uhf_bt.Utilidades.utilidades;
 
 import java.text.SimpleDateFormat;
@@ -37,8 +35,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import com.example.uhf_bt.Utilidades.GLOBAL;
 
 @Slf4j
 public class LoginActivity extends BaseActivity {
@@ -55,7 +51,7 @@ public class LoginActivity extends BaseActivity {
     private Boolean swUpdate = false;
     private Button btn_login, btn_registro, btn_sqlite;
     private TextView nombre, password;
-    public static String loginDate="";
+    public static String loginDate = "";
 
     private Retrofit retrofit;
 
@@ -161,7 +157,7 @@ public class LoginActivity extends BaseActivity {
             nombre.setText("");
             password.setText("");
             estaEnSQLite = true;
-            loginDate=new SimpleDateFormat().format(new Date());
+            loginDate = new SimpleDateFormat().format(new Date());
 
         }
         nombre.setText("");
@@ -169,7 +165,7 @@ public class LoginActivity extends BaseActivity {
         if (!estaEnSQLite) {
             if (buscarBDDotNet(nombre.toString(), password.toString()) == true) {
                 startActivity(loginIntend);
-                loginDate=new SimpleDateFormat().format(new Date());
+                loginDate = new SimpleDateFormat().format(new Date());
             } else {
                 Toast.makeText(getApplicationContext(), "el usuario o contraseña son incorrectos", Toast.LENGTH_LONG).show();
             }
@@ -222,8 +218,7 @@ public class LoginActivity extends BaseActivity {
                     listUsers = response.body();
                     for (int i = 0; i < listUsers.size(); i++) {
                         Log.d("USUARIOS", listUsers.get(i).toString());
-
-                        registroUser(listUsers.get(i).getNombre(), listUsers.get(i).getClave());
+                        registroUser(listUsers.get(i).getNombre(), listUsers.get(i).getClave(), listUsers.get(i).getId());
                     }
                 }
             }
@@ -255,8 +250,8 @@ public class LoginActivity extends BaseActivity {
         db.close();
     }
 
-    private void registroUser(String nombre, String password) {
-        User.registroUser(nombre, password, this);
+    private void registroUser(String nombre, String password, int id_NET) {
+        User.registroUser(nombre, password, id_NET, this);
     }
 
     public void deleteUsersData() {

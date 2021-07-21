@@ -27,6 +27,7 @@ public class User {
     private int id;
     private String nombre;
     private String clave;
+    private int id_net;
 
     public static int actualUser = 0;
 
@@ -39,12 +40,13 @@ public class User {
                 '}';
     }
 
-    public static void registroUser(String nombre, String password, Context context) {
+    public static void registroUser(String nombre, String password,int id_net, Context context) {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(utilidades.USER_NOMBRE, nombre);
         values.put(utilidades.USER_PASSWORD, password);
+        values.put(utilidades.USER_NET_ID, id_net);
         db.insert(utilidades.TABLA_USER, utilidades.USER_ID, values);
         db.close();
     }
@@ -61,7 +63,7 @@ public class User {
         ConnectionSQLiteHelper conn = new ConnectionSQLiteHelper(context, "bdUser", null, 1);
         SQLiteDatabase db = conn.getReadableDatabase();
         String[] parametros = {name};
-        String[] campos = {utilidades.USER_NOMBRE, utilidades.USER_PASSWORD, utilidades.USER_ID};
+        String[] campos = {utilidades.USER_NOMBRE, utilidades.USER_PASSWORD, utilidades.USER_NET_ID};
         String resUser = "";
         String resPass = "";
         try {

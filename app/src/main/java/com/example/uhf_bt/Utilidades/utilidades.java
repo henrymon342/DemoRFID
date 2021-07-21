@@ -31,6 +31,7 @@ public class utilidades {
     public static final String LECTOR_MODELO = "modelo";
     public static final String LECTOR_DESCRIPTION = "description";
     public static final String LECTOR_MAC = "mac";
+    public static final String LECTOR_NET_ID = "id_NET";
 
     // ASSIGNATION LECTOR
     public static final String TABLA_ASSIGNATION_LECTOR = "assignation_lector";
@@ -45,6 +46,7 @@ public class utilidades {
     public static final String USER_ID = "id";
     public static final String USER_NOMBRE = "name";
     public static final String USER_PASSWORD = "password";
+    public static final String USER_NET_ID = "id_NET";
 
     // SEARCH_LIST
     public static final String TABLA_SEARCH_LIST = "search_list";
@@ -85,7 +87,8 @@ public class utilidades {
             + LECTOR_MARCA + " TEXT, "
             + LECTOR_MODELO + " TEXT, "
             + LECTOR_DESCRIPTION + " TEXT, "
-            + LECTOR_MAC + " TEXT)";
+            + LECTOR_MAC + " TEXT, "
+            + LECTOR_NET_ID + " INTEGER)";
 
     // CREAR ASSIGNATION_LECTOR
     public static final String CREAR_TABLA_ASSIGNATION_LECTOR = "CREATE TABLE " + TABLA_ASSIGNATION_LECTOR + "("
@@ -101,7 +104,8 @@ public class utilidades {
     public static final String CREAR_TABLA_USER = "CREATE TABLE " + TABLA_USER + "("
             + USER_ID + " INTEGER PRIMARY KEY, "
             + USER_NOMBRE + " TEXT, "
-            + USER_PASSWORD + " TEXT)";
+            + USER_PASSWORD + " TEXT, "
+            + USER_NET_ID + " INTEGER)";
 
     // CREAR SEARCH
     public static final String CREAR_TABLA_SEARCH_LIST = "CREATE TABLE " + TABLA_SEARCH_LIST + "("
