@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 
+import com.example.Models.Lector;
 import com.rscja.deviceapi.RFIDWithUHFBLE;
 import com.rscja.deviceapi.interfaces.ConnectionStatus;
 import com.rscja.deviceapi.interfaces.ConnectionStatusCallback;
@@ -37,6 +38,8 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
 
     public boolean seenvio = false;
     public static int lectorId= 0;
+
+    private ArrayList<Lector> listaLector = new ArrayList<>();
 
 
     public boolean isScanning = false;
@@ -116,6 +119,11 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
         initUI();
         uhf.init(getApplicationContext());
         Utils.initSound(getApplicationContext());
+
+        listaLector = Lector.getLectors(getApplicationContext());
+        for (Lector x : listaLector){
+            Log.d("PRINCIPALLECTOR", x.toString());
+        }
     }
 
 

@@ -17,9 +17,11 @@ import android.widget.Toast;
 
 import com.example.Backend.APIUtils;
 import com.example.Interfaces.BuildingInterface;
+import com.example.Interfaces.LectorInterface;
 import com.example.Interfaces.LogeoInterface;
 import com.example.Interfaces.RoomInterface;
 import com.example.Models.Building;
+import com.example.Models.Lector;
 import com.example.Models.Room;
 import com.example.Models.User;
 import com.example.uhf_bt.Utilidades.GLOBAL;
@@ -46,6 +48,7 @@ public class LoginActivity extends BaseActivity {
     List<User> listUsers;
     List<Building> listBui;
     List<Room> listRooms;
+    List<Lector> listLectors;
 
     private Boolean swGlobal = false;
     private Boolean swUpdate = false;
@@ -83,11 +86,38 @@ public class LoginActivity extends BaseActivity {
             actualizarDatosUsuarioDeDotNet();
             ConnectionSQLiteHelper.deleteRoomsData(this);
             ConnectionSQLiteHelper.deleteBuildingsData(this);
+            ConnectionSQLiteHelper.deleteLectorsData(this);
             actualizarDatosBuildings();
             actualizarDatosRooms();
+            actualizarDatosLectors();
         } else {
             Toast.makeText(this, "NO HAY CONEXIÓN A INTERNET", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void actualizarDatosLectors() {
+        retrofit = this.construirRetrofit();
+        LectorInterface lectorInterface = retrofit.create(LectorInterface.class);
+        Call<List<Lector>> call = lectorInterface.getLectors();
+        call.enqueue(new Callback<List<Lector>>() {
+            @Override
+            public void onResponse(Call<List<Lector>> call, Response<List<Lector>> response) {
+                if (response.isSuccessful()) {
+
+                    listLectors = response.body();
+                    for (int i = 0; i < listLectors.size(); i++) {
+                        Log.d("LECTOR:", listLectors.get(i).toString() );
+                        Lector l = listLectors.get(i);
+                        Lector.registroLector(l.getAlias(), l.getMarca(), l.getModelo(), l.getDesc(), l.getMacAddr(), l.getId(), getApplicationContext());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Lector>> call, Throwable t) {
+                Log.e("ERROR: ", t.getMessage());
+            }
+        });
     }
 
     private Boolean verInternet() {

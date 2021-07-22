@@ -150,7 +150,7 @@ public class SincronizarActivity extends BaseActivity {
                     Log.d("RESPONSE->   ", String.valueOf(response.body()));
                     lectorsArrayList = new ArrayList<>(response.body());
                     for (Lector lector : lectorsArrayList) {
-                        Lector.registroLector(lector.getAlias(), lector.getMarca(), lector.getModelo(), lector.getDescription(), lector.getMacAddress(), lector.getId(), SincronizarActivity.this);
+                        Lector.registroLector(lector.getAlias(), lector.getMarca(), lector.getModelo(), lector.getDesc(), lector.getMacAddr(), lector.getId(), SincronizarActivity.this);
                     }
                 }
             }
