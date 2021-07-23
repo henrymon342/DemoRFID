@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.Models.SearchItem;
+import com.example.uhf_bt.Utilidades.VariablesGlobales;
 import com.example.uhf_bt.entidades.stockList;
 import com.rscja.deviceapi.RFIDWithUHFBLE;
 import com.rscja.deviceapi.entity.UHFTAGInfo;
@@ -112,6 +113,7 @@ public class BusquedaActivity extends BaseActivity {
                 Toast.makeText(BusquedaActivity.this,listSearch.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     Handler handler = new Handler() {

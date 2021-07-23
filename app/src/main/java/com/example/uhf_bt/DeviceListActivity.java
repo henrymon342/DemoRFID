@@ -40,6 +40,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.Models.Lector;
 import com.rscja.deviceapi.RFIDWithUHFBLE;
 import com.rscja.deviceapi.interfaces.ScanBTCallback;
 
@@ -56,6 +57,8 @@ public class DeviceListActivity extends BaseActivity {
     public static final String TAG = "DeviceListActivity";
 
     private TextView tvTitle;
+
+    private ArrayList<Lector> listaLector = new ArrayList<>();
 
     private List<MyDevice> deviceList;
     private DeviceAdapter deviceAdapter;
@@ -82,6 +85,7 @@ public class DeviceListActivity extends BaseActivity {
             finish();
         }
 
+        listaLector = Lector.getLectors(getApplicationContext());
         init();
     }
 
@@ -165,7 +169,7 @@ public class DeviceListActivity extends BaseActivity {
                         @Override
                         public void run() {
                             Log.d(TAG, "扫描成功");
-                            MyDevice myDevice = new MyDevice(bluetoothDevice.getAddress(), bluetoothDevice.getName());
+                            MyDevice myDevice = new MyDevice(bluetoothDevice.getAddress(), construirAlias(bluetoothDevice.getAddress()));
                             addDevice(myDevice, rssi);
                         }
                     });
@@ -238,6 +242,8 @@ public class DeviceListActivity extends BaseActivity {
             if(!TextUtils.isEmpty(address)) {
                 Bundle b = new Bundle();
                 b.putString(BluetoothDevice.EXTRA_DEVICE, device.getAddress());
+
+
 
                 Intent result = new Intent();
                 result.putExtras(b);
@@ -332,7 +338,7 @@ public class DeviceListActivity extends BaseActivity {
 
             MyDevice device = devices.get(position);
             final TextView tvadd = ((TextView) vg.findViewById(R.id.address));
-            //final TextView tvname = ((TextView) vg.findViewById(R.id.name));
+            final TextView tvname = ((TextView) vg.findViewById(R.id.nombre));
             final TextView tvpaired = (TextView) vg.findViewById(R.id.paired);
             final TextView tvrssi = (TextView) vg.findViewById(R.id.rssi);
 
@@ -343,8 +349,8 @@ public class DeviceListActivity extends BaseActivity {
                 tvrssi.setVisibility(View.VISIBLE);
             }
 
-            //tvname.setText(device.getName());
-            //tvname.setTextColor(Color.BLACK);
+            tvname.setText(device.getName());
+            tvname.setTextColor(Color.BLACK);
             tvadd.setText(device.getAddress());
             tvadd.setTextColor(Color.BLACK);
             if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
@@ -357,5 +363,17 @@ public class DeviceListActivity extends BaseActivity {
             }
             return vg;
         }
+    }
+
+    private String construirAlias(String deviceAddress) {
+        String alias = "Desconocido";
+        for (Lector x : listaLector){
+            if( x.getMacAddr().equals(deviceAddress)){
+                return x.getAlias();
+            }else{
+                continue;
+            }
+        }
+        return alias;
     }
 }

@@ -207,8 +207,8 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
             if (index == -1) {
                 tagList.add(tagMap);
                 tempData.add(uhftagInfo.getEPC());
-                tv_count.setText(String.valueOf(adapter.getCount()));
-                tv_total.setText(String.valueOf(++total));
+                //tv_count.setText(String.valueOf(adapter.getCount()));
+                //tv_total.setText(String.valueOf(++total));
                 adapter.notifyDataSetChanged();
                 Utils.playSound(1);
 
@@ -373,8 +373,8 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         btStop.setEnabled(false);
         btClear = (Button) mContext.findViewById(R.id.btClear);
         btnGenerar = (Button) mContext.findViewById(R.id.btnGenerar);
-        tv_count = (TextView) mContext.findViewById(R.id.tv_count);
-        tv_total = (TextView) mContext.findViewById(R.id.tv_total);
+        //tv_count = (TextView) mContext.findViewById(R.id.tv_count);
+        //tv_total = (TextView) mContext.findViewById(R.id.tv_total);
         tv_time = (TextView) mContext.findViewById(R.id.tv_time);
 
 
@@ -511,8 +511,8 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
 
     private void clearData() {
         total = 0;
-        tv_count.setText("0");
-        tv_total.setText("0");
+        //tv_count.setText("0");
+        //tv_total.setText("0");
         tv_time.setText("0s");
         tagList.clear();
         tempDatas.clear();
@@ -662,8 +662,8 @@ public class UHFReadTagFragment extends Fragment implements View.OnClickListener
         tagList.add(index, tagMap);
         tempDatas.add(index, info.getEpcBytes());
         adapter.notifyDataSetChanged();
-        tv_count.setText(valueOf(adapter.getCount()));
-        tv_total.setText(valueOf(++total));
+        //tv_count.setText(valueOf(adapter.getCount()));
+        //tv_total.setText(valueOf(++total));
     }
 
     private void addEPCToList(List<UHFTAGInfo> list) {

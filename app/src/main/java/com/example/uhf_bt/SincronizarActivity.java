@@ -23,6 +23,7 @@ import com.example.Models.Room;
 import com.example.Models.Stock;
 import com.example.Models.User;
 import com.example.uhf_bt.Utilidades.GLOBAL;
+import com.example.uhf_bt.Utilidades.VariablesGlobales;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -100,6 +101,9 @@ public class SincronizarActivity extends BaseActivity {
             }
         });
         userService = APIUtils.getUserService();
+
+        String s = ((VariablesGlobales) this.getApplication()).getIdLector();
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 
 import com.example.Models.Lector;
+import com.example.uhf_bt.Utilidades.GLOBAL;
+import com.example.uhf_bt.Utilidades.VariablesGlobales;
 import com.rscja.deviceapi.RFIDWithUHFBLE;
 import com.rscja.deviceapi.interfaces.ConnectionStatus;
 import com.rscja.deviceapi.interfaces.ConnectionStatusCallback;
@@ -30,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static com.example.uhf_bt.Utilidades.GLOBAL.idlector;
 
 public class PrincipalActivity extends BaseActivity implements View.OnClickListener {
 
@@ -139,7 +143,9 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
                     }
                     String deviceAddress = data.getStringExtra(BluetoothDevice.EXTRA_DEVICE);
                     mDevice = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(deviceAddress);
-                    tvAddress.setText(String.format("%s(%s)\nconnecting", mDevice.getName(), deviceAddress));
+
+                    //mDevice.getName()
+                        tvAddress.setText(String.format("%s(%s)\nconnecting", construirAlias(deviceAddress, 0), deviceAddress));
                     connect(deviceAddress);
                 }
                 break;
@@ -153,6 +159,31 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
             default:
                 break;
         }
+    }
+
+    private String construirAlias(String deviceAddress, int caso) {
+        if(caso == 0) {
+            String alias = "Desconocido";
+            for (Lector x : listaLector) {
+                if (x.getMacAddr().equals(deviceAddress)) {
+                    return x.getAlias();
+                } else {
+                    continue;
+                }
+            }
+            return alias;
+        } else if (caso == 1) {
+            String id = "-1";
+            for (Lector x : listaLector) {
+                if (x.getMacAddr().equals(deviceAddress)) {
+                    return x.getId_net()+"";
+                } else {
+                    continue;
+                }
+            }
+            return id;
+        }
+        return "";
     }
 
     public void inventario() {
@@ -358,8 +389,12 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
                         remoteBTName = device.getName();
                         remoteBTAdd = device.getAddress();
 
-                        tvAddress.setText(String.format("%s(%s)\nconnected", remoteBTName, remoteBTAdd));
+                        tvAddress.setText(String.format("%s(%s)\nconnected", construirAlias(remoteBTAdd, 0), remoteBTAdd));
                         if (shouldShowDisconnected()) {
+                            Log.d("IDLECTOR", construirAlias(remoteBTAdd, 0));
+                            Log.d("IDLECTOR", construirAlias(remoteBTAdd, 1));
+                            // SET VARIABLE IDLECTOR
+                            ((VariablesGlobales) getApplication()).setIdLector(construirAlias(remoteBTAdd, 1));
                             showToast(R.string.connect_success);
                         }
 
@@ -383,7 +418,7 @@ public class PrincipalActivity extends BaseActivity implements View.OnClickListe
                             remoteBTName = device.getName();
                             remoteBTAdd = device.getAddress();
 //                            if (shouldShowDisconnected())
-                            tvAddress.setText(String.format("%s(%s)\ndisconnected", remoteBTName, remoteBTAdd));
+                            tvAddress.setText(String.format("%s(%s)\ndisconnected", construirAlias(remoteBTAdd, 0), remoteBTAdd));
                         } else {
 //                            if (shouldShowDisconnected())
                             tvAddress.setText("disconnected");
