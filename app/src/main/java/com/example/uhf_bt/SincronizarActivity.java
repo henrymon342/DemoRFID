@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 
 import com.example.Backend.APIUtils;
+import com.example.Interfaces.AsignacionInterface;
 import com.example.Interfaces.BuildingInterface;
 import com.example.Interfaces.LectorInterface;
 import com.example.Interfaces.LogeoInterface;
@@ -50,6 +51,7 @@ public class SincronizarActivity extends BaseActivity {
     BuildingInterface buildingInterface;
     StockInterface stockInterface;
     StockInterface userService;
+    AsignacionInterface asignacionService;
 
     @TargetApi(Build.VERSION_CODES.GINGERBREAD_MR1)
     @Override
@@ -77,6 +79,22 @@ public class SincronizarActivity extends BaseActivity {
                 */
 
                 assignationLectorsArrayList = new ArrayList<>(AssignationLector.getAssignationLector(SincronizarActivity.this));
+                AssignationLector x = assignationLectorsArrayList.get(0);
+                Call<AssignationLector> call = asignacionService.createAsignacion(x);
+                call.enqueue(new Callback<AssignationLector>() {
+                    @Override
+                    public void onResponse(Call<AssignationLector> call, Response<AssignationLector> response) {
+                        if (response.isSuccessful()) {
+                            Log.d("COSA", String.valueOf(response.body()));
+                            Toast.makeText(getApplicationContext(), "User created successfully!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<AssignationLector> call, Throwable t) {
+                        Log.e("ERROR: ", t.getMessage());
+                    }
+                });
                 /*
                     completar
                  */
